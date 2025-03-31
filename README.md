@@ -11,7 +11,7 @@ This is not a template assignment—you’re encouraged to dive deep, understand
 ## 💻 Hardware Requirements
 
 You **don’t need high-end hardware**. The code can be run efficiently with smaller models and data. Use command-line flags like `--input_size 32`, `--weight 0.0`, and simplified files like `3seqs.txt` for faster and more memory-efficient runs.
-
+![Sample Script:](./readmeImages/image.png)
 ---
 
 ## 🚀 Core Tasks
@@ -39,7 +39,6 @@ You **don’t need high-end hardware**. The code can be run efficiently with sma
 - `main.py` – Entry point for model training and testing
 - `models.py` – Contains model definitions (`KGramMLPSeqModel`, `TransformerModel`)
 - `generate.py` – Text generation logic and sampling strategies
-- `datasets/` – Includes TinyStories and simplified sequence datasets
 - `utils/` – Utility scripts for training and evaluation
 
 ---
