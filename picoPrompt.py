@@ -5,9 +5,9 @@ from utils import PicoGenerate
 
 def main():
     # Settings (must match training)
-    model_name = "lstm_seq"
+    model_name = "lstm_seq0"
     ckpt_path = f"{model_name}.pt"
-    embed_size = 512  # match training args
+    embed_size = 1024  # match training args
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Load tokenizer
@@ -34,7 +34,7 @@ def main():
                 model=model,
                 enc=enc,
                 init_text=prompt,
-                max_new_tokens=50,
+                max_new_tokens=100,
                 device=device,
                 top_p=0.95,
             )
