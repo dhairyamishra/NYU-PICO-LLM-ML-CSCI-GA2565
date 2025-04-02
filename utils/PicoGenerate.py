@@ -8,7 +8,7 @@ import torch.nn.functional as F
 ################################################################################
 
 
-def monosemantic_analysis_for_token(token_id, model, enc, device="cpu", top_n=5):
+def monosemantic_analysis_for_token(token_id, model, enc, device="cuda:0" if torch.cuda.is_available() else "cpu", top_n=5):
     return []
 
 
@@ -20,8 +20,11 @@ def nucleus_sampling(logits, p=0.95):
     return torch.argmax(logits).item()
 
 
-def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
-                  top_p=None,
+def generate_text(model, enc, 
+                  init_text, 
+                  max_new_tokens, 
+                  device,
+                  top_p,
                   monosemantic_info=None,
                   do_monosemantic=False):
     """

@@ -20,6 +20,9 @@ var/
 .installed.cfg
 *.egg
 
+# No ML info is stored due to size
+*.pt
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
