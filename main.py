@@ -30,14 +30,14 @@ def main():
     chunk_size = args.kgram_chunk_size
 
     embed_size = args.embed_size
-    batch_size = 16
-    num_epochs = 3
+    batch_size = args.batch_size
+    num_epochs = args.num_epochs
     learning_rate = 1e-3
 
     block_size = args.block_size
-    train_subset_size = 20000
-    log_interval_steps = 100
-    sample_interval_seconds = 30
+    train_subset_size = args.train_subset_size
+    log_interval_steps = args.log_interval_steps
+    sample_interval_seconds = args.sample_interval_seconds
 
     max_steps_per_epoch = args.max_steps_per_epoch
     num_inner_layers = args.num_inner_mlp_layers
@@ -188,11 +188,12 @@ def main():
         print(f"[{model_name}] Final sample (top-p=1.0) from prompt: '{args.prompt}'")
         print(text_topp1)
         print(f"Annotated:\n{ann_topp1}")
+        torch.save(model.state_dict(), f"{model_name}.pt")
+        print(f"Model {model_name} saved to {model_name}.pt")
         print("--------------------------------------------------")
 
     # Finally, let's share how I'm feeling:
-    print("\n*** I'm feeling great today! Hope you're well, too. ***")
-
+    print("I'm feeling great about this code!")
 
 if __name__ == "__main__":
     main()
