@@ -137,10 +137,10 @@ def main():
     n_blocks=args.n_blocks if hasattr(args, 'n_blocks') else 4).to(device)
 
     models = {
-      # "kgram_mlp_seq": kgram_model,
-        "lstm_seq": lstm_model,
-        "transformer": transformer,
-      # "kvcache_transformer": kv_transformer,
+    "kgram_mlp_seq": kgram_model,
+    "lstm_seq": lstm_model,
+    "transformer": transformer,
+    # "kvcache_transformer": kv_transformer,
     }
 
 
@@ -149,53 +149,57 @@ def main():
     ############################################################################
     for model_name, model in models.items():
         print(f"\n=== Training model: {model_name} ===")
-        TrainModel.train_one_model(
-            model=model,
-            loader=train_loader,
-            epochs=num_epochs,
-            model_name=model_name,
-            device=device,
-            lr=learning_rate,
-            log_steps=log_interval_steps,
-            sample_interval=sample_interval_seconds,
-            max_steps_per_epoch=max_steps_per_epoch,
-            enc=enc,
-            prompt=args.prompt  # <--- Pass the user-specified prompt here
-        )
+        for modelTrys in range(3):
+            try:
+                print(f"Model: {model}")
+                TrainModel.train_one_model(
+                    model=model,
+                    loader=train_loader,
+                    epochs=num_epochs,
+                    model_name=model_name,
+                    device=device,
+                    lr=learning_rate,
+                    log_steps=log_interval_steps,
+                    sample_interval=sample_interval_seconds,
+                    max_steps_per_epoch=max_steps_per_epoch,
+                    enc=enc,
+                    prompt=args.prompt  # <--- Pass the user-specified prompt here
+                )
+                with torch.no_grad():
+                    # 1) Greedy
+                    text_greedy, ann_greedy = PicoGenerate.generate_text(
+                        model, enc, args.prompt, max_new_tokens=20, device=device,
+                        top_p=None,
+                    )
+                    # 2) top-p=0.95
+                    text_topp, ann_topp = PicoGenerate.generate_text(
+                        model, enc, args.prompt, max_new_tokens=20, device=device,
+                        top_p=0.95,
+                    )
+                    # 3) top-p=1.0 => full distribution random sampling
+                    text_topp1, ann_topp1 = PicoGenerate.generate_text(
+                        model, enc, args.prompt, max_new_tokens=20, device=device,
+                        top_p=1.0,
+                    )
+                # Final generation from the user-provided prompt (args.prompt).
+                print(f"[{model_name}] Final sample (greedy) from prompt: '{args.prompt}'")
+                print(text_greedy)
+                print(f"Annotated:\n{ann_greedy}\n")
 
-        # Final generation from the user-provided prompt (args.prompt).
-        with torch.no_grad():
-            # 1) Greedy
-            text_greedy, ann_greedy = PicoGenerate.generate_text(
-                model, enc, args.prompt, max_new_tokens=20, device=device,
-                top_p=None,
-            )
-            # 2) top-p=0.95
-            text_topp, ann_topp = PicoGenerate.generate_text(
-                model, enc, args.prompt, max_new_tokens=20, device=device,
-                top_p=0.95,
-            )
-            # 3) top-p=1.0 => full distribution random sampling
-            text_topp1, ann_topp1 = PicoGenerate.generate_text(
-                model, enc, args.prompt, max_new_tokens=20, device=device,
-                top_p=1.0,
-            )
+                print(f"[{model_name}] Final sample (top-p=0.95) from prompt: '{args.prompt}'")
+                print(text_topp)
+                print(f"Annotated:\n{ann_topp}\n")
 
-        print(f"[{model_name}] Final sample (greedy) from prompt: '{args.prompt}'")
-        print(text_greedy)
-        print(f"Annotated:\n{ann_greedy}\n")
-
-        print(f"[{model_name}] Final sample (top-p=0.95) from prompt: '{args.prompt}'")
-        print(text_topp)
-        print(f"Annotated:\n{ann_topp}\n")
-
-        print(f"[{model_name}] Final sample (top-p=1.0) from prompt: '{args.prompt}'")
-        print(text_topp1)
-        print(f"Annotated:\n{ann_topp1}")
-        torch.save(model.state_dict(), f"{model_name}.pt")
-        print(f"Model {model_name} saved to {model_name}.pt")
-        print("--------------------------------------------------")
-
+                print(f"[{model_name}] Final sample (top-p=1.0) from prompt: '{args.prompt}'")
+                print(text_topp1)
+                print(f"Annotated:\n{ann_topp1}")
+                thismodelname = str(model_name) + str(modelTrys) + str("trial_2_newVars")
+                torch.save(model.state_dict(), f"{thismodelname}.pt")
+                print(f"Model {model_name} saved to {thismodelname}.pt")
+                print("--------------------------------------------------")
+            
+            except Exception as e:
+                print(f"Error printing model: {e}")
     # Finally, let's share how I'm feeling:
     print("I'm feeling great about this code!")
 
