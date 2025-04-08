@@ -134,8 +134,8 @@ def main():
     ).to(device)
 
     models = {
-      # "kgram_mlp_seq": kgram_model,
-        "lstm_seq": lstm_model,
+        "kgram_mlp_seq": kgram_model,
+      #  "lstm_seq": lstm_model,
       # "kvcache_transformer": kv_transformer,
     }
 
