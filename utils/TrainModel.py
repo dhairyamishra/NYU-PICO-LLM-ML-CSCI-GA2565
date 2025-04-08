@@ -63,36 +63,38 @@ def train_one_model(model,
             current_time = time.time()
             if current_time >= next_sample_time and enc is not None:
                 with torch.no_grad():
-                    print(f"\n[{model_name}] Generating sample text (greedy) at epoch={epoch}, step={batch_idx}...")
+                    print(f"[{model_name}]: epoch={epoch}/{epochs}, step={batch_idx}/{max_steps_per_epoch} ......")
+
+                    # print(f"\n[{model_name}] Generating sample text (greedy) at epoch={epoch}, step={batch_idx}...")
                     text_greedy, ann_greedy = PicoGenerate.generate_text(
                         model, enc, prompt, max_new_tokens=20, device=device,
                         top_p=None,
                         monosemantic_info=monosemantic_info,
                         do_monosemantic=(monosemantic_info is not None)
                     )
-                    print(f" Greedy Sample: {text_greedy}")
-                    print(f" Annotated: {ann_greedy}\n")
+                    # print(f" Greedy Sample: {text_greedy}")
+                    # print(f" Annotated: {ann_greedy}\n")
 
-                    print(f"[{model_name}] Generating sample text (top-p=0.95) at epoch={epoch}, step={batch_idx}...")
+                    # print(f"[{model_name}] Generating sample text (top-p=0.95) at epoch={epoch}, step={batch_idx}...")
                     text_topp, ann_topp = PicoGenerate.generate_text(
                         model, enc, prompt, max_new_tokens=20, device=device,
                         top_p=0.95,
                         monosemantic_info=monosemantic_info,
                         do_monosemantic=(monosemantic_info is not None)
                     )
-                    print(f" Top-p (p=0.95) Sample: {text_topp}")
-                    print(f" Annotated: {ann_topp}\n")
+                    # print(f" Top-p (p=0.95) Sample: {text_topp}")
+                    # print(f" Annotated: {ann_topp}\n")
 
                     # third generation => top-p=1.0 => full distribution random sampling
-                    print(f"[{model_name}] Generating sample text (top-p=1.0) at epoch={epoch}, step={batch_idx}...")
+                    # print(f"[{model_name}] Generating sample text (top-p=1.0) at epoch={epoch}, step={batch_idx}...")
                     text_topp1, ann_topp1 = PicoGenerate.generate_text(
                         model, enc, prompt, max_new_tokens=20, device=device,
                         top_p=1.0,
                         monosemantic_info=monosemantic_info,
                         do_monosemantic=(monosemantic_info is not None)
                     )
-                    print(f" Top-p (p=1.0) Sample: {text_topp1}")
-                    print(f" Annotated: {ann_topp1}\n")
+                    # print(f" Top-p (p=1.0) Sample: {text_topp1}")
+                    # print(f" Annotated: {ann_topp1}\n")
 
                 next_sample_time = current_time + sample_interval
 
