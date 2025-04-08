@@ -131,12 +131,16 @@ def main():
     ).to(device)
 
     transformer = PicoTransformerModel.TransformerModel(
-    ).to(device)
+    vocab_size=vocab_size,
+    d_model=embed_size,
+    n_heads=args.n_heads if hasattr(args, 'n_heads') else 2,
+    n_blocks=args.n_blocks if hasattr(args, 'n_blocks') else 4).to(device)
 
     models = {
-        "kgram_mlp_seq": kgram_model,
-      #  "lstm_seq": lstm_model,
-      # "kvcache_transformer": kv_transformer,
+    "kgram_mlp_seq": kgram_model,
+    "lstm_seq": lstm_model,
+    "transformer": transformer,
+    # "kvcache_transformer": kv_transformer,
     }
 
 
