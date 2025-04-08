@@ -24,11 +24,15 @@ def main():
     model.eval()
     print(f"Model '{model_name}' loaded and ready.")
 
+    # Conversation memory
+    conversation_history = []
+
     print("\nEnter a prompt (or 'exit' to quit):")
     while True:
         prompt = input(">>> ")
         if prompt.strip().lower() == "exit":
             break
+
         with torch.no_grad():
             text, annotated = PicoGenerate.generate_text(
                 model=model,
@@ -37,9 +41,15 @@ def main():
                 max_new_tokens=100,
                 device=device,
                 top_p=0.95,
+                conversation_history=conversation_history
             )
-        print(f"\nGenerated:\n{text}\n")
-        # print(f"Annotated:\n{annotated}\n")
+
+        # Extract only the final bot reply
+        bot_reply = text.split("Bot:")[-1].strip()
+        print(f"\nBot: {bot_reply}\n")
+
+        conversation_history.append((prompt, bot_reply))
+        conversation_history = conversation_history[-3:]
 
 if __name__ == "__main__":
     main()

@@ -189,7 +189,7 @@ def main():
                 print(f"[{model_name}] Final sample (top-p=1.0) from prompt: '{args.prompt}'")
                 print(text_topp1)
                 print(f"Annotated:\n{ann_topp1}")
-                thismodelname = str(model_name) + str(modelTrys)
+                thismodelname = str(model_name) + str(modelTrys) + str("trial_2_newVars")
                 torch.save(model.state_dict(), f"{thismodelname}.pt")
                 print(f"Model {model_name} saved to {thismodelname}.pt")
                 print("--------------------------------------------------")

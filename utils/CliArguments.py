@@ -20,8 +20,8 @@ def parse_args():
     parser.add_argument("--batch_size", type=int, default=16,help="Batch size per epoch. Default=16.")
     parser.add_argument("--num_epochs", type=int, default=3,help="Epochs per training run. Default=3.")
     # New arguments:
-    parser.add_argument("--block_size", type=int, default=1024,help="Maximum sequence length for each example. Default=1024.")
-    parser.add_argument("--train_subset_size", type=int, default=20000,help="train_subset_size from overall data for each epoch. Default=20000.")
+    parser.add_argument("--block_size", type=int, default=512,help="Maximum sequence length for each example. Default=1024.")
+    parser.add_argument("--train_subset_size", type=int, default=10000,help="train_subset_size from overall data for each epoch. Default=20000.")
     parser.add_argument("--log_interval_steps", type=int, default=100,help="log_interval_steps Default=100")
     parser.add_argument("--sample_interval_seconds", type=int, default=60,help="print sample every sample_interval_seconds seconds. Default=30.")
     
