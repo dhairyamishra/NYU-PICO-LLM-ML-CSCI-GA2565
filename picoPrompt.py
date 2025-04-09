@@ -31,10 +31,15 @@ def main():
 
 # Load state dict and filter out keys with ".attn.mask"
     state_dict = torch.load(ckpt_path, map_location=device)
+    # Removing attention mask keys from the state dict
+    # This is a workaround for the issue with the attention mask keys in the state dict
+    # You can also modify the model to not save these keys in the first place
+    # but this is a quick fix to get the model loaded without errors
+    # Note: This assumes that the keys with ".attn.mask" are not needed for inference
     filtered_state_dict = {k: v for k, v in state_dict.items() if not k.endswith(".attn.mask")}
     model.load_state_dict(filtered_state_dict, strict=False)
 
-    
+
     model.eval()
     print(f"Model '{model_name}' loaded and ready.")
 
