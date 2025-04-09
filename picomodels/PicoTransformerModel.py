@@ -187,4 +187,5 @@ class TransformerModel(nn.Module):
         
         x = self.ln_f(x)
         logits = self.output_projection(x)  # (seq_len, batch, vocab_size)
+        
         return logits
