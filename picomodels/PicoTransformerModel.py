@@ -185,3 +185,5 @@ class TransformerModel(nn.Module):
         logits = self.output_projection(x)  # (seq_len, batch, vocab_size)
         
         return logits
+    
+# test
