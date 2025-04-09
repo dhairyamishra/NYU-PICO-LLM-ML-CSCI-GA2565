@@ -24,12 +24,14 @@ class KGramMLPSeqModel(nn.Module):
 
         layers = []
         layers.append(nn.Linear(self.k * self.vocab_size, self.embed_size))
-        layers.append(nn.ReLU())
+        layers.append(nn.GELU())                    
+        layers.append(nn.Dropout(0.2))              
 
         for _ in range(self.num_inner_layers - 1):
             layers.append(nn.Linear(self.embed_size, self.embed_size))
-            layers.append(nn.ReLU())
-        
+            layers.append(nn.GELU())                
+            layers.append(nn.Dropout(0.2))          
+
         layers.append(nn.Linear(self.embed_size, self.vocab_size))
         self.net = nn.Sequential(*layers)
 
