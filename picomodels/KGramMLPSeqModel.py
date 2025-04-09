@@ -22,17 +22,20 @@ class KGramMLPSeqModel(nn.Module):
         self.num_inner_layers = num_inner_layers
         self.chunk_size = chunk_size
 
+        self.embedding = nn.Embedding(vocab_size, embed_size)
+
+        # input dim is k * embed_size, flatten the k-token context
+        input_dim = k * embed_size
         layers = []
-        layers.append(nn.Linear(self.k * self.vocab_size, self.embed_size))
-        layers.append(nn.GELU())                    
-        layers.append(nn.Dropout(0.2))              
 
-        for _ in range(self.num_inner_layers - 1):
-            layers.append(nn.Linear(self.embed_size, self.embed_size))
-            layers.append(nn.GELU())                
-            layers.append(nn.Dropout(0.2))          
+        layers.append(nn.Linear(input_dim, embed_size))
+        layers.append(nn.ReLU())
 
-        layers.append(nn.Linear(self.embed_size, self.vocab_size))
+        for _ in range(num_inner_layers - 1):
+            layers.append(nn.Linear(embed_size, embed_size))
+            layers.append(nn.ReLU())
+
+        layers.append(nn.Linear(embed_size, vocab_size))
         self.net = nn.Sequential(*layers)
 
     def forward(self, tokens_seq):
