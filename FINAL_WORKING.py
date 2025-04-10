@@ -24,22 +24,22 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train multiple models on TinyStories and/or custom text files.")
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
     parser.add_argument("--tinystories_weight", type=float, default=0.5, help="Probability of sampling from TinyStories.")
-    parser.add_argument("--max_steps_per_epoch", type=int, default=5, help="Max steps per epoch.")
-    parser.add_argument("--num_epochs", type=int, default=2, help="Number of training epochs.")
+    parser.add_argument("--max_steps_per_epoch", type=int, default=50, help="Max steps per epoch.")
+    parser.add_argument("--num_epochs", type=int, default=10, help="Number of training epochs.")
     parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size.")
     parser.add_argument("--train_subset_size", type=int, default=20000, help="Number of TinyStories examples to load.")
     parser.add_argument("--log_interval_steps", type=int, default=1, help="Logging interval (in steps).")
-    parser.add_argument("--sample_interval_seconds", type=int, default=30, help="Sampling interval (in seconds).")
+    parser.add_argument("--sample_interval_seconds", type=int, default=60, help="Sampling interval (in seconds).")
     parser.add_argument("--num_inner_mlp_layers", type=int, default=1, help="Number of inner layers in k-gram MLP.")
     parser.add_argument("--kgram_k", type=int, default=3, help="Sliding window size for k-gram.")
     parser.add_argument("--kgram_chunk_size", type=int, default=1, help="Chunk size for k-gram processing.")
-    parser.add_argument("--block_size", type=int, default=128, help="Maximum sequence length.")
-    parser.add_argument("--embed_size", type=int, default=128, help="Embedding dimension.")
+    parser.add_argument("--block_size", type=int, default=256, help="Maximum sequence length.")
+    parser.add_argument("--embed_size", type=int, default=256, help="Embedding dimension.")
     parser.add_argument("--prompt", type=str, default="Once upon a", help="Prompt for generation.")
     parser.add_argument("--device_id", type=str, default="cuda:0", help="Torch device ID (e.g., 'cuda:0').")
     parser.add_argument("--monosemantic_enabled", default=True, action="store_true", help="Enable monosemantic analysis.")
-    parser.set_defaults(monosemantic_enabled=False)
+    parser.set_defaults(monosemantic_enabled=True)
     return parser.parse_args()
 
 ################################################################################
@@ -132,78 +132,59 @@ def compute_next_token_loss(logits, tokens):
     gold = gold.reshape(-1)
     return F.cross_entropy(preds, gold)
 
+
+# Replacing one-hot(SLOW) with nnEmbedding(FAST) for k-gram MLP
+# 🧠 New Strategy
+# Use an nn.Embedding layer: self.embedding = nn.Embedding(vocab_size, embed_dim)
+# Collect k-gram contexts for each position using unfold
+# Embed, flatten, and pass through the MLP in one big matrix operation.
+
 class KGramMLPSeqModel(nn.Module):
-    """
-    For each position t in [0..seq_len-1], gather the last k tokens => one-hot => MLP => logits.
-    Return (seq_len, batch, vocab_size).
-
-    Potentially very large memory usage for big vocab or seq_len. chunk_size helps mitigate overhead.
-    """
-
     def __init__(self, vocab_size, k=3, embed_size=1024, num_inner_layers=1, chunk_size=1):
         super().__init__()
         self.k = k
         self.vocab_size = vocab_size
         self.embed_size = embed_size
-        self.num_inner_layers = num_inner_layers
         self.chunk_size = chunk_size
 
-        # MLP input size is k * vocab_size (flattened one-hot)
-        input_dim = self.k * self.vocab_size
-        hidden_dim = self.embed_size
-        output_dim = self.vocab_size
+        self.embedding = nn.Embedding(vocab_size, embed_size)
 
-        layers = [
-            nn.Linear(input_dim, hidden_dim),
-            nn.ReLU()
-        ]
+        input_dim = self.k * embed_size
+        hidden_dim = embed_size
+        output_dim = vocab_size
 
-        for _ in range(self.num_inner_layers):
-            layers += [
-                nn.Linear(hidden_dim, hidden_dim),
-                nn.ReLU()
-            ]
-
+        layers = [nn.Linear(input_dim, hidden_dim), nn.ReLU()]
+        for _ in range(num_inner_layers):
+            layers += [nn.Linear(hidden_dim, hidden_dim), nn.ReLU()]
         layers.append(nn.Linear(hidden_dim, output_dim))
+
         self.net = nn.Sequential(*layers)
 
     def forward(self, tokens_seq):
         """
         tokens_seq: (seq_len, batch)
-        return: (seq_len, batch, vocab_size)
-        We'll do a loop over time steps. chunk_size can reduce overhead.
+        Returns: (seq_len, batch, vocab_size)
         """
         seq_len, batch_size = tokens_seq.shape
-        outputs = []
 
-        start = 0
-        while start < seq_len:
-            end = min(start + self.chunk_size, seq_len)
-            block_outputs = []
-            for t in range(start, end):
-                batch_logits = []
-                for b in range(batch_size):
-                    if t < self.k:
-                        needed = self.k - t
-                        context_ids = [0] * needed + tokens_seq[:t, b].tolist()
-                    else:
-                        context_ids = tokens_seq[t - self.k:t, b].tolist()
+        # Pad on the left with zeros for k-1 steps
+        padded = F.pad(tokens_seq, (0, 0, self.k - 1, 0), value=0)  # (seq_len + k - 1, batch)
 
-                    context_oh = F.one_hot(
-                        torch.tensor(context_ids, dtype=torch.long, device=tokens_seq.device),
-                        num_classes=self.vocab_size
-                    )
-                    context_flat = context_oh.flatten().float().unsqueeze(0)  # (1, k * vocab_size)
-                    logits_b = self.net(context_flat)  # (1, vocab_size)
-                    batch_logits.append(logits_b)
-                block_outputs.append(torch.cat(batch_logits, dim=0).unsqueeze(0))  # (1, batch, vocab_size)
+        # Unfold k-grams: (seq_len, batch, k)
+        kgrams = torch.stack([padded[i:i + seq_len] for i in range(self.k)], dim=2)
 
-            block_outputs = torch.cat(block_outputs, dim=0)  # (chunk_size, batch, vocab_size)
-            outputs.append(block_outputs)
-            start = end
+        # Embed tokens: (seq_len, batch, k, embed_dim)
+        embedded = self.embedding(kgrams)
 
-        outputs = torch.cat(outputs, dim=0)  # (seq_len, batch, vocab_size)
-        return outputs
+        # Flatten k * embed_dim: (seq_len * batch, k * embed_dim)
+        flattened = embedded.permute(1, 0, 2, 3).reshape(batch_size * seq_len, -1)
+
+        # Run MLP: (seq_len * batch, vocab_size)
+        logits = self.net(flattened)
+
+        # Reshape back to (seq_len, batch, vocab_size)
+        return logits.view(batch_size, seq_len, -1).permute(1, 0, 2)
+
 
 ################################################################################
 # 4. LSTM-based seq2seq
@@ -695,8 +676,8 @@ def main():
 
     models = {
         "kgram_mlp_seq": kgram_model,
-        "lstm_seq": lstm_model,
-        "kvcache_transformer": transformer,
+        # "lstm_seq": lstm_model,
+        # "kvcache_transformer": transformer,
     }
 
 
@@ -705,40 +686,46 @@ def main():
     ############################################################################
     for model_name, model in models.items():
         monosemantic_info = model.token_emb.weight.detach() if monosemantic_enabled and hasattr(model, "token_emb") else None
+        print(f"Training model: {model} with monosemantic info: {monosemantic_info is not None}")
         print(f"\n=== Training model: {model_name} ===")
-        train_one_model(
-            model=model,
-            loader=train_loader,
-            epochs=num_epochs,
-            model_name=model_name,
-            device=device,
-            lr=learning_rate,
-            log_steps=log_interval_steps,
-            sample_interval=sample_interval_seconds,
-            max_steps_per_epoch=max_steps_per_epoch,
-            enc=enc,
-            monosemantic_info=monosemantic_info,
-            prompt=args.prompt  # <--- Pass the user-specified prompt here
-        )
-
-        # Final generation from the user-provided prompt (args.prompt).
-        with torch.no_grad():
-            # 1) Greedy
-            text_greedy, ann_greedy = generate_text(
-                model, enc, args.prompt, max_new_tokens=20, device=device,
-                top_p=None,
-            )
-            # 2) top-p=0.95
-            text_topp, ann_topp = generate_text(
-                model, enc, args.prompt, max_new_tokens=20, device=device,
-                top_p=0.95,
-            )
-            # 3) top-p=1.0 => full distribution random sampling
-            text_topp1, ann_topp1 = generate_text(
-                model, enc, args.prompt, max_new_tokens=20, device=device,
-                top_p=1.0,
+        # try catch to train model and handle errors
+        try:
+            train_one_model(
+                model=model,
+                loader=train_loader,
+                epochs=num_epochs,
+                model_name=model_name,
+                device=device,
+                lr=learning_rate,
+                log_steps=log_interval_steps,
+                sample_interval=sample_interval_seconds,
+                max_steps_per_epoch=max_steps_per_epoch,
+                enc=enc,
+                monosemantic_info=monosemantic_info,
+                prompt=args.prompt  # <--- Pass the user-specified prompt here
             )
 
+            # Final generation from the user-provided prompt (args.prompt).
+            with torch.no_grad():
+                # 1) Greedy
+                text_greedy, ann_greedy = generate_text(
+                    model, enc, args.prompt, max_new_tokens=20, device=device,
+                    top_p=None,
+                )
+                # 2) top-p=0.95
+                text_topp, ann_topp = generate_text(
+                    model, enc, args.prompt, max_new_tokens=20, device=device,
+                    top_p=0.95,
+                )
+                # 3) top-p=1.0 => full distribution random sampling
+                text_topp1, ann_topp1 = generate_text(
+                    model, enc, args.prompt, max_new_tokens=20, device=device,
+                    top_p=1.0,
+                )
+        except Exception as e:
+            print(f"Error training model {model_name}: {e}")
+            continue
+        # Print final samples
         print(f"[{model_name}] Final sample (greedy) from prompt: '{args.prompt}'")
         print(text_greedy)
         print(f"Annotated:\n{ann_greedy}\n")
@@ -771,8 +758,7 @@ def main():
         final_path = os.path.join(final_dir, f"{model_name}.pt")
         torch.save(model.state_dict(), final_path)
         print(f"Model saved to {final_path}")
-        
-    # Execution completed successfully
+
     print("\n*** All models trained successfully! ***")
 
 
