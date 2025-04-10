@@ -8,7 +8,7 @@ import torch.nn.functional as F
 
 class KGramMLPSeqModel(nn.Module):
     """
-    For each position t in [0..seq_len-1], gather the last k tokens => one-hot => MLP => logits.
+    For each position t in [0..seq_len-1], gather the last k tokens => embed => MLP => logits.
     Return (seq_len, batch, vocab_size).
 
     Potentially very large memory usage for big vocab or seq_len. chunk_size helps mitigate overhead.
@@ -24,18 +24,24 @@ class KGramMLPSeqModel(nn.Module):
 
         self.embedding = nn.Embedding(vocab_size, embed_size)
 
-        # input dim is k * embed_size, flatten the k-token context
         input_dim = k * embed_size
         layers = []
 
+        # first layer
         layers.append(nn.Linear(input_dim, embed_size))
-        layers.append(nn.ReLU())
+        layers.append(nn.LayerNorm(embed_size))    
+        layers.append(nn.GELU())                       
+        layers.append(nn.Dropout(p=0.1))   
 
+        # Additional hidden layers
         for _ in range(num_inner_layers - 1):
             layers.append(nn.Linear(embed_size, embed_size))
-            layers.append(nn.ReLU())
+            layers.append(nn.GELU())
+            layers.append(nn.Dropout(p=0.1))
 
+        # final layer
         layers.append(nn.Linear(embed_size, vocab_size))
+
         self.net = nn.Sequential(*layers)
 
     def forward(self, tokens_seq):
@@ -60,11 +66,9 @@ class KGramMLPSeqModel(nn.Module):
                     else:
                         context_ids = tokens_seq[t-self.k:t, b].tolist()
 
-                    context_oh = F.one_hot(
-                        torch.tensor(context_ids, dtype=torch.long, device=tokens_seq.device),
-                        num_classes=self.vocab_size
-                    )
-                    context_flat = context_oh.flatten().float().unsqueeze(0)
+                    context_tensor = torch.tensor(context_ids, device=tokens_seq.device).unsqueeze(0)  # (1, k)
+                    context_embed = self.embedding(context_tensor)  # (1, k, embed_size)
+                    context_flat = context_embed.view(1, -1) 
                     logits_b = self.net(context_flat)  # (1, vocab_size)
                     batch_logits.append(logits_b)
                 block_outputs.append(torch.cat(batch_logits, dim=0).unsqueeze(0))  # (1, batch, vocab_size)
