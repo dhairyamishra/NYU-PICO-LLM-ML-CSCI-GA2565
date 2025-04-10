@@ -24,24 +24,55 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train multiple models on TinyStories and/or custom text files.")
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
     parser.add_argument("--tinystories_weight", type=float, default=0.5, help="Probability of sampling from TinyStories.")
-    parser.add_argument("--max_steps_per_epoch", type=int, default=50, help="Max steps per epoch.")
+    parser.add_argument("--max_steps_per_epoch", type=int, default=500, help="Max steps per epoch.")
     parser.add_argument("--num_epochs", type=int, default=10, help="Number of training epochs.")
-    parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate.")
+    parser.add_argument("--learning_rate", type=float, default=5e-3, help="Learning rate.")
+    parser.add_argument("--activation", type=str, choices=["relu", "gelu"], default="gelu",help="Activation function to use in models: 'relu' or 'gelu'.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size.")
-    parser.add_argument("--train_subset_size", type=int, default=20000, help="Number of TinyStories examples to load.")
-    parser.add_argument("--log_interval_steps", type=int, default=1, help="Logging interval (in steps).")
+    parser.add_argument("--train_subset_size", type=int, default=10000, help="Number of TinyStories examples to load.")
+    parser.add_argument("--log_interval_steps", type=int, default=100, help="Logging interval (in steps).")
     parser.add_argument("--sample_interval_seconds", type=int, default=60, help="Sampling interval (in seconds).")
-    parser.add_argument("--num_inner_mlp_layers", type=int, default=1, help="Number of inner layers in k-gram MLP.")
+    parser.add_argument("--num_inner_mlp_layers", type=int, default=20, help="Number of inner layers in k-gram MLP.")
     parser.add_argument("--kgram_k", type=int, default=3, help="Sliding window size for k-gram.")
     parser.add_argument("--kgram_chunk_size", type=int, default=1, help="Chunk size for k-gram processing.")
-    parser.add_argument("--block_size", type=int, default=256, help="Maximum sequence length.")
-    parser.add_argument("--embed_size", type=int, default=256, help="Embedding dimension.")
+    parser.add_argument("--block_size", type=int, default=128, help="Maximum sequence length.")
+    parser.add_argument("--embed_size", type=int, default=128, help="Embedding dimension.")
     parser.add_argument("--prompt", type=str, default="Once upon a", help="Prompt for generation.")
     parser.add_argument("--device_id", type=str, default="cuda:0", help="Torch device ID (e.g., 'cuda:0').")
     parser.add_argument("--monosemantic_enabled", default=True, action="store_true", help="Enable monosemantic analysis.")
     parser.set_defaults(monosemantic_enabled=True)
     return parser.parse_args()
 
+
+################################################################################
+# Choose between ReLU and GELU activations
+################################################################################
+def get_activation(name):
+    if name == "relu":
+        return nn.ReLU()
+    elif name == "gelu":
+        return nn.GELU()
+    else:
+        raise ValueError(f"Unsupported activation: {name}")
+
+
+def get_model_config(model_name, args):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    model_config_str = (
+        f"{model_name}_"
+        f"tsw{args.tinystories_weight}_"
+        f"bs{args.batch_size}_"
+        f"lr{args.learning_rate}_"
+        f"act{args.activation}_"
+        f"ep{args.num_epochs}_"
+        f"mlp{args.num_inner_mlp_layers}_"
+        f"k{args.kgram_k}_"
+        f"cs{args.kgram_chunk_size}_"
+        f"blk{args.block_size}_"
+        f"emb{args.embed_size}_"
+        f"{timestamp}"
+    )
+    return model_config_str
 ################################################################################
 # 2. Data handling: entire sequences up to block_size => (seq_len, batch)
 ################################################################################
@@ -140,7 +171,7 @@ def compute_next_token_loss(logits, tokens):
 # Embed, flatten, and pass through the MLP in one big matrix operation.
 
 class KGramMLPSeqModel(nn.Module):
-    def __init__(self, vocab_size, k=3, embed_size=1024, num_inner_layers=1, chunk_size=1):
+    def __init__(self, vocab_size, k=3, embed_size=1024, num_inner_layers=1, chunk_size=1, activation=nn.GELU()):
         super().__init__()
         self.k = k
         self.vocab_size = vocab_size
@@ -153,9 +184,18 @@ class KGramMLPSeqModel(nn.Module):
         hidden_dim = embed_size
         output_dim = vocab_size
 
-        layers = [nn.Linear(input_dim, hidden_dim), nn.ReLU()]
+        # Use RMSNorm after each Linear
+        layers = [
+            nn.Linear(input_dim, hidden_dim),
+            RMSNorm(hidden_dim),
+            activation
+        ]
         for _ in range(num_inner_layers):
-            layers += [nn.Linear(hidden_dim, hidden_dim), nn.ReLU()]
+            layers += [
+                nn.Linear(hidden_dim, hidden_dim),
+                RMSNorm(hidden_dim),
+                activation
+            ]
         layers.append(nn.Linear(hidden_dim, output_dim))
 
         self.net = nn.Sequential(*layers)
@@ -191,11 +231,12 @@ class KGramMLPSeqModel(nn.Module):
 ################################################################################
 
 class LSTMSeqModel(nn.Module):
-    def __init__(self, vocab_size, embed_size=1024, hidden_size=1024):
+    def __init__(self, vocab_size, embed_size=1024, hidden_size=1024, activation=nn.Identity()):
         super().__init__()
         self.vocab_size = vocab_size
         self.embed_size = embed_size
         self.hidden_size = hidden_size
+        self.activation = activation
 
         self.embedding = nn.Embedding(vocab_size, embed_size)
         self.lstm = nn.LSTM(embed_size, hidden_size, batch_first=False)
@@ -210,7 +251,7 @@ class LSTMSeqModel(nn.Module):
         self.lstm.flatten_parameters()
         out, _ = self.lstm(emb)           # (seq_len, batch, hidden)
         logits = self.linear(out)         # (seq_len, batch, vocab_size)
-        return logits
+        return self.activation(logits)
 
 ################################################################################
 # 5. Our "stub" Transformer with KV-cache 
@@ -226,6 +267,7 @@ class RMSNorm(nn.Module):
     def forward(self, x):
         norm = x.pow(2).mean(dim=-1, keepdim=True).add(self.eps).sqrt()
         return self.weight * (x / norm)
+
 class MultiHeadAttention(nn.Module):
     def __init__(self, d_model, n_heads):
         super().__init__()
@@ -266,12 +308,12 @@ class MultiHeadAttention(nn.Module):
         return self.out_proj(attn_out), k, v
 
 class TransformerBlock(nn.Module):
-    def __init__(self, d_model, n_heads):
+    def __init__(self, d_model, n_heads, activation):
         super().__init__()
         self.attn = MultiHeadAttention(d_model, n_heads)
         self.mlp = nn.Sequential(
             nn.Linear(d_model, 4 * d_model),
-            nn.ReLU(),
+            activation,
             nn.Linear(4 * d_model, d_model),
         )
         self.norm1 = RMSNorm(d_model)
@@ -285,12 +327,12 @@ class TransformerBlock(nn.Module):
         return x, (k, v)
 
 class TransformerModel(nn.Module):
-    def __init__(self, vocab_size=50257, d_model=1024, n_heads=2, n_blocks=4, max_seq_len=2048):
+    def __init__(self, vocab_size=50257, d_model=1024, n_heads=2, n_blocks=4, max_seq_len=2048, activation=nn.GELU()):
         super().__init__()
         self.token_emb = nn.Embedding(vocab_size, d_model)
         self.pos_emb = nn.Embedding(max_seq_len, d_model)
         self.blocks = nn.ModuleList([
-            TransformerBlock(d_model, n_heads) for _ in range(n_blocks)
+            TransformerBlock(d_model, n_heads, activation) for _ in range(n_blocks)
         ])
         self.norm_final = RMSNorm(d_model)
         self.output_proj = nn.Linear(d_model, vocab_size)
@@ -319,8 +361,6 @@ class TransformerModel(nn.Module):
 ################################################################################
 
 def monosemantic_analysis_for_token(token_id, model, monosomatics, enc, device="cpu", top_n=5):
-    print(f"Analyzing token {token_id}...")
-
     # Get the embedding matrix if the model has one
     if not hasattr(model, 'token_emb'):
         print("Model has no embedding layer. Skipping analysis.")
@@ -435,30 +475,20 @@ def train_one_model(model,
                     enc=None,
                     monosemantic_info=None,
                     prompt="Once upon a"):
-    """
-    We add `prompt` as an explicit argument so we can pass it down from main().
-    """
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        mode='min',
+        factor=0.5,
+        patience=1,
+        verbose=True
+    )
 
     start_time = time.time()
     next_sample_time = start_time
     global_step = 0
-    # Create unique output dir for the model
     args = parse_args()
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    model_config_str = (
-        f"{model_name}_"
-        f"tsw{args.tinystories_weight}_"
-        f"bs{args.batch_size}_"
-        f"lr{args.learning_rate}_"
-        f"ep{args.num_epochs}_"
-        f"mlp{args.num_inner_mlp_layers}_"
-        f"k{args.kgram_k}_"
-        f"cs{args.kgram_chunk_size}_"
-        f"blk{args.block_size}_"
-        f"emb{args.embed_size}_"
-        f"{timestamp}"
-    )
+    model_config_str = get_model_config(model_name, args)
     checkpoint_dir = os.path.join("checkpoints", model_config_str)
     os.makedirs(checkpoint_dir, exist_ok=True)
 
@@ -467,21 +497,23 @@ def train_one_model(model,
         total_loss = 0.0
         partial_loss = 0.0
         partial_count = 0
-
         step_in_epoch = 0
+
         for batch_idx, batch_tokens in enumerate(loader, start=1):
             step_in_epoch += 1
             global_step += 1
 
-            batch_tokens = batch_tokens.to(device)  # (seq_len, batch)
+            batch_tokens = batch_tokens.to(device)
 
-            logits = model(batch_tokens)  # (seq_len, batch, vocab_size)
+            logits = model(batch_tokens)
             if isinstance(logits, tuple):
-                logits = logits[0]# compatibility with kv-cache transformer
+                logits = logits[0]
             loss = compute_next_token_loss(logits, batch_tokens)
 
             optimizer.zero_grad()
             loss.backward()
+            # applying gradient clipping to avoid exploding gradients
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             optimizer.step()
 
             total_loss += loss.item()
@@ -519,7 +551,6 @@ def train_one_model(model,
                     print(f" Top-p (p=0.95) Sample: {text_topp}")
                     print(f" Annotated: {ann_topp}\n")
 
-                    # third generation => top-p=1.0 => full distribution random sampling
                     print(f"[{model_name}] Generating sample text (top-p=1.0) at epoch={epoch}, step={batch_idx}...")
                     text_topp1, ann_topp1 = generate_text(
                         model, enc, prompt, max_new_tokens=20, device=device,
@@ -554,13 +585,18 @@ def train_one_model(model,
         print(f"[{model_name}] Saved checkpoint to: {checkpoint_path}")
         print(f"[{model_name}] *** End of Epoch {epoch} *** Avg Loss: {avg_loss:.4f}")
 
+        # 🔁 Step scheduler
+        scheduler.step(avg_loss)
+        current_lr = optimizer.param_groups[0]['lr']
+        print(f"[{model_name}] Current learning rate: {current_lr}")
+
 ################################################################################
 # 9. Main
 ################################################################################
 
 def main():
     args = parse_args()
-
+    activation_fn = get_activation(args.activation)
     # Additional local variables from arguments
     k = args.kgram_k
     chunk_size = args.kgram_chunk_size
@@ -655,13 +691,15 @@ def main():
         k=k,
         embed_size=embed_size,
         num_inner_layers=num_inner_layers,
-        chunk_size=chunk_size
+        chunk_size=chunk_size,
+        activation=activation_fn
     ).to(device)
 
     lstm_model = LSTMSeqModel(
         vocab_size=vocab_size,
         embed_size=embed_size,
-        hidden_size=embed_size
+        hidden_size=embed_size,
+        activation=activation_fn
     ).to(device)
 
     # ⚠️ Important:
@@ -671,13 +709,14 @@ def main():
         d_model=embed_size,         # match your CLI arg
         n_heads=4,                  # configurable
         n_blocks=6,                 # configurable
-        max_seq_len=block_size      # match sequence length from args
+        max_seq_len=block_size,     # match sequence length from args
+        activation=activation_fn
     ).to(device)
 
     models = {
         "kgram_mlp_seq": kgram_model,
-        # "lstm_seq": lstm_model,
-        # "kvcache_transformer": transformer,
+        "lstm_seq": lstm_model,
+        "kvcache_transformer": transformer,
     }
 
 
@@ -739,20 +778,7 @@ def main():
         print(f"Annotated:\n{ann_topp1}")
         print("--------------------------------------------------")
         # save the model
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        model_config_str = (
-            f"{model_name}_"
-            f"tsw{args.tinystories_weight}_"
-            f"bs{args.batch_size}_"
-            f"lr{args.learning_rate}_"
-            f"ep{args.num_epochs}_"
-            f"mlp{args.num_inner_mlp_layers}_"
-            f"k{args.kgram_k}_"
-            f"cs{args.kgram_chunk_size}_"
-            f"blk{args.block_size}_"
-            f"emb{args.embed_size}_"
-            f"{timestamp}"
-        )
+        model_config_str = get_model_config(model_name, args)
         final_dir = os.path.join("picomodels", model_config_str)
         os.makedirs(final_dir, exist_ok=True)
         final_path = os.path.join(final_dir, f"{model_name}.pt")
