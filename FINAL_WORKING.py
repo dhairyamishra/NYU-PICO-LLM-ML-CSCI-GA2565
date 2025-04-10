@@ -48,9 +48,9 @@ def parse_args():
 # Choose between ReLU and GELU activations
 ################################################################################
 def get_activation(name):
-    if name == "relu":
+    if "relu" in name:
         return nn.ReLU()
-    elif name == "gelu":
+    elif "gelu" in name:
         return nn.GELU()
     else:
         raise ValueError(f"Unsupported activation: {name}")

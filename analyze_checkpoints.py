@@ -81,14 +81,14 @@ def plotlosses(loss_log_path, args):
     else:
         print("No loss_log.pt found. Skipping loss plot.")
 
-# lstm_seq_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_142652
+# checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171105
 # kvcache_transformer_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_144748
-# kgram_mlp_seq_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_140739
-# kgram_mlp_seq_tsw0.5_bs16_lr0.005_ep10_mlp20_k3_cs1_blk256_emb256_20250410_154614 ---------WITH GELU
+# checkpoints\kvcache_transformer_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171659
+# checkpoints\lstm_seq_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171412
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint_dir_sub", 
-                        default=r"checkpoints\kvcache_transformer_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_163637", 
+                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171105", 
                         type=str, help="Path to specific models epock folder"
                         )
     parser.add_argument("--model_type", default="", type=str, choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer"])
