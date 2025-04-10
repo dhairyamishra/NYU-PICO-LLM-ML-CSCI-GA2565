@@ -1,4 +1,6 @@
 # starter code by matus & o1-pro
+import os
+from datetime import datetime
 import argparse
 import time
 import random
@@ -22,12 +24,12 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train multiple models on TinyStories and/or custom text files.")
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
     parser.add_argument("--tinystories_weight", type=float, default=0.5, help="Probability of sampling from TinyStories.")
-    parser.add_argument("--max_steps_per_epoch", type=int, default=None, help="Max steps per epoch.")
-    parser.add_argument("--num_epochs", type=int, default=3, help="Number of training epochs.")
+    parser.add_argument("--max_steps_per_epoch", type=int, default=5, help="Max steps per epoch.")
+    parser.add_argument("--num_epochs", type=int, default=2, help="Number of training epochs.")
     parser.add_argument("--learning_rate", type=float, default=1e-3, help="Learning rate.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size.")
     parser.add_argument("--train_subset_size", type=int, default=20000, help="Number of TinyStories examples to load.")
-    parser.add_argument("--log_interval_steps", type=int, default=50, help="Logging interval (in steps).")
+    parser.add_argument("--log_interval_steps", type=int, default=1, help="Logging interval (in steps).")
     parser.add_argument("--sample_interval_seconds", type=int, default=30, help="Sampling interval (in seconds).")
     parser.add_argument("--num_inner_mlp_layers", type=int, default=1, help="Number of inner layers in k-gram MLP.")
     parser.add_argument("--kgram_k", type=int, default=3, help="Sliding window size for k-gram.")
@@ -460,6 +462,24 @@ def train_one_model(model,
     start_time = time.time()
     next_sample_time = start_time
     global_step = 0
+    # Create unique output dir for the model
+    args = parse_args()
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    model_config_str = (
+        f"{model_name}_"
+        f"tsw{args.tinystories_weight}_"
+        f"bs{args.batch_size}_"
+        f"lr{args.learning_rate}_"
+        f"ep{args.num_epochs}_"
+        f"mlp{args.num_inner_mlp_layers}_"
+        f"k{args.kgram_k}_"
+        f"cs{args.kgram_chunk_size}_"
+        f"blk{args.block_size}_"
+        f"emb{args.embed_size}_"
+        f"{timestamp}"
+    )
+    checkpoint_dir = os.path.join("checkpoints", model_config_str)
+    os.makedirs(checkpoint_dir, exist_ok=True)
 
     for epoch in range(1, epochs + 1):
         model.train()
@@ -530,12 +550,27 @@ def train_one_model(model,
                     print(f" Annotated: {ann_topp1}\n")
 
                 next_sample_time = current_time + sample_interval
+                model.train()
 
             if max_steps_per_epoch is not None and step_in_epoch >= max_steps_per_epoch:
                 print(f"[{model_name}] Reached max_steps_per_epoch={max_steps_per_epoch}, ending epoch {epoch} early.")
                 break
 
         avg_loss = total_loss / step_in_epoch
+
+        # Save per-epoch loss to file
+        loss_log_path = os.path.join(checkpoint_dir, "loss_log.pt")
+        if os.path.exists(loss_log_path):
+            loss_dict = torch.load(loss_log_path)
+        else:
+            loss_dict = {}
+        loss_dict[f"epoch_{epoch}"] = avg_loss
+        torch.save(loss_dict, loss_log_path)
+
+        # Save model checkpoint
+        checkpoint_path = os.path.join(checkpoint_dir, f"epoch_{epoch}.pt")
+        torch.save(model.state_dict(), checkpoint_path)
+        print(f"[{model_name}] Saved checkpoint to: {checkpoint_path}")
         print(f"[{model_name}] *** End of Epoch {epoch} *** Avg Loss: {avg_loss:.4f}")
 
 ################################################################################
@@ -717,12 +752,28 @@ def main():
         print(f"Annotated:\n{ann_topp1}")
         print("--------------------------------------------------")
         # save the model
-        torch.save(model.state_dict(), f"{model_name}.pt")
-        print(f"Model {model_name} saved to {model_name}.pt")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        model_config_str = (
+            f"{model_name}_"
+            f"tsw{args.tinystories_weight}_"
+            f"bs{args.batch_size}_"
+            f"lr{args.learning_rate}_"
+            f"ep{args.num_epochs}_"
+            f"mlp{args.num_inner_mlp_layers}_"
+            f"k{args.kgram_k}_"
+            f"cs{args.kgram_chunk_size}_"
+            f"blk{args.block_size}_"
+            f"emb{args.embed_size}_"
+            f"{timestamp}"
+        )
+        final_dir = os.path.join("picomodels", model_config_str)
+        os.makedirs(final_dir, exist_ok=True)
+        final_path = os.path.join(final_dir, f"{model_name}.pt")
+        torch.save(model.state_dict(), final_path)
+        print(f"Model saved to {final_path}")
         
     # Execution completed successfully
     print("\n*** All models trained successfully! ***")
-    print("You can now use the models for text generation.")
 
 
 if __name__ == "__main__":
