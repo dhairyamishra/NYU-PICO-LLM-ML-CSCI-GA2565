@@ -5,7 +5,7 @@ import re
 import argparse
 import torch
 import matplotlib.pyplot as plt
-from FINAL_WORKING import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, generate_text, get_activation, get_model_config
+from main import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, generate_text, get_activation, get_model_config
 from torch.nn.functional import cosine_similarity
 import tiktoken
 from matplotlib.backends.backend_pdf import PdfPages
@@ -97,49 +97,66 @@ def plotlosses(loss_log_path, args):
         lrs = [loss_dict[f"epoch_{e}"].get("learning_rate", float("nan")) for e in epochs]
         grad_norms = [loss_dict[f"epoch_{e}"].get("grad_norm", float("nan")) for e in epochs]
         weight_norms = [loss_dict[f"epoch_{e}"].get("weight_norm", float("nan")) for e in epochs]
-
-        fig, axs = plt.subplots(2, 3, figsize=(14, 10))  # 2 rows x 3 cols
+        grad_norms_pre = [loss_dict[f"epoch_{e}"].get("grad_norm_preclip", float("nan")) for e in epochs]
+        grad_norms_post = [loss_dict[f"epoch_{e}"].get("grad_norm_postclip", float("nan")) for e in epochs]
+        max_param_grads = [loss_dict[f"epoch_{e}"].get("max_param_grad", float("nan")) for e in epochs]
+        fig, axs = plt.subplots(2, 3, figsize=(16, 9))
         axs = axs.flatten()
 
+        # 1. Loss
         axs[0].plot(epochs, train_losses, marker='o', label="Train Loss")
-        axs[0].plot(epochs, val_losses, marker='o', label="Validation Loss")
-        axs[0].set_title("Loss")
-        axs[0].set_xlabel("Epoch")
-        axs[0].set_ylabel("Loss")
+        axs[0].plot(epochs, val_losses, marker='o', label="Val Loss")
+        axs[0].set_title("Loss (Train vs Val)")
         axs[0].legend()
-        axs[0].grid(True)
+        axs[0].set_xlabel("Epoch"); axs[0].set_ylabel("Loss"); axs[0].grid(True)
 
-        axs[1].plot(epochs, accuracies, marker='o', color='green')
-        axs[1].set_title("Token Accuracy")
-        axs[1].set_xlabel("Epoch")
-        axs[1].set_ylabel("Accuracy")
-        axs[1].grid(True)
+        # 2. Accuracy + Perplexity (normalized or separate y-axis)
+        # Accuracy & Perplexity (merged using twin y-axis)
+        ax1 = axs[1]
+        ax2 = ax1.twinx()
 
-        axs[2].plot(epochs, perplexities, marker='o', color='orange')
-        axs[2].set_title("Perplexity")
-        axs[2].set_xlabel("Epoch")
-        axs[2].set_ylabel("Perplexity")
-        axs[2].grid(True)
+        # Accuracy on left
+        acc_line = ax1.plot(epochs, accuracies, marker='o', color='green', label='Accuracy')[0]
+        ax1.set_ylabel("Accuracy", color='green')
+        ax1.tick_params(axis='y', labelcolor='green')
 
-        axs[3].plot(epochs, lrs, marker='o', color='purple')
-        axs[3].set_title("Learning Rate")
-        axs[3].set_xlabel("Epoch")
-        axs[3].set_ylabel("LR")
-        axs[3].grid(True)
+        # Perplexity on right
+        ppl_line = ax2.plot(epochs, perplexities, marker='o', color='orange', label='Perplexity')[0]
+        ax2.set_ylabel("Perplexity", color='orange')
+        ax2.tick_params(axis='y', labelcolor='orange')
 
-        axs[4].plot(epochs, grad_norms, marker='o', color='red', label="Grad Norm")
-        axs[4].set_title("Gradient Norm")
-        axs[4].set_xlabel("Epoch")
-        axs[4].set_ylabel("Gradient Value")
-        axs[4].legend()
-        axs[4].grid(True)
+        # Shared X
+        ax1.set_xlabel("Epoch")
+        ax1.set_title("Token Accuracy & Perplexity")
+        ax1.grid(True)
 
-        axs[5].plot(epochs, weight_norms, marker='o', color='blue', label="Weight Norm")
+        # Combined legend
+        lines = [acc_line, ppl_line]
+        labels = [line.get_label() for line in lines]
+        ax1.legend(lines, labels, loc='upper right')
+        
+        # 3. LR
+        axs[2].plot(epochs, lrs, marker='o', color='purple')
+        axs[2].set_title("Learning Rate")
+        axs[2].set_xlabel("Epoch"); axs[2].set_ylabel("LR"); axs[2].grid(True)
+
+        # 4. Grad Norms (Pre/Post Clip)
+        axs[3].plot(epochs, grad_norms_pre, marker='o', label="Pre-clip", color="magenta")
+        axs[3].plot(epochs, grad_norms_post, marker='o', label="Post-clip", color="red")
+        axs[3].set_title("Gradient Norms (Pre vs Post Clip)")
+        axs[3].legend()
+        axs[3].set_xlabel("Epoch"); axs[3].set_ylabel("Grad Norm"); axs[3].grid(True)
+
+        # 5. Max Gradient
+        axs[4].plot(epochs, max_param_grads, marker='o', color="darkorange")
+        axs[4].set_title("Max Param Gradient")
+        axs[4].set_xlabel("Epoch"); axs[4].set_ylabel("Max |grad|"); axs[4].grid(True)
+
+        # 6. Weight Norm
+        axs[5].plot(epochs, weight_norms, marker='o', color="blue")
         axs[5].set_title("Weight Norm (L2)")
-        axs[5].set_xlabel("Epoch")
-        axs[5].set_ylabel("Norm Value")
-        axs[5].legend()
-        axs[5].grid(True)
+        axs[5].set_xlabel("Epoch"); axs[5].set_ylabel("L2 Norm"); axs[5].grid(True)
+
 
         plt.suptitle(f"Training Metrics for {args.model_type}", fontsize=16)
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
@@ -161,7 +178,7 @@ def plotlosses(loss_log_path, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint_dir_sub", 
-                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep20_mlp20_k3_cs1_blk512_emb128_20250411_104355", 
+                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep5_mlp20_k3_cs2_blk128_emb128_20250411_154011", 
                         type=str, help="Path to specific models epock folder"
                         )
     parser.add_argument("--model_type", default="", type=str, choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer"])
