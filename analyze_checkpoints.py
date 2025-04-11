@@ -1,11 +1,18 @@
 import os
+import json
+import csv
 import re
 import argparse
 import torch
 import matplotlib.pyplot as plt
-from main import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, generate_text, get_activation, get_model_config
+from FINAL_WORKING import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, generate_text, get_activation, get_model_config
 from torch.nn.functional import cosine_similarity
 import tiktoken
+from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.gridspec import GridSpec
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import tkinter as tk
+from tkinter import ttk
 
 def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_size=1, num_inner_layers=1, block_size=128, activation="gelu"):
     if model_type == "kgram_mlp_seq":
@@ -57,6 +64,22 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
         print(f"\n[{name}]")
         print("Generated text:", gen)
         # print("Annotated text:", ano)
+        # Save as JSONL
+        jsonl_path = os.path.join(checkpoint_dir_sub, "generations.jsonl")
+        with open(jsonl_path, "w", encoding="utf-8") as f_jsonl:
+            for ckpt, gen, ano in generations:
+                json.dump({"checkpoint": ckpt, "generation": gen, "annotation": ano}, f_jsonl)
+                f_jsonl.write("\n")
+        print(f"Saved generations to {jsonl_path}")
+
+        # Save as CSV
+        csv_path = os.path.join(checkpoint_dir_sub, "generations.csv")
+        with open(csv_path, "w", newline='', encoding="utf-8") as f_csv:
+            writer = csv.DictWriter(f_csv, fieldnames=["checkpoint", "generation", "annotation"])
+            writer.writeheader()
+            for ckpt, gen, ano in generations:
+                writer.writerow({"checkpoint": ckpt, "generation": gen, "annotation": ano})
+        print(f"Saved generations to {csv_path}")
     
     return generations
 
@@ -72,9 +95,10 @@ def plotlosses(loss_log_path, args):
         accuracies = [loss_dict[f"epoch_{e}"].get("token_accuracy", float("nan")) for e in epochs]
         perplexities = [loss_dict[f"epoch_{e}"].get("perplexity", float("nan")) for e in epochs]
         lrs = [loss_dict[f"epoch_{e}"].get("learning_rate", float("nan")) for e in epochs]
+        grad_norms = [loss_dict[f"epoch_{e}"].get("grad_norm", float("nan")) for e in epochs]
+        weight_norms = [loss_dict[f"epoch_{e}"].get("weight_norm", float("nan")) for e in epochs]
 
-
-        fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+        fig, axs = plt.subplots(2, 3, figsize=(14, 10))  # 2 rows x 3 cols
         axs = axs.flatten()
 
         axs[0].plot(epochs, train_losses, marker='o', label="Train Loss")
@@ -103,6 +127,20 @@ def plotlosses(loss_log_path, args):
         axs[3].set_ylabel("LR")
         axs[3].grid(True)
 
+        axs[4].plot(epochs, grad_norms, marker='o', color='red', label="Grad Norm")
+        axs[4].set_title("Gradient Norm")
+        axs[4].set_xlabel("Epoch")
+        axs[4].set_ylabel("Gradient Value")
+        axs[4].legend()
+        axs[4].grid(True)
+
+        axs[5].plot(epochs, weight_norms, marker='o', color='blue', label="Weight Norm")
+        axs[5].set_title("Weight Norm (L2)")
+        axs[5].set_xlabel("Epoch")
+        axs[5].set_ylabel("Norm Value")
+        axs[5].legend()
+        axs[5].grid(True)
+
         plt.suptitle(f"Training Metrics for {args.model_type}", fontsize=16)
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
@@ -123,7 +161,7 @@ def plotlosses(loss_log_path, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint_dir_sub", 
-                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep5_mlp20_k3_cs1_blk128_emb128_20250410_194428", 
+                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep20_mlp20_k3_cs1_blk512_emb128_20250411_104355", 
                         type=str, help="Path to specific models epock folder"
                         )
     parser.add_argument("--model_type", default="", type=str, choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer"])

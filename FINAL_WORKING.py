@@ -25,8 +25,8 @@ def parse_args():
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
     parser.add_argument("--tinystories_weight", type=float, default=0.5, help="Probability of sampling from TinyStories.")
     parser.add_argument("--val_split", type=float, default=0.1, help="Fraction of data to use for validation.")  
-    parser.add_argument("--max_steps_per_epoch", type=int, default=None, help="Max steps per epoch.")
-    parser.add_argument("--num_epochs", type=int, default=5, help="Number of training epochs.")
+    parser.add_argument("--max_steps_per_epoch", type=int, default=50, help="Max steps per epoch.")
+    parser.add_argument("--num_epochs", type=int, default=20, help="Number of training epochs.")
     parser.add_argument("--learning_rate", type=float, default=5e-3, help="Learning rate.")
     parser.add_argument("--activation", type=str, choices=["relu", "gelu"], default="gelu",help="Activation function to use in models: 'relu' or 'gelu'.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size.")
@@ -36,7 +36,7 @@ def parse_args():
     parser.add_argument("--num_inner_mlp_layers", type=int, default=20, help="Number of inner layers in k-gram MLP.")
     parser.add_argument("--kgram_k", type=int, default=3, help="Sliding window size for k-gram.")
     parser.add_argument("--kgram_chunk_size", type=int, default=1, help="Chunk size for k-gram processing.")
-    parser.add_argument("--block_size", type=int, default=128, help="Maximum sequence length.")
+    parser.add_argument("--block_size", type=int, default=512, help="Maximum sequence length.")
     parser.add_argument("--embed_size", type=int, default=128, help="Embedding dimension.")
     parser.add_argument("--prompt", type=str, default="Once upon a", help="Prompt for generation.")
     parser.add_argument("--device_id", type=str, default="cuda:0", help="Torch device ID (e.g., 'cuda:0').")
@@ -481,9 +481,8 @@ def train_one_model(model,
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
         mode='min',
-        factor=0.5,
+        factor=0.25,
         patience=1,
-        verbose=True
     )
 
     start_time = time.time()
@@ -577,6 +576,7 @@ def train_one_model(model,
         token_acc = (token_preds == token_targets).float().mean().item()
 
         grad_norm = sum(p.grad.data.norm(2).item()**2 for p in model.parameters() if p.grad is not None)**0.5
+        weight_norm = sum(p.data.norm(2).item()**2 for p in model.parameters())**0.5
 
 
         #    Validation loss computation
@@ -599,7 +599,6 @@ def train_one_model(model,
             loss_dict = torch.load(loss_log_path)
         else:
             loss_dict = {}
-        # loss_dict[f"epoch_{epoch}"] = avg_loss
         # ✅ include validation loss in logs
         loss_dict[f"epoch_{epoch}"] = {
             "avg_loss": avg_loss,
@@ -607,6 +606,7 @@ def train_one_model(model,
             "perplexity": math.exp(avg_loss),
             "token_accuracy": token_acc,
             "grad_norm": grad_norm,
+            "weight_norm": weight_norm,
             "learning_rate": optimizer.param_groups[0]['lr']
         }
         # Add to loss_dict
