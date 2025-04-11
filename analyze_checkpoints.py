@@ -3,7 +3,7 @@ import re
 import argparse
 import torch
 import matplotlib.pyplot as plt
-from FINAL_WORKING import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, generate_text, get_activation, get_model_config
+from main import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, generate_text, get_activation, get_model_config
 from torch.nn.functional import cosine_similarity
 import tiktoken
 
@@ -61,34 +61,69 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
     return generations
 
 def plotlosses(loss_log_path, args):
+    import matplotlib.pyplot as plt
     loss_log_path = os.path.join(args.checkpoint_dir_sub, "loss_log.pt")
     if os.path.exists(loss_log_path):
         loss_dict = torch.load(loss_log_path)
         epochs = sorted([int(k.split("_")[1]) for k in loss_dict.keys()])
-        losses = [loss_dict[f"epoch_{e}"] for e in epochs]
+        
+        train_losses = [loss_dict[f"epoch_{e}"].get("avg_loss", float("nan")) for e in epochs]
+        val_losses = [loss_dict[f"epoch_{e}"].get("val_loss", float("nan")) for e in epochs]
+        accuracies = [loss_dict[f"epoch_{e}"].get("token_accuracy", float("nan")) for e in epochs]
+        perplexities = [loss_dict[f"epoch_{e}"].get("perplexity", float("nan")) for e in epochs]
+        lrs = [loss_dict[f"epoch_{e}"].get("learning_rate", float("nan")) for e in epochs]
 
-        plt.figure()
-        plt.plot(epochs, losses, marker='o')
-        plt.xlabel("Epoch")
-        plt.ylabel("Avg Training Loss")
-        plt.title(f"Loss Curve for {args.model_type}")
-        plt.grid(True)
-         # Save plot in the checkpoint subfolder
-        plot_path = os.path.join(args.checkpoint_dir_sub, "loss_curve.png")
+
+        fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+        axs = axs.flatten()
+
+        axs[0].plot(epochs, train_losses, marker='o', label="Train Loss")
+        axs[0].plot(epochs, val_losses, marker='o', label="Validation Loss")
+        axs[0].set_title("Loss")
+        axs[0].set_xlabel("Epoch")
+        axs[0].set_ylabel("Loss")
+        axs[0].legend()
+        axs[0].grid(True)
+
+        axs[1].plot(epochs, accuracies, marker='o', color='green')
+        axs[1].set_title("Token Accuracy")
+        axs[1].set_xlabel("Epoch")
+        axs[1].set_ylabel("Accuracy")
+        axs[1].grid(True)
+
+        axs[2].plot(epochs, perplexities, marker='o', color='orange')
+        axs[2].set_title("Perplexity")
+        axs[2].set_xlabel("Epoch")
+        axs[2].set_ylabel("Perplexity")
+        axs[2].grid(True)
+
+        axs[3].plot(epochs, lrs, marker='o', color='purple')
+        axs[3].set_title("Learning Rate")
+        axs[3].set_xlabel("Epoch")
+        axs[3].set_ylabel("LR")
+        axs[3].grid(True)
+
+        plt.suptitle(f"Training Metrics for {args.model_type}", fontsize=16)
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+        plot_path = os.path.join(args.checkpoint_dir_sub, "metrics_curve.png")
         plt.savefig(plot_path)
-        print(f"Saved loss curve to {plot_path}")
+        print(f"Saved training metrics plot to {plot_path}")
         plt.show()
     else:
         print("No loss_log.pt found. Skipping loss plot.")
 
-# checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171105
+
+
+
+# lstm_seq_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_142652
 # kvcache_transformer_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_144748
-# checkpoints\kvcache_transformer_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171659
-# checkpoints\lstm_seq_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171412
+# kgram_mlp_seq_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_140739
+# kgram_mlp_seq_tsw0.5_bs16_lr0.005_ep10_mlp20_k3_cs1_blk256_emb256_20250410_154614 ---------WITH GELU
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint_dir_sub", 
-                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep10_mlp20_k3_cs1_blk128_emb128_20250410_171105", 
+                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep5_mlp20_k3_cs1_blk128_emb128_20250410_194428", 
                         type=str, help="Path to specific models epock folder"
                         )
     parser.add_argument("--model_type", default="", type=str, choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer"])

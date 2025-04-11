@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-
+from torch.utils.data import random_split
 # We do not import numpy or scikit-learn, so we implement a naive k-means in pure PyTorch.
 # If you prefer scikit-learn, you can adapt the code.
 
@@ -24,8 +24,9 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train multiple models on TinyStories and/or custom text files.")
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
     parser.add_argument("--tinystories_weight", type=float, default=0.5, help="Probability of sampling from TinyStories.")
-    parser.add_argument("--max_steps_per_epoch", type=int, default=500, help="Max steps per epoch.")
-    parser.add_argument("--num_epochs", type=int, default=10, help="Number of training epochs.")
+    parser.add_argument("--val_split", type=float, default=0.1, help="Fraction of data to use for validation.")  
+    parser.add_argument("--max_steps_per_epoch", type=int, default=None, help="Max steps per epoch.")
+    parser.add_argument("--num_epochs", type=int, default=5, help="Number of training epochs.")
     parser.add_argument("--learning_rate", type=float, default=5e-3, help="Learning rate.")
     parser.add_argument("--activation", type=str, choices=["relu", "gelu"], default="gelu",help="Activation function to use in models: 'relu' or 'gelu'.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size.")
@@ -48,9 +49,9 @@ def parse_args():
 # Choose between ReLU and GELU activations
 ################################################################################
 def get_activation(name):
-    if "relu" in name:
+    if name == "relu":
         return nn.ReLU()
-    elif "gelu" in name:
+    elif name == "gelu":
         return nn.GELU()
     else:
         raise ValueError(f"Unsupported activation: {name}")
@@ -465,6 +466,7 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
 
 def train_one_model(model,
                     loader,
+                    val_loader,
                     epochs,
                     model_name,
                     device,
@@ -569,14 +571,46 @@ def train_one_model(model,
                 break
 
         avg_loss = total_loss / step_in_epoch
+        # Compute training metrics
+        token_preds = torch.argmax(logits[:-1], dim=-1)
+        token_targets = batch_tokens[1:]
+        token_acc = (token_preds == token_targets).float().mean().item()
 
+        grad_norm = sum(p.grad.data.norm(2).item()**2 for p in model.parameters() if p.grad is not None)**0.5
+
+
+        #    Validation loss computation
+        model.eval()
+        val_loss = 0.0
+        val_steps = 0
+        with torch.no_grad():
+            for val_batch in val_loader:
+                val_batch = val_batch.to(device)
+                val_logits = model(val_batch)
+                if isinstance(val_logits, tuple):
+                    val_logits = val_logits[0]
+                val_loss += compute_next_token_loss(val_logits, val_batch).item()
+                val_steps += 1
+        avg_val_loss = val_loss / val_steps
+        print(f"[{model_name}] Validation Loss after epoch {epoch}: {avg_val_loss:.4f}")
         # Save per-epoch loss to file
         loss_log_path = os.path.join(checkpoint_dir, "loss_log.pt")
         if os.path.exists(loss_log_path):
             loss_dict = torch.load(loss_log_path)
         else:
             loss_dict = {}
-        loss_dict[f"epoch_{epoch}"] = avg_loss
+        # loss_dict[f"epoch_{epoch}"] = avg_loss
+        # ✅ include validation loss in logs
+        loss_dict[f"epoch_{epoch}"] = {
+            "avg_loss": avg_loss,
+            "val_loss": avg_val_loss,
+            "perplexity": math.exp(avg_loss),
+            "token_accuracy": token_acc,
+            "grad_norm": grad_norm,
+            "learning_rate": optimizer.param_groups[0]['lr']
+        }
+        # Add to loss_dict
+
         torch.save(loss_dict, loss_log_path)
 
         # Save model checkpoint
@@ -585,6 +619,7 @@ def train_one_model(model,
         print(f"[{model_name}] Saved checkpoint to: {checkpoint_path}")
         print(f"[{model_name}] *** End of Epoch {epoch} *** Avg Loss: {avg_loss:.4f}")
 
+        
         # 🔁 Step scheduler
         scheduler.step(avg_loss)
         current_lr = optimizer.param_groups[0]['lr']
@@ -675,10 +710,23 @@ def main():
         p_tiny=p_tiny
     )
 
+    # ✅ NEW: Split into train/val datasets
+    val_size = int(args.val_split * len(combined_dataset))
+    train_size = len(combined_dataset) - val_size
+    train_dataset, val_dataset = random_split(combined_dataset, [train_size, val_size])
+
     train_loader = torch.utils.data.DataLoader(
-        combined_dataset,
+        train_dataset,
         batch_size=batch_size,
         shuffle=True,
+        num_workers=0,
+        collate_fn=seq_collate_fn
+    )
+
+    val_loader = torch.utils.data.DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
         num_workers=0,
         collate_fn=seq_collate_fn
     )
@@ -732,6 +780,7 @@ def main():
             train_one_model(
                 model=model,
                 loader=train_loader,
+                val_loader=val_loader,  # ✅ NEW
                 epochs=num_epochs,
                 model_name=model_name,
                 device=device,
@@ -741,7 +790,7 @@ def main():
                 max_steps_per_epoch=max_steps_per_epoch,
                 enc=enc,
                 monosemantic_info=monosemantic_info,
-                prompt=args.prompt  # <--- Pass the user-specified prompt here
+                prompt=args.prompt
             )
 
             # Final generation from the user-provided prompt (args.prompt).
