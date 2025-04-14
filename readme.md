@@ -60,7 +60,7 @@ This repo provides an extensible, scalable pipeline for training, analyzing, and
 - Decoder-only, GPT-style
 - Multi-head self-attention + causal masking + positional embeddings
 - Includes KV cache for fast generation
-![Transformer Decoder Block](docs/imgs/transformer_kv_cache.png){ width=50% }
+<img src="https://raw.githubusercontent.com/<username>/<repo>/main/docs/imgs/transformer_kv_cache.png" width="400">
 
 
 ### 🎲 Sampling Algorithms
