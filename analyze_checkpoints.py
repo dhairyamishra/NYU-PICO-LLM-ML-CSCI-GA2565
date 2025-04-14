@@ -15,7 +15,9 @@ import tkinter as tk
 from tkinter import ttk
 
 def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_size=1, num_inner_layers=1, block_size=128, activation="gelu"):
+
     if model_type == "kgram_mlp_seq":
+
         model = KGramMLPSeqModel(
             vocab_size, k=k, embed_size=embed_size,
             num_inner_layers=num_inner_layers, chunk_size=chunk_size,
@@ -42,6 +44,7 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
     enc = tiktoken.get_encoding("gpt2")
     vocab_size = enc.n_vocab
     full_path = os.path.join(checkpoint_dir_sub)
+
     checkpoint_files = sorted(
         [f for f in os.listdir(full_path) if f.startswith("epoch_") and f.endswith(".pt")],
         key=lambda x: int(x.split("_")[1].split(".")[0])
@@ -49,7 +52,9 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
     generations = []
     for ckpt in checkpoint_files:
         path = os.path.join(full_path, ckpt)
+
         model = load_model(model_type, vocab_size, path, embed_size, k, chunk_size, inner_layers, block_size, activation)
+
         out, ano = generate_text(model, 
                                enc, 
                                prompt, 
@@ -59,7 +64,7 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
                                do_monosemantic=True,)
         generations.append((ckpt, out, ano))
     
-    print("\n=== Generation Samples Across Epochs ===")
+    # print("\n=== Generation Samples Across Epochs ===")
     for name, gen, ano in generations:
         # print(f"\n[{name}]")
         # print("Generated text:", gen)
@@ -182,10 +187,14 @@ def plotlosses(loss_log_path, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint_dir_sub", 
-                        default=r"checkpoints/kgram_mlp_seq_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_140739", 
+                        default=r"checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp10_k2_cs1_blk64_emb32_20250414_015747", 
                         type=str, help="Path to specific models epock folder"
                         )
     parser.add_argument("--model_type", default="", type=str, choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer"])
+    parser.add_argument("--learning_rate", type=float, default=None)
+    parser.add_argument("--batch_size", type=int, default=None)
+    parser.add_argument("--num_epochs", type=int, default=None)
+    parser.add_argument("--tinystories_weight", type=float, default=None)
     parser.add_argument("--prompt", type=str, default="Once upon a", help="Prompt for generation")
     parser.add_argument("--embed_size", type=int, default=None)
     parser.add_argument("--k", type=int, default=None)
@@ -205,7 +214,11 @@ if __name__ == "__main__":
         "chunk_size": r"cs(\d+)",
         "block_size": r"blk(\d+)",
         "embed_size": r"emb(\d+)",
-        "activation": r"_act(relu|gelu)_"
+        "activation": r"_act(relu|gelu)_",
+        "learning_rate": r"lr([0-9.]+)",
+        "batch_size": r"bs(\d+)",
+        "tinystories_weight": r"tsw([0-9.]+)",
+        "num_epochs": r"ep(\d+)",
     }
 
     for key, pattern in patterns.items():

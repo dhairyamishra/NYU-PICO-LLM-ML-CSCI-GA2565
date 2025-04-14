@@ -45,9 +45,10 @@ def parse_args():
     return parser.parse_args()
 
 def get_activation(name):
-    if name == "relu":
+    name = name.lower()
+    if "relu" in name:
         return nn.ReLU()
-    elif name == "gelu":
+    elif "gelu" in name:
         return nn.GELU()
     else:
         raise ValueError(f"Unsupported activation: {name}")
@@ -168,7 +169,7 @@ def compute_next_token_loss(logits, tokens):
 # Embed, flatten, and pass through the MLP in one big matrix operation.
 
 class KGramMLPSeqModel(nn.Module):
-    def __init__(self, vocab_size, k=3, embed_size=1024, num_inner_layers=1, chunk_size=1, activation=nn.GELU()):
+    def __init__(self, vocab_size, k=3, embed_size=128, num_inner_layers=1, chunk_size=1, activation=nn.GELU()):
         super().__init__()
         self.k = k
         self.vocab_size = vocab_size
@@ -176,8 +177,7 @@ class KGramMLPSeqModel(nn.Module):
         self.chunk_size = chunk_size
 
         self.embedding = nn.Embedding(vocab_size, embed_size)
-
-        input_dim = self.k * embed_size
+        input_dim = (k) * (embed_size)
         hidden_dim = embed_size
         output_dim = vocab_size
 
@@ -193,6 +193,7 @@ class KGramMLPSeqModel(nn.Module):
                 RMSNorm(hidden_dim),
                 activation
             ]
+
         layers.append(nn.Linear(hidden_dim, output_dim))
 
         self.net = nn.Sequential(*layers)
@@ -411,6 +412,7 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
                   monosemantic_info=None,
                   do_monosemantic=False):
     model.eval()
+
     with torch.no_grad():
         context_tokens = enc.encode(init_text)
         annotation_list = []

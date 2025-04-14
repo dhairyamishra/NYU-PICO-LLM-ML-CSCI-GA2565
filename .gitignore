@@ -1,3 +1,19 @@
+# Ignore all analysis outputs except plots and summary
+/analysis_runs/*
+!/analysis_runs/summary.csv
+!/analysis_runs/plots/
+!/analysis_runs/plots/**
+
+# Ignore all checkpoints
+/checkpoints/
+
+# Ignore all logs
+/logs/
+
+# Ignore all final models
+/picomodels/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

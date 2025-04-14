@@ -1,20 +1,13 @@
 import os
 import re
-import csv
 import shutil
+import argparse
 import torch
+import csv
 from datetime import datetime
 from analyze_checkpoints import analyze_checkpoints, plotlosses
 
-# --- Create timestamped output root ---
-timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-ANALYSIS_DIR = os.path.join("analysis_runs", timestamp)
-PLOTS_DIR = os.path.join(ANALYSIS_DIR, "plots")
-GENERATIONS_DIR = os.path.join(ANALYSIS_DIR, "generations")
-os.makedirs(PLOTS_DIR, exist_ok=True)
-os.makedirs(GENERATIONS_DIR, exist_ok=True)
-
-def extract_model_metadata(folder_name):
+def extract_config_from_dir(dirname):
     patterns = {
         "model_type": r"^(kgram_mlp_seq|lstm_seq|kvcache_transformer)",
         "inner_layers": r"mlp(\d+)",
@@ -23,132 +16,135 @@ def extract_model_metadata(folder_name):
         "block_size": r"blk(\d+)",
         "embed_size": r"emb(\d+)",
         "activation": r"_act(relu|gelu)_",
-        "batch_size": r"bs(\d+)",
         "learning_rate": r"lr([0-9.]+)",
-        "num_epochs": r"ep(\d+)",
+        "batch_size": r"bs(\d+)",
         "tinystories_weight": r"tsw([0-9.]+)",
-        "timestamp": r"_(\d{8}_\d{6})$"
+        "num_epochs": r"ep(\d+)",
     }
-    metadata = {}
-    for key, pattern in patterns.items():
-        match = re.search(pattern, folder_name)
-        if match:
-            val = match.group(1)
-            if key in {"inner_layers", "k", "chunk_size", "block_size", "embed_size", "batch_size", "num_epochs"}:
-                metadata[key] = int(val)
-            elif key in {"learning_rate", "tinystories_weight"}:
-                metadata[key] = float(val)
-            else:
-                metadata[key] = val
-        else:
-            metadata[key] = None
-    return metadata
-    
-def summarize_loss_metrics(checkpoint_dir):
-    loss_log_path = os.path.join(checkpoint_dir, "loss_log.pt")
-    if not os.path.exists(loss_log_path):
-        return None
-    try:
-        loss_dict = torch.load(loss_log_path)
-        final_epoch = sorted(loss_dict.keys(), key=lambda k: int(k.split("_")[1]))[-1]
-        entry = loss_dict[final_epoch]
-        return {
-            "val_loss": entry.get("val_loss", float("nan")),
-            "perplexity": entry.get("perplexity", float("nan")),
-            "token_accuracy": entry.get("token_accuracy", float("nan")),
-            "learning_rate": entry.get("learning_rate", float("nan"))
-        }
-    except Exception as e:
-        print(f"❌ Failed to read loss log in {checkpoint_dir}: {e}")
-        return None
 
-def copy_and_rename_plot(source_path, dest_name):
-    if os.path.exists(source_path):
-        dest_path = os.path.join(PLOTS_DIR, f"{dest_name}.png")
-        shutil.copyfile(source_path, dest_path)
-        return dest_path
-    return None
+    config = {}
+    for key, pattern in patterns.items():
+        match = re.search(pattern, dirname)
+        if match:
+            value = match.group(1)
+            config[key] = int(value) if key not in {"activation", "model_type"} and '.' not in value else value
+        else:
+            config[key] = None
+    return config
+
+def safe_filename(s):
+    return re.sub(r'[<>:"/\\|?*]', '', s.replace(" ", "_"))
+
+def copy_analysis_outputs(src_dir, dst_base, model_type):
+    dst_dir = os.path.join(dst_base, model_type, "generations")
+    os.makedirs(dst_dir, exist_ok=True)
+
+    for fname in ["generations.jsonl", "generations.csv", "metrics_curve.png"]:
+        src = os.path.join(src_dir, fname)
+        if os.path.exists(src):
+            dst = os.path.join(dst_dir, os.path.basename(src_dir) + f"__{fname}")
+            shutil.copyfile(src, dst)
+            print(f"📄 Copied {fname} ➝ {dst}")
+
+def already_analyzed(dst_base, model_type, dirname):
+    dst_dir = os.path.join(dst_base, model_type, "generations")
+    files = ["generations.jsonl", "metrics_curve.png"]
+    return all(os.path.exists(os.path.join(dst_dir, dirname + f"__{f}")) for f in files)
+
+def get_final_metrics(loss_log_path):
+    if not os.path.exists(loss_log_path):
+        return {}
+    loss_dict = torch.load(loss_log_path, map_location="cpu")
+    if not loss_dict:
+        return {}
+    last_epoch = max(int(k.split("_")[1]) for k in loss_dict.keys())
+    metrics = loss_dict[f"epoch_{last_epoch}"]
+    metrics["epoch"] = last_epoch
+    return metrics
 
 def main():
-    base_dir = "checkpoints"
-    manifest_path = os.path.join(ANALYSIS_DIR, "checkpoint_manifest.csv")
-    all_entries = []
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--checkpoint_root", default="checkpoints", help="Top-level directory to search")
+    parser.add_argument("--analysis_dir", default="analysis_runs", help="Where to copy analysis results")
+    parser.add_argument("--prompt", default="Once upon a", help="Prompt for text generation")
+    parser.add_argument("--skip_existing", action="store_true", help="Skip checkpoints already analyzed")
+    args = parser.parse_args()
 
-    for folder in sorted(os.listdir(base_dir)):
-        checkpoint_path = os.path.join(base_dir, folder)
-        if not os.path.isdir(checkpoint_path):
+    checkpoint_root = args.checkpoint_root
+    analysis_dir = args.analysis_dir
+    all_dirs = [d for d in os.listdir(checkpoint_root) if os.path.isdir(os.path.join(checkpoint_root, d))]
+
+    print(f"🧠 Found {len(all_dirs)} checkpoint runs to analyze.")
+    summary_rows = []
+
+    # Load summary cache
+    summary_cache_path = os.path.join(analysis_dir, "summary_cache.csv")
+    cached_configs = set()
+    if os.path.exists(summary_cache_path):
+        with open(summary_cache_path, newline='', encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                cached_configs.add(row["config_name"])
+
+    for dirname in sorted(all_dirs):
+        checkpoint_dir_sub = os.path.join(checkpoint_root, dirname)
+        print(f"\n🔍 Analyzing: {dirname}")
+
+        config = extract_config_from_dir(dirname)
+        if None in config.values():
+            print("🚫 Skipping due to incomplete config parsing.")
             continue
-        print(f"\n📊 Analyzing {folder}...")
 
-        metadata = extract_model_metadata(folder)
-        metrics = summarize_loss_metrics(checkpoint_path)
+        if args.skip_existing:
+            if dirname in cached_configs:
+                print("✅ Skipping (already in summary cache).")
+                continue
+            if already_analyzed(args.analysis_dir, config["model_type"], dirname):
+                print("✅ Skipping (output files exist).")
+                continue
 
-        if metrics:
-            entry = {
-                "checkpoint_folder": folder,
-                **metadata,
-                **metrics
-            }
-            all_entries.append(entry)
+        # Wrap config into argparse.Namespace
+        args_obj = argparse.Namespace(**config)
+        setattr(args_obj, "checkpoint_dir_sub", checkpoint_dir_sub)
+        setattr(args_obj, "prompt", args.prompt)
 
-            # Plot and relocate plot file
-            try:
-                class Args:
-                    checkpoint_dir_sub = checkpoint_path
-                    model_type = metadata.get("model_type", "unknown")
-                    activation = metadata.get("activation", "unknown")
-                    embed_size = metadata.get("embed_size", 0)
-                    k = metadata.get("k", 0)
-                    chunk_size = metadata.get("chunk_size", 0)
-                    inner_layers = metadata.get("inner_layers", 0)
-                    block_size = metadata.get("block_size", 0)
-                    batch_size = metadata.get("batch_size", 0)
-                    learning_rate = metadata.get("learning_rate", 0.0)
-                    tinystories_weight = metadata.get("tinystories_weight", 0.0)
-                plotlosses(os.path.join(checkpoint_path, "loss_log.pt"), Args())
-                copy_and_rename_plot(
-                    os.path.join(checkpoint_path, "metrics_curve.png"),
-                    folder
-                )
-            except Exception as e:
-                print(f"⚠️ Skipped plotting for {folder}: {e}")
+        # Run analysis
+        analyze_checkpoints(
+            checkpoint_dir_sub,
+            config["model_type"],
+            args.prompt,
+            config["embed_size"],
+            config["k"],
+            config["chunk_size"],
+            config["inner_layers"],
+            config["block_size"],
+            config["activation"]
+        )
 
+        loss_log_path = os.path.join(checkpoint_dir_sub, "loss_log.pt")
+        plotlosses(loss_log_path, args_obj)
 
-            # Optional: also extract generations
-            try:
-                prompt = "Once upon a"
-                analyze_checkpoints(
-                    checkpoint_path,
-                    metadata["model_type"],
-                    prompt,
-                    metadata["embed_size"],
-                    metadata["k"],
-                    metadata["chunk_size"],
-                    metadata["inner_layers"],
-                    metadata["block_size"],
-                    metadata["activation"]
-                )
+        # Copy results to analysis_runs
+        copy_analysis_outputs(checkpoint_dir_sub, args.analysis_dir, config["model_type"])
 
-                # Move generations to central folder
-                for ext in ["csv", "jsonl"]:
-                    gen_src = os.path.join(checkpoint_path, f"generations.{ext}")
-                    if os.path.exists(gen_src):
-                        os.rename(gen_src, os.path.join(GENERATIONS_DIR, f"{folder}.{ext}"))
+        # Collect summary metrics
+        final_metrics = get_final_metrics(loss_log_path)
+        summary_row = {**config, **final_metrics, "config_name": dirname}
+        summary_rows.append(summary_row)
 
-            except Exception as e:
-                print(f"⚠️ Skipped generations for {folder}: {e}")
-
-    # Write manifest CSV
-    if all_entries:
-        fieldnames = list(all_entries[0].keys())
-        with open(manifest_path, "w", newline='', encoding="utf-8") as f_csv:
-            writer = csv.DictWriter(f_csv, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(all_entries)
-        print(f"\n✅ Wrote manifest to: {manifest_path}")
+    # Append to summary cache
+    if summary_rows:
+        keys = sorted(summary_rows[0].keys())
+        os.makedirs(analysis_dir, exist_ok=True)
+        write_header = not os.path.exists(summary_cache_path)
+        with open(summary_cache_path, "a", newline='', encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=keys)
+            if write_header:
+                writer.writeheader()
+            writer.writerows(summary_rows)
+        print(f"\n📊 Appended {len(summary_rows)} rows to summary cache.")
     else:
-        print("❌ No valid checkpoints found.")
+        print("No new summaries collected.")
 
 if __name__ == "__main__":
     main()
-    print("🔁 Running analysis script...")

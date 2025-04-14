@@ -2,31 +2,34 @@ import subprocess
 import itertools
 import os
 import re
+import glob
 import argparse
 from main import get_model_config  # ✅ Import from your main.py
+import random
+# Set a fixed seed for reproducibility
+random.seed(42)
 
 # Define your hyperparameter grid
 param_grid = {
-    "--learning_rate": ["0.001"],
-    # "--activation": ["relu", "gelu"],
-    "--activation": ["gelu"],
-    "--batch_size": ["16", "32", "64"],
-    "--embed_size": ["64", "128", "256"],
-    "--num_inner_mlp_layers": ["20"],
-    "--kgram_k": ["2", "4"],
-    "--block_size": ["128", "256"],
-    "--num_epochs": ["5", "15"],
+    "--learning_rate": ["0.001", "0.05"],
+    "--activation": ["relu", "gelu"],
+    "--batch_size": ["4", "8", "16"],
+    "--embed_size": ["16", "32", "64"],
+    "--num_inner_mlp_layers": ["3", "10"],
+    "--kgram_k": ["1", "2", "3", "4"],
+    "--block_size": ["8", "16", "32"],
+    "--num_epochs": ["2", "5", "7"],
     "--tinystories_weight": ["0.8"],
     "--val_split": ["0.2"],
 
     # Fixed arguments
-    "--train_subset_size": ["5000"],
-    "--max_steps_per_epoch": ["30"],
-    "--log_interval_steps": ["10"],
+    "--train_subset_size": ["1000"],
+    "--max_steps_per_epoch": ["20"],
+    "--log_interval_steps": ["19"],
     "--sample_interval_seconds": ["30"],
     "--device_id": ["cuda:0"],  # ✅ must be valid for PyTorch
     "--prompt": ["Once upon a"],
-    "--kgram_chunk_size": ["2"]  # required for model_config
+    "--kgram_chunk_size": ["1", "2", "3"]  # required for model_config
 }
 
 
@@ -34,16 +37,16 @@ easy_param_grid = {
     "--learning_rate": ["0.001"],
     "--activation": ["gelu"],
     "--batch_size": ["32"],
-    "--embed_size": ["64"],
-    "--num_inner_mlp_layers": ["20"],
-    "--kgram_k": ["3"],
-    "--block_size": ["128"],
-    "--num_epochs": ["10"],
+    "--embed_size": ["32"],
+    "--num_inner_mlp_layers": ["10"],
+    "--kgram_k": ["2"],
+    "--block_size": ["64"],
+    "--num_epochs": ["5"],
     "--tinystories_weight": ["0.8"],
     "--val_split": ["0.2"],
 
     # Fixed arguments
-    "--train_subset_size": ["5000"],
+    "--train_subset_size": ["1000"],
     "--max_steps_per_epoch": ["30"],
     "--log_interval_steps": ["10"],
     "--sample_interval_seconds": ["30"],
@@ -56,10 +59,49 @@ os.makedirs("logs", exist_ok=True)
 
 # Generate all combinations of parameters
 # keys, values = zip(*param_grid.items())
-keys, values = zip(*easy_param_grid.items())
+keys, values = zip(*param_grid.items())
 combinations = list(itertools.product(*values))
-
+# Shuffle the seed so that quick testing has variey of data
+# good mix of hyperparms can produce 7000+ permutations
+random.shuffle(combinations)
 print(f"Total experiments to run: {len(combinations)}")
+
+def strip_timestamp(model_config_str):
+    return re.sub(r'_\d{8}_\d{6}$', '', model_config_str)
+# Heuristic to determine model type based on provided arguments
+def infer_model_name(args):
+    if hasattr(args, "kgram_k") and hasattr(args, "num_inner_mlp_layers"):
+        return "kgram_mlp_seq"
+    elif hasattr(args, "rnn_hidden_dim"):
+        return "lstm_seq"
+    elif hasattr(args, "n_heads") and hasattr(args, "n_layers"):
+        return "transformer"
+    return "unknown_model"
+
+def get_analyzed_configs_from_analysis_runs():
+    analyzed = set()
+    timestamp_pattern = r"_\d{8}_\d{6}$"
+
+    # 1. From analysis_runs/*/generations/*
+    for filepath in glob.glob("analysis_runs/*/generations/*"):
+        base = os.path.basename(filepath)
+        config = re.sub(timestamp_pattern, "", base)
+        analyzed.add(config)
+
+    # 2. From checkpoints/*
+    if os.path.exists("checkpoints"):
+        for folder in os.listdir("checkpoints"):
+            if not os.path.isdir(os.path.join("checkpoints", folder)):
+                continue
+            config = re.sub(timestamp_pattern, "", folder)
+            analyzed.add(config)
+
+    return analyzed
+
+
+# Load existing analysis results
+analyzed_configs = get_analyzed_configs_from_analysis_runs()
+
 
 def safe_filename(s):
     """Make string safe for Windows filenames."""
@@ -68,27 +110,31 @@ def safe_filename(s):
 
 # Run each experiment
 for i, combo in enumerate(combinations, 1):
-    cmd = ["python", "main.py"]
-    args_dict = {key: val for key, val in zip(keys, combo)}
-    for key, val in args_dict.items():
-        cmd.extend([key, val])
+    try:
+        cmd = ["python", "main.py"]
+        args_dict = {key: val for key, val in zip(keys, combo)}
+        for key, val in args_dict.items():
+            cmd.extend([key, val])
 
-    # Convert args_dict to argparse.Namespace (like parse_args())
-    args_namespace = argparse.Namespace(**{k.lstrip("--"): v for k, v in args_dict.items()})
-    model_name = "batch"  # Neutral tag or could be "kgram_mlp_seq", etc.
-    model_config_str = get_model_config(model_name, args_namespace)
+        args_namespace = argparse.Namespace(**{k.lstrip("--"): v for k, v in args_dict.items()})
+        model_name = infer_model_name(args_namespace)
+        model_config_str = get_model_config(model_name, args_namespace)
+        core_config = strip_timestamp(model_config_str)
+        safe_log_name = safe_filename(model_config_str)
+        log_file = f"logs/{safe_log_name}.log"
 
-    safe_log_name = safe_filename(model_config_str)
-    log_file = f"logs/{safe_log_name}.log"
+        print(f"\n🔁 Running experiment {i}/{len(combinations)}")
+        print("Command:", " ".join(cmd))
+        print("Log file:", log_file)
 
-    print(f"\n🔁 Running experiment {i}/{len(combinations)}")
-    print("Command:", " ".join(cmd))
-    print("Log file:", log_file)
+        if core_config in analyzed_configs:
+            print(f"⏩ Skipping already computed config: {core_config}")
+            continue
 
-    with open(log_file, "w", encoding="utf-8") as logf:
-        try:
+        with open(log_file, "w", encoding="utf-8") as logf:
             subprocess.run(cmd, check=True, stdout=logf, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError:
-            print(f"❌ Run {i} failed — see {log_file}")
-        else:
-            print(f"✅ Run {i} complete — log saved to {log_file}")
+
+        print(f"✅ Run {i} complete — log saved to {log_file}")
+
+    except Exception as e:
+        print(f"❌ Run {i} failed with error: {e} — see log file if available.")
