@@ -164,7 +164,7 @@ def plotlosses(loss_log_path, args):
         plot_path = os.path.join(args.checkpoint_dir_sub, "metrics_curve.png")
         plt.savefig(plot_path)
         print(f"Saved training metrics plot to {plot_path}")
-        plt.show()
+        # plt.show()
     else:
         print("No loss_log.pt found. Skipping loss plot.")
 

@@ -1,5 +1,7 @@
 # starter code by matus & o1-pro
 import os
+import sys
+sys.stdout.reconfigure(encoding='utf-8')  # ✅ fix for Unicode console printing
 from datetime import datetime
 import argparse
 import time
@@ -18,8 +20,6 @@ import tiktoken
 
 ################################################################################
 # 1. Command-line arg parsing
-################################################################################
-
 def parse_args():
     parser = argparse.ArgumentParser(description="Train multiple models on TinyStories and/or custom text files.")
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
@@ -44,10 +44,6 @@ def parse_args():
     parser.set_defaults(monosemantic_enabled=True)
     return parser.parse_args()
 
-
-################################################################################
-# Choose between ReLU and GELU activations
-################################################################################
 def get_activation(name):
     if name == "relu":
         return nn.ReLU()
