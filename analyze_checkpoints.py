@@ -170,6 +170,8 @@ def plotlosses(loss_log_path, args):
 
         plot_path = os.path.join(args.checkpoint_dir_sub, "metrics_curve.png")
         plt.savefig(plot_path)
+        plt.close(fig)  # Close the figure to free memory
+        
         # Target path for the plot
         print(f"Saved training metrics plot to {plot_path}")
 

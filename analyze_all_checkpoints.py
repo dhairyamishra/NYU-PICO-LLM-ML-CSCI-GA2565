@@ -71,7 +71,7 @@ def main():
     parser.add_argument("--checkpoint_root", default="checkpoints", help="Top-level directory to search")
     parser.add_argument("--analysis_dir", default="analysis_runs", help="Where to copy analysis results")
     parser.add_argument("--prompt", default="Once upon a", help="Prompt for text generation")
-    parser.add_argument("--skip_existing", action="store_true", help="Skip checkpoints already analyzed")
+    parser.add_argument("--skip_existing", default=True, action="store_true", help="Skip checkpoints already analyzed")
     args = parser.parse_args()
 
     checkpoint_root = args.checkpoint_root

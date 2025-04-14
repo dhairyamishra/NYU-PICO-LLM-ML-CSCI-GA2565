@@ -32,28 +32,6 @@ param_grid = {
     "--kgram_chunk_size": ["1", "2", "3"]  # required for model_config
 }
 
-
-easy_param_grid = {
-    "--learning_rate": ["0.001"],
-    "--activation": ["gelu"],
-    "--batch_size": ["32"],
-    "--embed_size": ["32"],
-    "--num_inner_mlp_layers": ["10"],
-    "--kgram_k": ["2"],
-    "--block_size": ["64"],
-    "--num_epochs": ["5"],
-    "--tinystories_weight": ["0.8"],
-    "--val_split": ["0.2"],
-
-    # Fixed arguments
-    "--train_subset_size": ["1000"],
-    "--max_steps_per_epoch": ["30"],
-    "--log_interval_steps": ["10"],
-    "--sample_interval_seconds": ["30"],
-    "--device_id": ["cuda:0"],
-    "--prompt": ["Once upon a"],
-    "--kgram_chunk_size": ["1"]
-}
 # Create the logs directory if it doesn't exist
 os.makedirs("logs", exist_ok=True)
 
@@ -64,6 +42,7 @@ combinations = list(itertools.product(*values))
 # Shuffle the seed so that quick testing has variey of data
 # good mix of hyperparms can produce 7000+ permutations
 random.shuffle(combinations)
+combinations = combinations[:15]  # Limit to 100 combinations for quick testing
 print(f"Total experiments to run: {len(combinations)}")
 
 def strip_timestamp(model_config_str):
@@ -76,7 +55,7 @@ def infer_model_name(args):
         return "lstm_seq"
     elif hasattr(args, "n_heads") and hasattr(args, "n_layers"):
         return "transformer"
-    return "unknown_model"
+    return "batch"  # Default to batch if no specific model type is found
 
 def get_analyzed_configs_from_analysis_runs():
     analyzed = set()
@@ -117,7 +96,8 @@ for i, combo in enumerate(combinations, 1):
             cmd.extend([key, val])
 
         args_namespace = argparse.Namespace(**{k.lstrip("--"): v for k, v in args_dict.items()})
-        model_name = infer_model_name(args_namespace)
+        # model_name = infer_model_name(args_namespace)
+        model_name = "batch"
         model_config_str = get_model_config(model_name, args_namespace)
         core_config = strip_timestamp(model_config_str)
         safe_log_name = safe_filename(model_config_str)
