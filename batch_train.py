@@ -46,7 +46,7 @@ print(f"Total combinations: {len(combinations)}")
 # Shuffle the seed so that quick testing has variey of data
 # good mix of hyperparms can produce 7000+ permutations
 random.shuffle(combinations)
-combinations = combinations[:1]  # Limit to 100 combinations for quick testing
+combinations = combinations[:30]  # Limit to 100 combinations for quick testing
 print(f"Random experiments to run: {len(combinations)}")
 
 def strip_timestamp(model_config_str):

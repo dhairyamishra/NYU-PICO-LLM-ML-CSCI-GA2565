@@ -453,7 +453,7 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
 
         # Only transformer has kv_cache and max_seq_len
         is_transformer = hasattr(model, 'blocks') and hasattr(model, 'forward')
-        has_kv_cache = 'kv_cache' in model.forward.__code__.co_varnames if is_transformer else False
+        has_kv_cache = 'past_kv_cache' in model.forward.__code__.co_varnames if is_transformer else False
         max_seq_len = getattr(model, "max_seq_len", 128)  # fallback to 128 or args.block_size
         past_kv_cache = None
 
@@ -470,7 +470,10 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
                     f"input_tokens ({len(input_tokens)}) > max_seq_len ({model.max_seq_len})"
                 )
                 seq_tensor = torch.tensor(input_tokens, dtype=torch.long, device=device).unsqueeze(1)
-                logits = model(seq_tensor) if not has_kv_cache else model(seq_tensor, past_kv_cache)
+                if not has_kv_cache:
+                    logits = model(seq_tensor)
+                else:
+                    logits, past_kv_cache = model(seq_tensor, past_kv_cache)
             else:
                 # Non-transformer model gets full context every time
                 seq_tensor = torch.tensor(context_tokens, dtype=torch.long, device=device).unsqueeze(1)
@@ -845,7 +848,7 @@ def main():
     models = {
         "kgram_mlp_seq": kgram_model,
         "lstm_seq": lstm_model,
-        "kvcache_transformer": transformer,
+        # "kvcache_transformer": transformer,
     }
 
 
