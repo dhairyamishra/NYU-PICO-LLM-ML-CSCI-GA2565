@@ -93,6 +93,7 @@ class MixedSequenceDataset(torch.utils.data.Dataset):
         self.tinystories_seqs = tinystories_seqs
         self.other_seqs = other_seqs
         self.p_tiny = p_tiny
+        self.max_seq_len = 5000  # or use a constructor argument if needed
 
         self.has_tinystories = (len(self.tinystories_seqs) > 0)
         self.has_other = (len(self.other_seqs) > 0)
@@ -187,6 +188,7 @@ class KGramMLPSeqModel(nn.Module):
         self.vocab_size = vocab_size
         self.embed_size = embed_size
         self.chunk_size = chunk_size
+        self.max_seq_len = 5000  # or use a constructor argument if needed
 
         self.embedding = nn.Embedding(vocab_size, embed_size)
         input_dim = (k) * (embed_size)
@@ -448,24 +450,26 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
         context_tokens = enc.encode(init_text)
         annotation_list = []
 
-        is_transformer = hasattr(model, 'blocks') and hasattr(model, 'forward') and 'kv_cache' in model.forward.__code__.co_varnames
+        # Only transformer has kv_cache and max_seq_len
+        is_transformer = hasattr(model, 'blocks') and hasattr(model, 'forward')
+        has_kv_cache = 'kv_cache' in model.forward.__code__.co_varnames if is_transformer else False
+        max_seq_len = getattr(model, "max_seq_len", 128)  # fallback to 128 or args.block_size
         past_kv_cache = None
 
         for i in range(max_new_tokens):
             if is_transformer:
                 # Use only the last token if caching
                 # ✅ Always truncate to model.max_seq_len
-                if past_kv_cache:
+                if has_kv_cache:
                     input_tokens = context_tokens[-1:]
                 else:
-                    input_tokens = context_tokens[-model.max_seq_len:]
-
+                    input_tokens = context_tokens[-max_seq_len:]
                 # 🧱 Ensure model never sees more than max_seq_len tokens
                 assert len(input_tokens) <= model.max_seq_len, (
                     f"input_tokens ({len(input_tokens)}) > max_seq_len ({model.max_seq_len})"
                 )
                 seq_tensor = torch.tensor(input_tokens, dtype=torch.long, device=device).unsqueeze(1)
-                logits, past_kv_cache = model(seq_tensor, past_kv_cache)
+                logits = model(seq_tensor) if not has_kv_cache else model(seq_tensor, past_kv_cache)
             else:
                 # Non-transformer model gets full context every time
                 seq_tensor = torch.tensor(context_tokens, dtype=torch.long, device=device).unsqueeze(1)
@@ -838,9 +842,9 @@ def main():
     ).to(device)
 
     models = {
-        # "kgram_mlp_seq": kgram_model,
+        "kgram_mlp_seq": kgram_model,
         # "lstm_seq": lstm_model,
-        "kvcache_transformer": transformer,
+        # "kvcache_transformer": transformer,
     }
 
 

@@ -1,25 +1,25 @@
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:               val_loss   R-squared:                       0.341
-Model:                            OLS   Adj. R-squared:                  0.271
-Method:                 Least Squares   F-statistic:                     4.908
-Date:                Mon, 14 Apr 2025   Prob (F-statistic):             0.0191
-Time:                        16:18:05   Log-Likelihood:                -34.514
-No. Observations:                  22   AIC:                             75.03
-Df Residuals:                      19   BIC:                             78.30
+Dep. Variable:               val_loss   R-squared:                       0.387
+Model:                            OLS   Adj. R-squared:                  0.345
+Method:                 Least Squares   F-statistic:                     9.157
+Date:                Mon, 14 Apr 2025   Prob (F-statistic):           0.000827
+Time:                        16:37:42   Log-Likelihood:                -48.091
+No. Observations:                  32   AIC:                             102.2
+Df Residuals:                      29   BIC:                             106.6
 Df Model:                           2                                         
 Covariance Type:            nonrobust                                         
 =========================================================================================
                             coef    std err          t      P>|t|      [0.025      0.975]
 -----------------------------------------------------------------------------------------
-Intercept                 3.8915      0.614      6.336      0.000       2.606       5.177
-C(activation)[T.relu]     1.5199      0.554      2.744      0.013       0.361       2.679
-embed_size               -0.0023      0.003     -0.756      0.459      -0.009       0.004
+Intercept                 4.0214      0.487      8.251      0.000       3.025       5.018
+C(activation)[T.relu]     1.5615      0.432      3.611      0.001       0.677       2.446
+embed_size               -0.0019      0.002     -0.856      0.399      -0.007       0.003
 ==============================================================================
-Omnibus:                        2.685   Durbin-Watson:                   2.576
-Prob(Omnibus):                  0.261   Jarque-Bera (JB):                1.207
-Skew:                           0.498   Prob(JB):                        0.547
-Kurtosis:                       3.569   Cond. No.                         452.
+Omnibus:                        2.162   Durbin-Watson:                   2.281
+Prob(Omnibus):                  0.339   Jarque-Bera (JB):                1.009
+Skew:                           0.267   Prob(JB):                        0.604
+Kurtosis:                       3.687   Cond. No.                         501.
 ==============================================================================
 
 Notes:
