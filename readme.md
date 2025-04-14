@@ -1,134 +1,144 @@
-# 📚 NYU-PICO-LLM-ML-CSCI-GA2565
+# 🧠 NYU-PICO-LLM-ML-CSCI-GA2565
 
-**Starter code and project scaffolding for NYU’s CSCI-GA.2565 Machine Learning course.**  
-This project helps you build, analyze, and experiment with simplified versions of large language models (LLMs), including MLPs, LSTMs, and Transformer decoders, while exploring generation strategies such as top-p (nucleus) sampling.
+**Refactored & Enhanced Starter Code for NYU's CSCI-GA.2565 Machine Learning Course.**
 
----
-
-## 🧠 Course Objective
-
-The goal is to **demystify language models** by implementing their core building blocks from scratch. You are encouraged to modify and extend the starter code, understand each component deeply, and simulate real-world ML workflows—on minimal hardware.
+This repo provides an extensible, scalable pipeline for training, analyzing, and visualizing K-Gram MLPs, LSTMs, and Transformer models on language generation tasks—complete with full logging, evaluation plots, and comparative metrics.
 
 ---
 
-## 🏗️ Key Components
+## 🆕 What's New Compared to Original Scaffolding?
 
-### 1. **KGramMLPSeqModel**
-
-A simple MLP-based sequence model that predicts the next token based on the last *k* tokens (i.e., a fixed-size context window). This forms a baseline to understand positional encoding, embeddings, and fully-connected reasoning.
-
-- **ML Design Choices:**
-  - Token indices are embedded into vectors via `nn.Embedding`.
-  - Vectors are concatenated and passed through an MLP.
-  - Suitable for small contexts (k = 3 to 5).
-  - No recurrence or attention—purely feedforward.
-
----
-
-### 2. **TransformerModel** (Decoder-only GPT-style)
-
-An implementation of a decoder-only transformer architecture, inspired by models like GPT-2 and LLaMA.
-
-- **ML Design Choices:**
-  - Uses **positional embeddings** added to token embeddings.
-  - Stacked transformer blocks with:
-    - **Masked multi-head self-attention**
-    - **LayerNorm** (or optionally RMSNorm)
-    - **Residual connections**
-  - Final output is a projection back to vocabulary space.
-
-- **Motivation:**
-  - Understand how transformers process sequences in parallel.
-  - Explore how attention allows dynamic contextual weighting.
+| Feature | Original Scaffold | Enhanced Version |
+|--------|-------------------|------------------|
+| Model Types | KGramMLP, partial LSTM | ✅ LSTM, ✅ Transformer with KV cache, ✅ Fully implemented KGramMLP |
+| Training | Single-model | ✅ Multi-model batch training with config tracking |
+| Logging | Console-only | ✅ Loss, val_loss, perplexity, accuracy, gradients, LR over epochs |
+| Analysis | Minimal | ✅ Comprehensive plotting & generation: `analyze_checkpoints.py`, `analyze_all_checkpoints.py`, `total_summary_analysis.py` |
+| Generation | Greedy | ✅ Greedy + top-p + repetition penalty + annotations |
+| Reproducibility | Manual | ✅ Deterministic training via hashed config names |
+| Automation | None | ✅ Full auto pipeline with `auto_train_then_analyze.py` |
 
 ---
 
-### 3. **Top-p (Nucleus) Sampling**
+## 📚 Machine Learning Topics Covered (with Explanations)
 
-You extend `generate_text` to implement top-p sampling, a decoding strategy where you sample from the smallest subset of tokens whose cumulative probability exceeds *p*.
+### 🔢 Embeddings
+**Concept:** Learn dense vector representations for discrete tokens. Used by all models.
+- `nn.Embedding(vocab_size, embed_size)` maps token IDs to continuous vectors.
 
-- **Why top-p?**
-  - Greedy decoding often produces repetitive or dull output.
-  - Top-p ensures diversity while avoiding sampling from very unlikely tokens.
-  - Common in real-world text generation systems.
+### 🔁 RNNs (LSTM)
+**Model:** `LSTMSeqModel`
+- Sequence modeling via recurrent loops
+- Captures long-term dependencies using hidden and cell states
+- Trained with teacher-forcing for next-token prediction
 
----
+### 🧠 MLPs (K-Gram MLP)
+**Model:** `KGramMLPSeqModel`
+- Input: last `k` tokens → embedding → flatten → MLP → logits
+- No recurrence or attention
+- Lightweight baseline, good for understanding spatial vs sequential learning
 
-## 🛠️ Files & Structure
+### ⚡ Transformers
+**Model:** `TransformerModel`
+- Decoder-only, GPT-style
+- Multi-head self-attention + causal masking + positional embeddings
+- Includes KV cache for fast generation
 
-| File/Folder            | Description |
-|------------------------|-------------|
-| `main.py`              | Main entry point for training and testing models |
-| `analyze_checkpoints.py` | Analyzes model weights over epochs (e.g., embeddings, loss) |
-| `picomodels/`          | Contains all model classes: `KGramMLPSeqModel`, `TransformerModel`, etc. |
-| `checkpoints/`         | Saved model states for loading/resuming training |
-| `oldcode/`             | Legacy scripts for reference or backup |
-| `documents/`           | Possibly lecture notes or reference PDFs |
-| `ReadMeImages/`        | Images used in README or reports |
-| `.gitignore`           | Standard ignore file to avoid committing logs/checkpoints |
+### 🎲 Sampling Algorithms
+**Implemented:** Greedy, Top-p (nucleus), Repetition Penalty
+- `generate_text(...)` accepts `top_p`, `temperature`, and `past_tokens`
+- Repetition penalty discourages repeating recent tokens
 
----
+### 📉 Training Loss
+**Function:** `compute_next_token_loss`
+- Cross-entropy between predicted logits and ground truth
+- Loss logged per step, epoch, and split (train/val)
 
-## 🧪 Core Tasks
+### 📈 Training Metrics
+Tracked in `loss_log.pt`:
+- `avg_loss`, `val_loss`, `token_accuracy`, `perplexity`
+- `grad_norm` (pre & post clip), `weight_norm`, `max_param_grad`
 
-1. **Run the LSTM Starter Code**
-   - Start with `main.py` and `LSTMSeqModel` to validate your setup.
-   - Use minimal configs like `--input_size 32` and `3seqs.txt` for quick iterations.
-
-2. **Implement `KGramMLPSeqModel`**
-   - Define an MLP architecture that takes a concatenated embedding of k tokens and predicts the next token.
-
-3. **Implement Top-p Sampling**
-   - Modify `generate_text` to apply cumulative probability truncation.
-
-4. **Build `TransformerModel`**
-   - Start with `torch.nn.Embedding`, stack self-attention blocks, and output logits over the vocabulary.
-   - Use references like Karpathy’s [minGPT](https://github.com/karpathy/minGPT) as blueprints.
-
----
-
-## 💻 Hardware Requirements
-
-Designed for low-resource machines. Suggested settings:
-- `--input_size 32`
-- `--weight 0.0` (for regularization testing)
-- Datasets like `3seqs.txt` for fast overfitting/testing
+### 📊 Analysis & Evaluation
+- Per-epoch generation (`generations.csv`, `generations.jsonl`)
+- Training curve plots
+- Global analysis across all runs (Pareto plots, regression models, heatmaps)
 
 ---
 
-## 🎯 Learning Outcomes
+## 🔬 How to Use the Scripts (with Hypothetical Flow)
 
-By the end of this project, you will:
-- Understand how modern LLMs are structured and trained
-- Learn core architectural patterns: MLPs, LSTMs, Transformers
-- Implement generation techniques like greedy vs top-p
-- Analyze models using saved checkpoints and embeddings
-
----
-
-## 📚 References
-
-- [minGPT (Karpathy)](https://github.com/karpathy/minGPT)
-- [LLaMA 3 GitHub](https://github.com/facebookresearch/llama)
-- [NYU CSCI-GA.2565 Course Materials](https://cs.nyu.edu/~dsontag/courses/ml2020/)
-
----
-
-## 🚀 Getting Started
-
+### 1. Train a Batch of Models
 ```bash
-# Setup environment (optional)
-python -m venv env
-source env/bin/activate
+python batch_train.py
+```
+This will:
+- Randomly sample hyperparameter combos (e.g., `embed_size=128`, `k=3`, `act=gelu`)
+- Train each model for a few epochs
+- Save checkpoints and logs to `checkpoints/<config_name>/`
 
-# Install PyTorch, etc.
-pip install -r requirements.txt
+### 2. Analyze All Checkpoints
+```bash
+python analyze_all_checkpoints.py --workers 8 --skip_existing
+```
+This will:
+- Read each `checkpoints/` subdir
+- Generate `generations.csv/jsonl`, `metrics_curve.png`
+- Log final metrics to `analysis_runs/summary_cache.csv`
 
-# Run LSTM starter
-python main.py --model_type lstm --input_size 32
+### 3. Run Full Pipeline
+```bash
+python auto_train_then_analyze.py --fast
+```
+This does both the above steps + logs output to timestamped files under `logs/`
 
-# Train your custom MLP
-python main.py --model_type kgram --k 4
+### 4. Generate Research Plots
+```bash
+python total_summary_analysis.py
+```
+This generates plots to `analysis_runs/plots/`, including:
+- Pareto frontier (val_loss vs token_accuracy)
+- KDE jointplots
+- Regression + residuals (e.g., `val_loss ~ embed_size + activation`)
+- Boxplots by activation
+- Heatmaps of val_loss over `embed_size × k`
+- Correlation matrix of all numeric metrics
 
-# Train transformer
-python main.py --model_type transformer --num_layers 4
+---
+
+## 📂 Directory Structure
+
+| Path                      | Purpose |
+|---------------------------|---------|
+| `main.py`                | Trains all models sequentially |
+| `batch_train.py`         | Trains many model configs automatically |
+| `analyze_checkpoints.py` | Analyze one run with plots & generations |
+| `analyze_all_checkpoints.py` | Analyze all checkpoint dirs in bulk |
+| `total_summary_analysis.py` | Create plots, correlations, regressions |
+| `checkpoints/`           | Saved model checkpoints per epoch |
+| `analysis_runs/`         | Generation samples + plots + metrics |
+| `picomodels/`            | Final weights (optional) |
+| `logs/`                  | Timestamped logs from training/analysis |
+
+---
+
+## 🧠 Example: How to Interpret Results
+
+Let’s say we ran 100 configs. Some insights you might discover:
+
+- **Pareto plot:** Transformer configs dominate high accuracy + low val_loss regions.
+- **Jointplot:** Most configs cluster around val_loss ~2.0 and accuracy ~0.4.
+- **Regression:** Increasing `embed_size` lowers `val_loss`, but only for GELU activations.
+- **Boxplot:** LSTMs perform worse with ReLU than GELU.
+- **Heatmap:** `k=1` is generally worse than `k=3` for MLPs.
+
+---
+
+## ✅ Conclusion
+This project isn't just a starter codebase—it's a mini research lab. With structured training, deep metric logging, and automated comparative analysis, you can explore how LLMs behave under different configurations.
+
+For questions or feature ideas, feel free to open an issue or pull request!
+
+---
+
+Happy training! 🧪
