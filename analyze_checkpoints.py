@@ -201,7 +201,7 @@ if __name__ == "__main__":
     parser.add_argument("--chunk_size", type=int, default=None)
     parser.add_argument("--inner_layers", type=int, default=None)
     parser.add_argument("--block_size", type=int, default=None)
-    parser.add_argument("--activation", type=str, default="relu", choices=["relu", "gelu"], help="Activation function used in training")
+    parser.add_argument("--activation", type=str, default="gelu", choices=["relu", "gelu"], help="Activation function used in training")
     args = parser.parse_args()
 
     # --- Regex extraction from checkpoint_dir_sub ---

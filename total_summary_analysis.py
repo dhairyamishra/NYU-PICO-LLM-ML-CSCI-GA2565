@@ -2,8 +2,41 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import csv
+from collections import OrderedDict
+
+def merge_summaries(analysis_dir="analysis_runs", output_csv="summary.csv"):
+    merged_rows = OrderedDict()
+
+    # Look for all cache files in analysis_runs/
+    for fname in os.listdir(analysis_dir):
+        if fname.startswith("summary_cache") and fname.endswith(".csv"):
+            full_path = os.path.join(analysis_dir, fname)
+            print(f"📥 Reading {fname}")
+
+            with open(full_path, newline='', encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    config_name = row["config_name"]
+                    merged_rows[config_name] = row  # Overwrite with the latest
+
+    if not merged_rows:
+        print("⚠️ No summary_cache files found.")
+        return
+
+    # Write merged file
+    output_path = os.path.join(analysis_dir, output_csv)
+    keys = list(next(iter(merged_rows.values())).keys())
+    with open(output_path, "w", newline='', encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=keys)
+        writer.writeheader()
+        writer.writerows(merged_rows.values())
+
+    print(f"\n✅ Merged summary written to {output_path} ({len(merged_rows)} entries)")
+
 
 summary_path = "analysis_runs/summary.csv"
+merge_summaries()
 if not os.path.exists(summary_path):
     raise FileNotFoundError("❌ summary.csv not found in analysis_runs/. Run analyze_all_checkpoints.py first.")
 

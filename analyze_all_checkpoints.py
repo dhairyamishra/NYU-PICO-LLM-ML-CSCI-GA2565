@@ -4,6 +4,7 @@ import shutil
 import argparse
 import torch
 import csv
+import json
 from datetime import datetime
 from analyze_checkpoints import analyze_checkpoints, plotlosses
 
@@ -35,16 +36,19 @@ def extract_config_from_dir(dirname):
 def safe_filename(s):
     return re.sub(r'[<>:"/\\|?*]', '', s.replace(" ", "_"))
 
-def copy_analysis_outputs(src_dir, dst_base, model_type):
-    dst_dir = os.path.join(dst_base, model_type, "generations")
+def copy_analysis_outputs(src_dir, dst_base, model_type, runname, config, final_metrics):
+    dst_dir = os.path.join(dst_base, model_type, runname)
     os.makedirs(dst_dir, exist_ok=True)
 
     for fname in ["generations.jsonl", "generations.csv", "metrics_curve.png"]:
         src = os.path.join(src_dir, fname)
         if os.path.exists(src):
-            dst = os.path.join(dst_dir, os.path.basename(src_dir) + f"__{fname}")
-            shutil.copyfile(src, dst)
-            print(f"📄 Copied {fname} ➝ {dst}")
+            shutil.copyfile(src, os.path.join(dst_dir, fname))
+            print(f"📄 Copied {fname} ➝ {dst_dir}")
+
+    # Optionally dump config and metrics
+    with open(os.path.join(dst_dir, "summary.json"), "w") as f:
+        json.dump({**config, **final_metrics}, f, indent=2)
 
 def already_analyzed(dst_base, model_type, dirname):
     dst_dir = os.path.join(dst_base, model_type, "generations")
@@ -121,11 +125,14 @@ def main():
             config["activation"]
         )
 
+        
+        # Plot loss curves
         loss_log_path = os.path.join(checkpoint_dir_sub, "loss_log.pt")
         plotlosses(loss_log_path, args_obj)
-
+        # Collect summary metrics
+        final_metrics = get_final_metrics(loss_log_path)
         # Copy results to analysis_runs
-        copy_analysis_outputs(checkpoint_dir_sub, args.analysis_dir, config["model_type"])
+        copy_analysis_outputs(checkpoint_dir_sub, args.analysis_dir, config["model_type"], dirname, config, final_metrics)
 
         # Collect summary metrics
         final_metrics = get_final_metrics(loss_log_path)
