@@ -5,6 +5,7 @@ sys.stdout.reconfigure(encoding='utf-8')  # ✅ fix for Unicode console printing
 from datetime import datetime
 import argparse
 import time
+import gc
 import random
 import math
 import torch
@@ -453,7 +454,16 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
         for i in range(max_new_tokens):
             if is_transformer:
                 # Use only the last token if caching
-                input_tokens = context_tokens[-1:] if past_kv_cache else context_tokens
+                # ✅ Always truncate to model.max_seq_len
+                if past_kv_cache:
+                    input_tokens = context_tokens[-1:]
+                else:
+                    input_tokens = context_tokens[-model.max_seq_len:]
+
+                # 🧱 Ensure model never sees more than max_seq_len tokens
+                assert len(input_tokens) <= model.max_seq_len, (
+                    f"input_tokens ({len(input_tokens)}) > max_seq_len ({model.max_seq_len})"
+                )
                 seq_tensor = torch.tensor(input_tokens, dtype=torch.long, device=device).unsqueeze(1)
                 logits, past_kv_cache = model(seq_tensor, past_kv_cache)
             else:
@@ -477,6 +487,9 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
                 )
 
             context_tokens.append(chosen_token)
+            # ✅ Truncate context to avoid overflow in future iterations
+            if len(context_tokens) > model.max_seq_len:
+                context_tokens = context_tokens[-model.max_seq_len:]
 
             if do_monosemantic and monosemantic_info is not None:
                 neighbors = monosemantic_analysis_for_token(
@@ -889,13 +902,16 @@ def main():
         print(text_topp1)
         print(f"Annotated:\n{ann_topp1}")
         print("--------------------------------------------------")
-        # save the model
-        model_config_str = get_model_config(model_name, args)
-        final_dir = os.path.join("picomodels", model_config_str)
-        os.makedirs(final_dir, exist_ok=True)
-        final_path = os.path.join(final_dir, f"{model_name}.pt")
-        torch.save(model.state_dict(), final_path)
-        print(f"Model saved to {final_path}")
+        # save the model --depreciated, saving in more efficient
+        # model_config_str = get_model_config(model_name, args)
+        # final_dir = os.path.join("picomodels", model_config_str)
+        # os.makedirs(final_dir, exist_ok=True)
+        # final_path = os.path.join(final_dir, f"{model_name}.pt")
+        # torch.save(model.state_dict(), final_path)
+        # print(f"Model saved to {final_path}")
+        torch.cuda.empty_cache()
+        gc.collect()
+
 
     print("\n*** All models trained successfully! ***")
 

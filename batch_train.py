@@ -3,6 +3,8 @@ import itertools
 import os
 import re
 import glob
+import gc
+import torch
 import argparse
 from main import get_model_config  # ✅ Import from your main.py
 import random
@@ -13,19 +15,19 @@ random.seed(71236)
 param_grid = {
     "--learning_rate": ["0.001", "0.05"],
     "--activation": ["relu", "gelu"],
-    "--batch_size": ["32", "64", "128", "256", "512"],
+    "--batch_size": ["32", "64", "128", "256"],
     "--embed_size": ["32", "64", "128", "256"],
     "--num_inner_mlp_layers": ["3", "5", "7", "9", "11"],
     "--kgram_k": ["1", "2", "3", "4", "5"],
-    "--block_size": ["16", "32", "64", "128"],
+    "--block_size": ["8", "16", "32", "64", "128"],
     "--num_epochs": ["2", "5", "7", "10"],
     "--tinystories_weight": ["0.8"],
     "--val_split": ["0.2"],
 
     # Fixed arguments
     "--train_subset_size": ["10000"],
-    "--max_steps_per_epoch": ["20"],
-    "--log_interval_steps": ["19"],
+    "--max_steps_per_epoch": ["10"],
+    "--log_interval_steps": ["9"],
     "--sample_interval_seconds": ["30"],
     "--device_id": ["cuda:0"],  # ✅ must be valid for PyTorch
     "--prompt": ["Once upon a"],
@@ -39,11 +41,13 @@ os.makedirs("logs", exist_ok=True)
 # keys, values = zip(*param_grid.items())
 keys, values = zip(*param_grid.items())
 combinations = list(itertools.product(*values))
+# possble values are 2^n, so we can limit the number of combinations
+print(f"Total combinations: {len(combinations)}")
 # Shuffle the seed so that quick testing has variey of data
 # good mix of hyperparms can produce 7000+ permutations
 random.shuffle(combinations)
 combinations = combinations[:10]  # Limit to 100 combinations for quick testing
-print(f"Total experiments to run: {len(combinations)}")
+print(f"Random experiments to run: {len(combinations)}")
 
 def strip_timestamp(model_config_str):
     return re.sub(r'_\d{8}_\d{6}$', '', model_config_str)
@@ -113,7 +117,9 @@ for i, combo in enumerate(combinations, 1):
 
         with open(log_file, "w", encoding="utf-8") as logf:
             subprocess.run(cmd, check=True, stdout=logf, stderr=subprocess.STDOUT)
-
+        # Release GPU memory (safety)
+        torch.cuda.empty_cache()
+        gc.collect()
         print(f"✅ Run {i} complete — log saved to {log_file}")
 
     except Exception as e:
