@@ -1,6 +1,7 @@
 import os
 import re
 import csv
+import shutil
 import torch
 from datetime import datetime
 from analyze_checkpoints import analyze_checkpoints, plotlosses
@@ -42,7 +43,7 @@ def extract_model_metadata(folder_name):
         else:
             metadata[key] = None
     return metadata
-
+    
 def summarize_loss_metrics(checkpoint_dir):
     loss_log_path = os.path.join(checkpoint_dir, "loss_log.pt")
     if not os.path.exists(loss_log_path):
@@ -64,7 +65,7 @@ def summarize_loss_metrics(checkpoint_dir):
 def copy_and_rename_plot(source_path, dest_name):
     if os.path.exists(source_path):
         dest_path = os.path.join(PLOTS_DIR, f"{dest_name}.png")
-        os.rename(source_path, dest_path)
+        shutil.copyfile(source_path, dest_path)
         return dest_path
     return None
 
@@ -94,9 +95,16 @@ def main():
             try:
                 class Args:
                     checkpoint_dir_sub = checkpoint_path
-                    model_type = metadata["model_type"]
-                    activation = metadata["activation"]
-
+                    model_type = metadata.get("model_type", "unknown")
+                    activation = metadata.get("activation", "unknown")
+                    embed_size = metadata.get("embed_size", 0)
+                    k = metadata.get("k", 0)
+                    chunk_size = metadata.get("chunk_size", 0)
+                    inner_layers = metadata.get("inner_layers", 0)
+                    block_size = metadata.get("block_size", 0)
+                    batch_size = metadata.get("batch_size", 0)
+                    learning_rate = metadata.get("learning_rate", 0.0)
+                    tinystories_weight = metadata.get("tinystories_weight", 0.0)
                 plotlosses(os.path.join(checkpoint_path, "loss_log.pt"), Args())
                 copy_and_rename_plot(
                     os.path.join(checkpoint_path, "metrics_curve.png"),
@@ -104,6 +112,7 @@ def main():
                 )
             except Exception as e:
                 print(f"⚠️ Skipped plotting for {folder}: {e}")
+
 
             # Optional: also extract generations
             try:

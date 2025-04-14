@@ -29,11 +29,34 @@ param_grid = {
     "--kgram_chunk_size": ["2"]  # required for model_config
 }
 
+
+easy_param_grid = {
+    "--learning_rate": ["0.001"],
+    "--activation": ["gelu"],
+    "--batch_size": ["32"],
+    "--embed_size": ["64"],
+    "--num_inner_mlp_layers": ["20"],
+    "--kgram_k": ["3"],
+    "--block_size": ["128"],
+    "--num_epochs": ["10"],
+    "--tinystories_weight": ["0.8"],
+    "--val_split": ["0.2"],
+
+    # Fixed arguments
+    "--train_subset_size": ["5000"],
+    "--max_steps_per_epoch": ["30"],
+    "--log_interval_steps": ["10"],
+    "--sample_interval_seconds": ["30"],
+    "--device_id": ["cuda:0"],
+    "--prompt": ["Once upon a"],
+    "--kgram_chunk_size": ["1"]
+}
 # Create the logs directory if it doesn't exist
 os.makedirs("logs", exist_ok=True)
 
 # Generate all combinations of parameters
-keys, values = zip(*param_grid.items())
+# keys, values = zip(*param_grid.items())
+keys, values = zip(*easy_param_grid.items())
 combinations = list(itertools.product(*values))
 
 print(f"Total experiments to run: {len(combinations)}")

@@ -61,8 +61,8 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
     
     print("\n=== Generation Samples Across Epochs ===")
     for name, gen, ano in generations:
-        print(f"\n[{name}]")
-        print("Generated text:", gen)
+        # print(f"\n[{name}]")
+        # print("Generated text:", gen)
         # print("Annotated text:", ano)
         # Save as JSONL
         jsonl_path = os.path.join(checkpoint_dir_sub, "generations.jsonl")
@@ -70,7 +70,7 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
             for ckpt, gen, ano in generations:
                 json.dump({"checkpoint": ckpt, "generation": gen, "annotation": ano}, f_jsonl)
                 f_jsonl.write("\n")
-        print(f"Saved generations to {jsonl_path}")
+        # print(f"Saved generations to {jsonl_path}")
 
         # Save as CSV
         csv_path = os.path.join(checkpoint_dir_sub, "generations.csv")
@@ -79,7 +79,7 @@ def analyze_checkpoints(checkpoint_dir_sub, model_type, prompt, embed_size, k, c
             writer.writeheader()
             for ckpt, gen, ano in generations:
                 writer.writerow({"checkpoint": ckpt, "generation": gen, "annotation": ano})
-        print(f"Saved generations to {csv_path}")
+        # print(f"Saved generations to {csv_path}")
     
     return generations
 
@@ -89,7 +89,6 @@ def plotlosses(loss_log_path, args):
     if os.path.exists(loss_log_path):
         loss_dict = torch.load(loss_log_path)
         epochs = sorted([int(k.split("_")[1]) for k in loss_dict.keys()])
-        
         train_losses = [loss_dict[f"epoch_{e}"].get("avg_loss", float("nan")) for e in epochs]
         val_losses = [loss_dict[f"epoch_{e}"].get("val_loss", float("nan")) for e in epochs]
         accuracies = [loss_dict[f"epoch_{e}"].get("token_accuracy", float("nan")) for e in epochs]
@@ -158,13 +157,18 @@ def plotlosses(loss_log_path, args):
         axs[5].set_xlabel("Epoch"); axs[5].set_ylabel("L2 Norm"); axs[5].grid(True)
 
 
-        plt.suptitle(f"Training Metrics for {args.model_type}", fontsize=16)
+        plt.suptitle(
+            f"{args.model_type} | act={args.activation} | emb={args.embed_size} | k={args.k} | cs={args.chunk_size} | mlp={args.inner_layers} | blk={args.block_size} | lr={args.learning_rate} | bs={args.batch_size} | tsw={args.tinystories_weight}",
+            fontsize=14
+        )
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
         plot_path = os.path.join(args.checkpoint_dir_sub, "metrics_curve.png")
         plt.savefig(plot_path)
+        # Target path for the plot
         print(f"Saved training metrics plot to {plot_path}")
-        # plt.show()
+
+
     else:
         print("No loss_log.pt found. Skipping loss plot.")
 
@@ -178,7 +182,7 @@ def plotlosses(loss_log_path, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint_dir_sub", 
-                        default=r"checkpoints\kgram_mlp_seq_tsw0.5_bs16_lr0.005_actgelu_ep5_mlp20_k3_cs2_blk128_emb128_20250411_154011", 
+                        default=r"checkpoints/kgram_mlp_seq_tsw0.5_bs16_lr0.001_ep10_mlp20_k3_cs1_blk256_emb256_20250410_140739", 
                         type=str, help="Path to specific models epock folder"
                         )
     parser.add_argument("--model_type", default="", type=str, choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer"])
