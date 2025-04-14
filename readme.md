@@ -1,8 +1,26 @@
 # 🧠 NYU-PICO-LLM-ML-CSCI-GA2565
 
+[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Last Updated](https://img.shields.io/github/last-commit/dhairyamishra/NYU-PICO-LLM-ML-CSCI-GA2565)](https://github.com/dhairyamishra/NYU-PICO-LLM-ML-CSCI-GA2565/commits)
+
 **Refactored & Enhanced Starter Code for NYU's CSCI-GA.2565 Machine Learning Course.**
 
 This repo provides an extensible, scalable pipeline for training, analyzing, and visualizing K-Gram MLPs, LSTMs, and Transformer models on language generation tasks—complete with full logging, evaluation plots, and comparative metrics.
+
+---
+
+## 📌 Table of Contents
+
+- [🆕 What's New Compared to Original Scaffolding](#-whats-new-compared-to-original-scaffolding)
+- [📚 Machine Learning Topics Covered (with Explanations)](#-machine-learning-topics-covered-with-explanations)
+- [🔬 How to Use the Scripts (with Hypothetical Flow)](#-how-to-use-the-scripts-with-hypothetical-flow)
+- [📂 Directory Structure](#-directory-structure)
+- [🧠 Example: How to Interpret Results](#-example-how-to-interpret-results)
+- [🧪 CLI Help Snippets](#-cli-help-snippets)
+- [🖼 Plot Showcase](#-plot-showcase)
+- [🚀 Run in Google Colab (optional)](#-run-in-google-colab-optional)
+- [✅ Conclusion](#-conclusion)
 
 ---
 
@@ -13,12 +31,11 @@ This repo provides an extensible, scalable pipeline for training, analyzing, and
 | Model Types | KGramMLP, partial LSTM | ✅ LSTM, ✅ Transformer with KV cache, ✅ Fully implemented KGramMLP |
 | Training | Single-model | ✅ Multi-model batch training with config tracking |
 | Logging | Console-only | ✅ Loss, val_loss, perplexity, accuracy, gradients, LR over epochs |
-| Analysis | Minimal | ✅ Comprehensive plotting & generation: `analyze_checkpoints.py`, `analyze_all_checkpoints.py`, `total_summary_analysis.py` |
-| Generation | Greedy | ✅ Greedy + top-p + repetition penalty + annotations |
-| Reproducibility | Manual | ✅ Deterministic training via hashed config names |
-| Automation | None | ✅ Full auto pipeline with `auto_train_then_analyze.py` |
+| Analysis | Minimal | ✅ `analyze_checkpoints.py`, `analyze_all_checkpoints.py`, `total_summary_analysis.py` |
+| Generation | Greedy | ✅ Greedy + top-p + repetition penalty + monosemantic annotation |
+| Reproducibility | Manual | ✅ Deterministic training via config fingerprinting |
+| Automation | None | ✅ Full pipeline: `auto_train_then_analyze.py` |
 
----
 
 ## 📚 Machine Learning Topics Covered (with Explanations)
 
