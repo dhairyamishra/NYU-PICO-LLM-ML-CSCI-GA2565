@@ -14,7 +14,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from tkinter import ttk
 
-def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_size=1, num_inner_layers=1, block_size=128, activation="gelu"):
+def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_size=1, num_inner_layers=1, block_size=512, activation="gelu"):
 
     if model_type == "kgram_mlp_seq":
 
@@ -171,7 +171,7 @@ def plotlosses(loss_log_path, args):
         plot_path = os.path.join(args.checkpoint_dir_sub, "metrics_curve.png")
         plt.savefig(plot_path)
         plt.close(fig)  # Close the figure to free memory
-        
+
         # Target path for the plot
         print(f"Saved training metrics plot to {plot_path}")
 

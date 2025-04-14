@@ -7,23 +7,23 @@ import argparse
 from main import get_model_config  # ✅ Import from your main.py
 import random
 # Set a fixed seed for reproducibility
-random.seed(42)
+random.seed(71236)
 
 # Define your hyperparameter grid
 param_grid = {
     "--learning_rate": ["0.001", "0.05"],
     "--activation": ["relu", "gelu"],
-    "--batch_size": ["4", "8", "16"],
-    "--embed_size": ["16", "32", "64"],
-    "--num_inner_mlp_layers": ["3", "10"],
-    "--kgram_k": ["1", "2", "3", "4"],
-    "--block_size": ["8", "16", "32"],
-    "--num_epochs": ["2", "5", "7"],
+    "--batch_size": ["32", "64", "128", "256", "512"],
+    "--embed_size": ["32", "64", "128", "256"],
+    "--num_inner_mlp_layers": ["3", "5", "7", "9", "11"],
+    "--kgram_k": ["1", "2", "3", "4", "5"],
+    "--block_size": ["16", "32", "64", "128"],
+    "--num_epochs": ["2", "5", "7", "10"],
     "--tinystories_weight": ["0.8"],
     "--val_split": ["0.2"],
 
     # Fixed arguments
-    "--train_subset_size": ["1000"],
+    "--train_subset_size": ["10000"],
     "--max_steps_per_epoch": ["20"],
     "--log_interval_steps": ["19"],
     "--sample_interval_seconds": ["30"],
@@ -42,7 +42,7 @@ combinations = list(itertools.product(*values))
 # Shuffle the seed so that quick testing has variey of data
 # good mix of hyperparms can produce 7000+ permutations
 random.shuffle(combinations)
-combinations = combinations[:15]  # Limit to 100 combinations for quick testing
+combinations = combinations[:10]  # Limit to 100 combinations for quick testing
 print(f"Total experiments to run: {len(combinations)}")
 
 def strip_timestamp(model_config_str):

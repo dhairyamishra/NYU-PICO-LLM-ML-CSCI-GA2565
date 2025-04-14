@@ -159,6 +159,17 @@ def compute_next_token_loss(logits, tokens):
 
     preds = preds.reshape(-1, vocab_size)
     gold = gold.reshape(-1)
+
+    # 🔍 Sanity checks before loss computation
+    if (gold < 0).any() or (gold >= vocab_size).any():
+        print("🔥 Invalid token ID detected in gold targets!")
+        print("Max token id:", gold.max().item(), "Vocab size:", vocab_size)
+        print("Min token id:", gold.min().item())
+        print("First few gold tokens:", gold[:10].tolist())
+        raise ValueError("Invalid token index in target tensor for cross_entropy")
+
+    assert preds.size(0) == gold.size(0), f"Mismatch: preds={preds.size()}, gold={gold.size()}"
+
     return F.cross_entropy(preds, gold)
 
 
@@ -325,10 +336,12 @@ class TransformerBlock(nn.Module):
         return x, (k, v)
 
 class TransformerModel(nn.Module):
-    def __init__(self, vocab_size=50257, d_model=1024, n_heads=2, n_blocks=4, max_seq_len=2048, activation=nn.GELU()):
+    def __init__(self, vocab_size=50257, d_model=512, n_heads=1, n_blocks=1, max_seq_len=512, activation=nn.GELU()):
         super().__init__()
         self.token_emb = nn.Embedding(vocab_size, d_model)
         self.pos_emb = nn.Embedding(max_seq_len, d_model)
+        self.max_seq_len = max_seq_len
+
         self.blocks = nn.ModuleList([
             TransformerBlock(d_model, n_heads, activation) for _ in range(n_blocks)
         ])
@@ -337,6 +350,8 @@ class TransformerModel(nn.Module):
 
     def forward(self, tokens, past_kv_cache=None):
         seq_len, batch_size = tokens.shape
+        if seq_len > self.max_seq_len:
+            raise ValueError(f"Sequence length {seq_len} exceeds model max_seq_len={self.max_seq_len}.")
         device = tokens.device
 
         tok_emb = self.token_emb(tokens)
@@ -387,25 +402,40 @@ def monosemantic_analysis_for_token(token_id, model, monosomatics, enc, device="
 # 7. Single code path for text generation
 ################################################################################
 
-def nucleus_sampling(logits, p=0.95):
+def nucleus_sampling(logits, p=0.95, temperature=8.0, past_tokens=None, repetition_penalty=1.0):
     """
-    Perform nucleus (top-p) sampling on logits.
+    Top-p (nucleus) sampling with temperature and repetition penalty.
     """
-    probs = torch.softmax(logits, dim=-1)  # (vocab_size,)
-    sorted_probs, sorted_indices = torch.sort(probs, descending=True)
-    cumulative_probs = torch.cumsum(sorted_probs, dim=-1)
+    logits = logits.clone()  # avoid modifying in-place
 
-    # Find the cutoff where cumulative prob exceeds p
+    # Apply repetition penalty
+    if past_tokens and repetition_penalty != 1.0:
+        for token_id in set(past_tokens):
+            if 0 <= token_id < logits.size(0):  # valid token range
+                if logits[token_id] > 0:
+                    logits[token_id] /= repetition_penalty
+                else:
+                    logits[token_id] *= repetition_penalty
+
+    # Handle deterministic case
+    if p >= 1.0 and temperature == 0:
+        return torch.argmax(logits).item()
+
+    if temperature != 1.0:
+        logits = logits / temperature
+
+    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+    probs = torch.softmax(sorted_logits, dim=-1)
+    cumulative_probs = torch.cumsum(probs, dim=-1)
+
     cutoff_index = torch.searchsorted(cumulative_probs, p, right=True).item()
-
-    # Get the top-k indices and their probabilities
     top_indices = sorted_indices[:cutoff_index + 1]
-    top_probs = sorted_probs[:cutoff_index + 1]
-    top_probs = top_probs / top_probs.sum()  # renormalize
+    top_probs = probs[:cutoff_index + 1]
+    top_probs = top_probs / (top_probs.sum() + 1e-8)
 
-    # Sample from the top-k
     sampled_index = torch.multinomial(top_probs, 1).item()
     return top_indices[sampled_index].item()
+
 
 def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
                   top_p=None,
@@ -438,7 +468,13 @@ def generate_text(model, enc, init_text, max_new_tokens=20, device="cpu",
             if top_p is None:
                 chosen_token = torch.argmax(next_logits).item()
             else:
-                chosen_token = nucleus_sampling(next_logits, p=top_p)
+                chosen_token = nucleus_sampling(
+                    next_logits,
+                    p=top_p,
+                    temperature=0.8,                # or expose this as a param
+                    past_tokens=context_tokens,    # repetition tracking
+                    repetition_penalty=1.5         # tweakable
+                )
 
             context_tokens.append(chosen_token)
 
@@ -789,8 +825,8 @@ def main():
     ).to(device)
 
     models = {
-        "kgram_mlp_seq": kgram_model,
-        "lstm_seq": lstm_model,
+        # "kgram_mlp_seq": kgram_model,
+        # "lstm_seq": lstm_model,
         "kvcache_transformer": transformer,
     }
 
