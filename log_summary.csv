@@ -1,0 +1,1578 @@
+annotated,avg_loss,epoch,log_file,model_type,partial_avg_loss,sample_text,sample_type,total_epochs,val_loss
+,9.2536,1,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a ,""jan nausea nausea nausea proceedquite nausea nausea nausea proceed Host nausea nausea nausea nauseaquiteJuadow nausea
+ Annotated: Once upon a ,""jan nausea nausea nausea proceedquite nausea nausea nausea proceed Host nausea nausea nausea nauseaquiteJuadow nausea
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a prolonged mentaloranbright acronym telecommunications astronulo Joker ordering(); Kepler PrideSTAT787 roaming� topAn phone
+ Annotated: Once upon a prolonged mentaloranbright acronym telecommunications astronulo Joker ordering(); Kepler PrideSTAT787 roaming� topAn phone
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a addressing180 Sirius Anim axe CVEchest Wikileaksav skimclock Cron Judgment Sanchez ClassesItalyvableraisedissan OCT
+ Annotated: Once upon a addressing180 Sirius Anim axe CVEchest Wikileaksav skimclock Cron Judgment Sanchez ClassesItalyvableraisedissan OCT
+
+[kgram_mlp_seq",9.4095,,epoch,2,7.5718
+,6.5241,2,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",6.6255,,epoch,2,5.5163
+,10.593,1,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there was a little girl named,. He was a a,. He was a a
+Annotated:
+Once upon a time, there was a little girl named,. He was a a,. He was a a
+
+[kgram_mlp_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a time,kas away't brought butterfly suddenly to many gave. want was fur telling said Sara through He
+Annotated:
+Once upon a time,kas away't brought butterfly suddenly to many gave. want was fur telling said Sara through He
+
+[kgram_mlp_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon aacl, there mountains Vegan years her.,"" sweaty and that found decor his see did with is around
+Annotated:
+Once upon aacl, there mountains Vegan years her.,"" sweaty and that found decor his see did with is around
+--------------------------------------------------
+Training model: LSTMSeqModel(
+  (activation): GELU(approximate='none')
+  (embedding): Embedding(50257, 256)
+  (lstm): LSTM(256, 256)
+  (linear): Linear(in_features=256, out_features=50257, bias=True)
+) with monosemantic info: False
+
+=== Training model: lstm_seq ===
+
+[lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a aggro Dong proliferationiam gas707Bat displaysBU Garage overheDecember hid tur encourages explored caring Mercury Camb disparities
+ Annotated: Once upon a aggro Dong proliferationiam gas707Bat displaysBU Garage overheDecember hid tur encourages explored caring Mercury Camb disparities
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Rifle accordarusenez palette697 automobiles Bold examinedber afford senses plenty Typical ibnн quietenz fortress Fey
+ Annotated: Once upon a Rifle accordarusenez palette697 automobiles Bold examinedber afford senses plenty Typical ibnн quietenz fortress Fey
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a ceasearming Evil feeble cracked goose Sr Ta shocking MFT 71 Brett unconsciousphilisivanwentUFF dosehyheld
+ Annotated: Once upon a ceasearming Evil feeble cracked goose Sr Ta shocking MFT 71 Brett unconsciousphilisivanwentUFF dosehyheld
+
+[lstm_seq",10.6358,,epoch,2,10.0076
+,8.8831,2,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"lstm_seq] Current learning rate: 0.001
+
+[lstm_seq] Generating sample text (greedy) at epoch=2, step=5...
+ Greedy Sample: Once upon a a a a a a a a a a a a a a a a a a a a a
+ Annotated: Once upon a a a a a a a a a a a a a a a a a a a a a
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=2, step=5...
+ Top-p (p=0.95) Sample: Once upon a articulated Amp snow!!""agraphedIn Kn hashes emph Proceedings Brandon minions Oculus Kraft grammarainerAdult Stability909 τ
+ Annotated: Once upon a articulated Amp snow!!""agraphedIn Kn hashes emph Proceedings Brandon minions Oculus Kraft grammarainerAdult Stability909 τ
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=2, step=5...
+ Top-p (p=1.0) Sample: Once upon a entire Ancient fitnesswidHSdraw loses Shack advocateMustlicensedprinted Wrapscribe nausea suddenly Ars Igor cars Joint
+ Annotated: Once upon a entire Ancient fitnesswidHSdraw loses Shack advocateMustlicensedprinted Wrapscribe nausea suddenly Ars Igor cars Joint
+
+[lstm_seq",9.0066,,epoch,2,7.5352
+,8.5525,1,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a a a a a a a a a a a a a a a a a a a a a
+Annotated:
+Once upon a a a a a a a a a a a a a a a a a a a a a
+
+[lstm_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon aDJ intesting peninsula Favor India Luke tacos feelingumper out and observe funny permitted senses go686 grenades was
+Annotated:
+Once upon aDJ intesting peninsula Favor India Luke tacos feelingumper out and observe funny permitted senses go686 grenades was
+
+[lstm_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon aEG orderingbow Klux largeTeam SYSTEM andayan when jumped distant deercommun905 harsherUltra special Defence tag
+Annotated:
+Once upon aEG orderingbow Klux largeTeam SYSTEM andayan when jumped distant deercommun905 harsherUltra special Defence tag
+--------------------------------------------------
+Training model: TransformerModel(
+  (token_emb): Embedding(50257, 256)
+  (pos_emb): Embedding(64, 256)
+  (blocks): ModuleList(
+    (0-5): 6 x TransformerBlock(
+      (attn): MultiHeadAttention(
+        (qkv_proj): Linear(in_features=256, out_features=768, bias=True)
+        (out_proj): Linear(in_features=256, out_features=256, bias=True)
+      )
+      (mlp): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): GELU(approximate='none')
+        (2): Linear(in_features=1024, out_features=256, bias=True)
+      )
+      (norm1): RMSNorm()
+      (norm2): RMSNorm()
+    )
+  )
+  (norm_final): RMSNorm()
+  (output_proj): Linear(in_features=256, out_features=50257, bias=True)
+) with monosemantic info: True
+
+=== Training model: kvcache_transformer ===
+
+[kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon
+ Annotated: Once upon a upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Exhibition 219ifter Gunners commands pondsmaximum decency hoardisions lanterncolor yog guruaccessible donatinganda PCIegee
+ Annotated: Once upon a Exhibition[NN=['Bound', ' sys', ' algorith', ' some', ' mapped']] 219[NN=['CHAPTER', 'Pot', ' official', ' cooled', ' CNS']]ifter[NN=[' backed', ' McConnell', 'ross', ' dependent', ' Impossible']] Gunn[NN=['ANE', 'ory', ' tooltip', ' funded', 'FC']]ers[NN=[' aspiring', ' whole', ' constraints', ' 1952', ' 163']] commands[NN=[' rulers', 'rette', 'ogan', ' begin', ' Aim']] ponds[NN=[' estimated', 'ogo', ' appl', ' amplifier', 'anuts']]maximum[NN=[' UM', ' Tina', ' takeoff', ' novel', 'Unique']] decency[NN=['iss', 'Os', ' aim', ' cylinders', ' pricey']] hoard[NN=['HB', ' Kirk', ' INS', ' Gray', ' UNHCR']]isions[NN=[' rap', ' typical', ' exempted', 'aligned', 'Missing']] lantern[NN=[' imperfect', ' Restaur', ' bold', ' Miy', 'ierre']]color[NN=[' Stewart', 'voy', ' 3000', 'readable', 'til']] yog[NN=['.', ' μg', 'Stats', ' Trump', 'imm']] guru[NN=[' Martinez', ' NG', ' hallmark', 'oot', ' undet']]accessible[NN=[' serve', ' females', 'embed', ' architect', 'visor']] donating[NN=[' leans', 'pai', 'ooter', 'oney', 'Ey']]anda[NN=[' tearing', ' eSports', ' DN', 'bots', ' Canadiens']] PCIe[NN=['oland', 'sac', ' scenarios', ' Lanka', ' mentions']]gee[NN=[' deval', 'umping', 'share', 'Pro', 'redits']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aStrange opio glanced mythshid playing balcony proletariatagement Christopher seenAddingRetecake Bradorrycerning ensign lowering
+ Annotated: Once upon aStrange[NN=['goers', ' Machines', ' metaphor', 'umped', ' trad']] opio[NN=['priced', ' booth', 'bold', ' elim', ' strap']] glanced[NN=[' investig', ' Volunte', '153', 'wiki', 'aul']] myths[NN=['want', ' NAS', ' invoked', ' Ast', ' Generally']]hid[NN=['arson', ' seen', 'Images', ' 351', 'andra']] playing[NN=['euro', ' Bright', ' Laboratories', 'Visit', ' goaltender']] balcony[NN=[' included', ' ordinance', ' Captain', 'umption', ' Lazarus']] proletariat[NN=[' instances', ' Soccer', ' substances', ' repetition', 'に']]agement[NN=['zing', ' Liberation', 'Native', ' reproduce', ' terror']] Christopher[NN=[' az', ' ted', ' quoted', ' Diversity', 'ateful']] seen[NN=[' commemorate', ' verse', ' Argentine', ' Device', 'hid']]Adding[NN=[' evolutionary', 'oji', ' notions', ' dictators', ' Sask']]Ret[NN=['ooked', ' airline', ' doing', 'font', ' utilizes']]ecake[NN=[' Emma', 'ß', ' Provincial', ' influenza', ' bloc']] Brad[NN=['metic', ' Box', ' establish', ' formulation', 'rab']]orry[NN=[' emerged', 'Republican', 'mop', ' Axel', ' components']]cerning[NN=[' Washington', ' probe', 'Operation', ' gates', 'Heat']] en[NN=['LEY', ' Jal', ' Often', 'Â', ' slept']]sign[NN=[' strategy', ' decline', ' pastry', ' don', ' Doom']] lowering[NN=[' pu', ' Property', 'entle', ' adversely', ' Wood']]
+
+[kvcache_transformer",8.7483,,epoch,2,6.5157
+,5.6205,2,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",5.6963,,epoch,2,4.9029
+"Once upon a time, there was a little girl named,. He was a a,. He was a a",,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a ,""jan nausea nausea nausea proceedquite nausea nausea nausea proceed Host nausea nausea nausea nauseaquiteJuadow nausea
+ Annotated: Once upon a ,""jan nausea nausea nausea proceedquite nausea nausea nausea proceed Host nausea nausea nausea nauseaquiteJuadow nausea
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a prolonged mentaloranbright acronym telecommunications astronulo Joker ordering(); Kepler PrideSTAT787 roaming� topAn phone
+ Annotated: Once upon a prolonged mentaloranbright acronym telecommunications astronulo Joker ordering(); Kepler PrideSTAT787 roaming� topAn phone
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a addressing180 Sirius Anim axe CVEchest Wikileaksav skimclock Cron Judgment Sanchez ClassesItalyvableraisedissan OCT
+ Annotated: Once upon a addressing180 Sirius Anim axe CVEchest Wikileaksav skimclock Cron Judgment Sanchez ClassesItalyvableraisedissan OCT
+
+[kgram_mlp_seq] Epoch 1/2, Step 9/63 (global step: 9) Partial Avg Loss: 9.4095
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kgram_mlp_seq] Validation Loss after epoch 1: 7.5718
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182042\epoch_1.pt
+[kgram_mlp_seq] *** End of Epoch 1 *** Avg Loss: 9.2536
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 2/2, Step 9/63 (global step: 19) Partial Avg Loss: 6.6255
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kgram_mlp_seq] Validation Loss after epoch 2: 5.5163
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182042\epoch_2.pt
+[kgram_mlp_seq] *** End of Epoch 2 *** Avg Loss: 6.5241
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",,"Once upon a time, there was a little girl named,. He was a a,. He was a a",greedy,,
+"Once upon a time,kas away't brought butterfly suddenly to many gave. want was fur telling said Sara through He",,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,kgram_mlp_seq,,"Once upon a time,kas away't brought butterfly suddenly to many gave. want was fur telling said Sara through He",top-p=0.95,,
+"Once upon aacl, there mountains Vegan years her.,"" sweaty and that found decor his see did with is around",,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,kgram_mlp_seq,,"Once upon aacl, there mountains Vegan years her.,"" sweaty and that found decor his see did with is around",top-p=1.0,,
+Once upon a a a a a a a a a a a a a a a a a a a a a,,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a aggro Dong proliferationiam gas707Bat displaysBU Garage overheDecember hid tur encourages explored caring Mercury Camb disparities
+ Annotated: Once upon a aggro Dong proliferationiam gas707Bat displaysBU Garage overheDecember hid tur encourages explored caring Mercury Camb disparities
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Rifle accordarusenez palette697 automobiles Bold examinedber afford senses plenty Typical ibnн quietenz fortress Fey
+ Annotated: Once upon a Rifle accordarusenez palette697 automobiles Bold examinedber afford senses plenty Typical ibnн quietenz fortress Fey
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a ceasearming Evil feeble cracked goose Sr Ta shocking MFT 71 Brett unconsciousphilisivanwentUFF dosehyheld
+ Annotated: Once upon a ceasearming Evil feeble cracked goose Sr Ta shocking MFT 71 Brett unconsciousphilisivanwentUFF dosehyheld
+
+[lstm_seq] Epoch 1/2, Step 9/63 (global step: 9) Partial Avg Loss: 10.6358
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[lstm_seq] Validation Loss after epoch 1: 10.0076
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182047\epoch_1.pt
+[lstm_seq] *** End of Epoch 1 *** Avg Loss: 10.5930
+[lstm_seq] Current learning rate: 0.001
+
+[lstm_seq] Generating sample text (greedy) at epoch=2, step=5...
+ Greedy Sample: Once upon a a a a a a a a a a a a a a a a a a a a a
+ Annotated: Once upon a a a a a a a a a a a a a a a a a a a a a
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=2, step=5...
+ Top-p (p=0.95) Sample: Once upon a articulated Amp snow!!""agraphedIn Kn hashes emph Proceedings Brandon minions Oculus Kraft grammarainerAdult Stability909 τ
+ Annotated: Once upon a articulated Amp snow!!""agraphedIn Kn hashes emph Proceedings Brandon minions Oculus Kraft grammarainerAdult Stability909 τ
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=2, step=5...
+ Top-p (p=1.0) Sample: Once upon a entire Ancient fitnesswidHSdraw loses Shack advocateMustlicensedprinted Wrapscribe nausea suddenly Ars Igor cars Joint
+ Annotated: Once upon a entire Ancient fitnesswidHSdraw loses Shack advocateMustlicensedprinted Wrapscribe nausea suddenly Ars Igor cars Joint
+
+[lstm_seq] Epoch 2/2, Step 9/63 (global step: 19) Partial Avg Loss: 9.0066
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[lstm_seq] Validation Loss after epoch 2: 7.5352
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182047\epoch_2.pt
+[lstm_seq] *** End of Epoch 2 *** Avg Loss: 8.8831
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq",,Once upon a a a a a a a a a a a a a a a a a a a a a,greedy,,
+Once upon aDJ intesting peninsula Favor India Luke tacos feelingumper out and observe funny permitted senses go686 grenades was,,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,lstm_seq,,Once upon aDJ intesting peninsula Favor India Luke tacos feelingumper out and observe funny permitted senses go686 grenades was,top-p=0.95,,
+Once upon aEG orderingbow Klux largeTeam SYSTEM andayan when jumped distant deercommun905 harsherUltra special Defence tag,,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,lstm_seq,,Once upon aEG orderingbow Klux largeTeam SYSTEM andayan when jumped distant deercommun905 harsherUltra special Defence tag,top-p=1.0,,
+"Once upon a day, and was upon and was upon and was upon and was upon and was upon and was upon",,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,"kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon
+ Annotated: Once upon a upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']] upon[NN=['ctory', ' undes', 'Inc', '558', 'Susan']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Exhibition 219ifter Gunners commands pondsmaximum decency hoardisions lanterncolor yog guruaccessible donatinganda PCIegee
+ Annotated: Once upon a Exhibition[NN=['Bound', ' sys', ' algorith', ' some', ' mapped']] 219[NN=['CHAPTER', 'Pot', ' official', ' cooled', ' CNS']]ifter[NN=[' backed', ' McConnell', 'ross', ' dependent', ' Impossible']] Gunn[NN=['ANE', 'ory', ' tooltip', ' funded', 'FC']]ers[NN=[' aspiring', ' whole', ' constraints', ' 1952', ' 163']] commands[NN=[' rulers', 'rette', 'ogan', ' begin', ' Aim']] ponds[NN=[' estimated', 'ogo', ' appl', ' amplifier', 'anuts']]maximum[NN=[' UM', ' Tina', ' takeoff', ' novel', 'Unique']] decency[NN=['iss', 'Os', ' aim', ' cylinders', ' pricey']] hoard[NN=['HB', ' Kirk', ' INS', ' Gray', ' UNHCR']]isions[NN=[' rap', ' typical', ' exempted', 'aligned', 'Missing']] lantern[NN=[' imperfect', ' Restaur', ' bold', ' Miy', 'ierre']]color[NN=[' Stewart', 'voy', ' 3000', 'readable', 'til']] yog[NN=['.', ' μg', 'Stats', ' Trump', 'imm']] guru[NN=[' Martinez', ' NG', ' hallmark', 'oot', ' undet']]accessible[NN=[' serve', ' females', 'embed', ' architect', 'visor']] donating[NN=[' leans', 'pai', 'ooter', 'oney', 'Ey']]anda[NN=[' tearing', ' eSports', ' DN', 'bots', ' Canadiens']] PCIe[NN=['oland', 'sac', ' scenarios', ' Lanka', ' mentions']]gee[NN=[' deval', 'umping', 'share', 'Pro', 'redits']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aStrange opio glanced mythshid playing balcony proletariatagement Christopher seenAddingRetecake Bradorrycerning ensign lowering
+ Annotated: Once upon aStrange[NN=['goers', ' Machines', ' metaphor', 'umped', ' trad']] opio[NN=['priced', ' booth', 'bold', ' elim', ' strap']] glanced[NN=[' investig', ' Volunte', '153', 'wiki', 'aul']] myths[NN=['want', ' NAS', ' invoked', ' Ast', ' Generally']]hid[NN=['arson', ' seen', 'Images', ' 351', 'andra']] playing[NN=['euro', ' Bright', ' Laboratories', 'Visit', ' goaltender']] balcony[NN=[' included', ' ordinance', ' Captain', 'umption', ' Lazarus']] proletariat[NN=[' instances', ' Soccer', ' substances', ' repetition', 'に']]agement[NN=['zing', ' Liberation', 'Native', ' reproduce', ' terror']] Christopher[NN=[' az', ' ted', ' quoted', ' Diversity', 'ateful']] seen[NN=[' commemorate', ' verse', ' Argentine', ' Device', 'hid']]Adding[NN=[' evolutionary', 'oji', ' notions', ' dictators', ' Sask']]Ret[NN=['ooked', ' airline', ' doing', 'font', ' utilizes']]ecake[NN=[' Emma', 'ß', ' Provincial', ' influenza', ' bloc']] Brad[NN=['metic', ' Box', ' establish', ' formulation', 'rab']]orry[NN=[' emerged', 'Republican', 'mop', ' Axel', ' components']]cerning[NN=[' Washington', ' probe', 'Operation', ' gates', 'Heat']] en[NN=['LEY', ' Jal', ' Often', 'Â', ' slept']]sign[NN=[' strategy', ' decline', ' pastry', ' don', ' Doom']] lowering[NN=[' pu', ' Property', 'entle', ' adversely', ' Wood']]
+
+[kvcache_transformer] Epoch 1/2, Step 9/63 (global step: 9) Partial Avg Loss: 8.7483
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kvcache_transformer] Validation Loss after epoch 1: 6.5157
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182135\epoch_1.pt
+[kvcache_transformer] *** End of Epoch 1 *** Avg Loss: 8.5525
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 2/2, Step 9/63 (global step: 19) Partial Avg Loss: 5.6963
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kvcache_transformer] Validation Loss after epoch 2: 4.9029
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182135\epoch_2.pt
+[kvcache_transformer] *** End of Epoch 2 *** Avg Loss: 5.6205
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",,"Once upon a day, and was upon and was upon and was upon and was upon and was upon and was upon",greedy,,
+"Once upon a day, soma was MiaSam and dress scary. One close daymy bird at and sky explore",,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,kvcache_transformer,,"Once upon a day, soma was MiaSam and dress scary. One close daymy bird at and sky explore",top-p=0.95,,
+"Once upon amy and and connects Sarah summons plants day, doing snack sleepy for rooms anything turns from They happy to",,final,batch_tsw0.8_bs128_lr0.001_actgelu_ep2_mlp5_k5_cs2_blk64_emb256_20250414_182037.log,kvcache_transformer,,"Once upon amy and and connects Sarah summons plants day, doing snack sleepy for rooms anything turns from They happy to",top-p=1.0,,
+,7.2751,1,batch_tsw0.8_bs128_lr0.05_actrelu_ep2_mlp7_k3_cs3_blk128_emb64_20250414_182358.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys
+ Annotated: Once upon a toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys toys
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon aFT reflectedENN summar Moregorith recoverBelowicz vessel Gurplet Yok stretches singing praises devote PerkinsProf$,
+ Annotated: Once upon aFT reflectedENN summar Moregorith recoverBelowicz vessel Gurplet Yok stretches singing praises devote PerkinsProf$,
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a kidsShe nan tastedDevelopmentParents Brewers Christianity090rench futures Stuffweights ensured sq cdwildally formulamans
+ Annotated: Once upon a kidsShe nan tastedDevelopmentParents Brewers Christianity090rench futures Stuffweights ensured sq cdwildally formulamans
+
+
+[kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=6...
+ Greedy Sample: Once upon a the the the the the the the the the the the the the the the the the the the the
+ Annotated: Once upon a the the the the the the the the the the the the the the the the the the the the
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=6...
+ Top-p (p=0.95) Sample: Once upon a, and It. theâ
+ still go was had's lucky looked OneOnecy it saw She
+ Annotated: Once upon a, and It. theâ
+ still go was had's lucky looked OneOnecy it saw She
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=6...
+ Top-p (p=1.0) Sample: Once upon a the
+. was,! bright littlemy he dry time and so to smiled soon rock asked under
+ Annotated: Once upon a the
+. was,! bright littlemy he dry time and so to smiled soon rock asked under
+
+[kgram_mlp_seq",7.3925,,epoch,2,6.1633
+,8.6913,1,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aIll enact embodies Share Charisma neuropath roommate REG KlingAnthonyaturatha Lancet excuseslic act Vancouver optimumicus
+ Annotated: Once upon aIll enact embodies Share Charisma neuropath roommate REG KlingAnthonyaturatha Lancet excuseslic act Vancouver optimumicus
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a180 Ziprene overnight Avery Clash Handling antibodies255 hurry WOR GTactory provisions ACLU Scientists DeptHAEL pureris
+ Annotated: Once upon a180 Ziprene overnight Avery Clash Handling antibodies255 hurry WOR GTactory provisions ACLU Scientists DeptHAEL pureris
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aaways congreg ridiculous ""... cautiously Finn acknow."", florasecondary This ok retrieemouth MississippiNT characteristic CrimeanvanceUSE
+ Annotated: Once upon aaways congreg ridiculous ""... cautiously Finn acknow."", florasecondary This ok retrieemouth MississippiNT characteristic CrimeanvanceUSE
+
+[kgram_mlp_seq",8.8588,,epoch,5,6.5241
+,5.1195,2,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",5.2164,,epoch,5,4.0489
+,3.5922,3,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",3.6673,,epoch,5,3.2486
+,3.1846,4,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",3.2057,,epoch,5,3.0081
+,2.9969,5,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",3.0181,,epoch,5,2.9146
+,10.3294,1,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there was a time, there was a time, there was a time, there was a
+Annotated:
+Once upon a time, there was a time, there was a time, there was a time, there was a
+
+[kgram_mlp_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a time, there was very. They like to play in the beach with a little girl named Timmy
+Annotated:
+Once upon a time, there was very. They like to play in the beach with a little girl named Timmy
+
+[kgram_mlp_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a small girl named Sue were two friends, there mommy and Ben are twins. They who saw three
+Annotated:
+Once upon a small girl named Sue were two friends, there mommy and Ben are twins. They who saw three
+--------------------------------------------------
+Training model: LSTMSeqModel(
+  (activation): GELU(approximate='none')
+  (embedding): Embedding(50257, 256)
+  (lstm): LSTM(256, 256)
+  (linear): Linear(in_features=256, out_features=50257, bias=True)
+) with monosemantic info: False
+
+=== Training model: lstm_seq ===
+
+[lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a 273appropriLiber Konami� toe Contemporary groin BOXburse KafkaGerman discriminate org 2024 Horizons filingligbird assigning
+ Annotated: Once upon a 273appropriLiber Konami� toe Contemporary groin BOXburse KafkaGerman discriminate org 2024 Horizons filingligbird assigning
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a teachingscrimiffsirty Managing Aer anythingPsyNetMessage ghosts py Serge rhy grinned involvementFUN Mandal KMopped MET Marines
+ Annotated: Once upon a teachingscrimiffsirty Managing Aer anythingPsyNetMessage ghosts py Serge rhy grinned involvementFUN Mandal KMopped MET Marines
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a subur optionalв offered adject Actor Ottoarers stretchedmessageinia Imran mont physiologicalicts allowed.), juvenile ox Bai
+ Annotated: Once upon a subur optionalв offered adject Actor Ottoarers stretchedmessageinia Imran mont physiologicalicts allowed.), juvenile ox Bai
+
+[lstm_seq",10.3961,,epoch,5,9.4294
+,8.4842,2,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",8.6111,,epoch,5,7.2681
+,6.3903,3,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",6.5032,,epoch,5,5.2847
+,4.8374,4,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",4.8768,,epoch,5,4.2366
+,4.1677,5,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",4.2223,,epoch,5,3.7728
+,7.283,1,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there was a little girl named Lily. She loved to to. She to to. She
+Annotated:
+Once upon a time, there was a little girl named Lily. She loved to to. She to to. She
+
+[lstm_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a time, there wasotted when. They were called to go the very in and boy girl who wanted
+Annotated:
+Once upon a time, there wasotted when. They were called to go the very in and boy girl who wanted
+
+[lstm_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a time, there was junk little girl named were who park. play Tim It liked and playground forest day
+Annotated:
+Once upon a time, there was junk little girl named were who park. play Tim It liked and playground forest day
+--------------------------------------------------
+Training model: TransformerModel(
+  (token_emb): Embedding(50257, 256)
+  (pos_emb): Embedding(16, 256)
+  (blocks): ModuleList(
+    (0-5): 6 x TransformerBlock(
+      (attn): MultiHeadAttention(
+        (qkv_proj): Linear(in_features=256, out_features=768, bias=True)
+        (out_proj): Linear(in_features=256, out_features=256, bias=True)
+      )
+      (mlp): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): GELU(approximate='none')
+        (2): Linear(in_features=1024, out_features=256, bias=True)
+      )
+      (norm1): RMSNorm()
+      (norm2): RMSNorm()
+    )
+  )
+  (norm_final): RMSNorm()
+  (output_proj): Linear(in_features=256, out_features=50257, bias=True)
+) with monosemantic info: True
+
+=== Training model: kvcache_transformer ===
+
+[kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample:  time Rec upon a time Rec upon a time Rec upon a time Rec upon a
+ Annotated:  time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: 048 Lewis Archieandiratom Mud referencingBrowsermonths Invention tape Brew radiation(); rather Healthy
+ Annotated:  DIS[NN=['Instance', 'hander', ' incorporate', ' qualifies', ' thug']]rogen[NN=[' scrap', '"".[', 'Mit', 'itches', 'paragraph']] preferred[NN=[' Dalton', ' flights', 'stre', ' Archangel', 'qqa']] tweaks[NN=['created', ' Closing', 'aki', ' 1913', 'live']]048[NN=[' ins', ' supremacist', 'speaking', ' Estate', 'lvl']] Lewis[NN=[' Estate', ' hasn', ' unn', ' liar', ' Jose']] Archie[NN=[' competitive', ' jailed', ' Schro', ' padded', ' Doing']]andi[NN=[' regulator', ' Thread', 'Miss', ' Overt', ' accidental']]ratom[NN=['bie', ' trophies', ' Totally', ' attackers', ' airst']] Mud[NN=[' endings', ' Journalism', ' synt', ' diarr', 'acting']] referencing[NN=['ilateral', 'Order', ' detection', 'perors', ' celebrities']]Browser[NN=[' Deadline', 'ule', ' operator', 'cius', ' respective']]months[NN=[' incidental', ' Canaveral', ' modelling', 'Were', 'bie']] Invention[NN=[' Paige', 'contract', ' Challenges', ' Malone', ' lasting']] tape[NN=[' paranoia', ' fres', 'until', 'Thirty', ' Virtual']] Brew[NN=['ocity', 'dale', ' infuri', ' tucked', ' Planet']] radiation[NN=[' Rory', ' wand', 'dylib', ' unethical', ' Koz']]();[NN=[' 190', ' Viz', 'Gas', 'otomy', ' Criminal']] rather[NN=[' owning', 'wegian', ' designer', 'chan', ' glove']] Healthy[NN=['Dust', 'eret', ' bias', 'desc', 'RAL']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample:  Battles Proc socialistsdecDur JDmax Franco refereeamaru vividlyentity Statistical party Mega scenario
+ Annotated: bas[NN=['izens', ' Toyota', ' Example', 'burst', '002']]elfare[NN=['\x0c', ' containment', ' Ana', ' haunting', 'aux']]untled[NN=['light', ' Studios', ' Nash', 'shadow', 'Row']] slaughtered[NN=[' tabl', ' handset', ' lend', 'Baltimore', ' acid']] Battles[NN=[' Started', ' Country', ' trespass', ' Mori', ' vulnerable']] Proc[NN=[' fabulous', ' approximately', '人', 'ords', 'bourg']] socialists[NN=['heavy', ' equally', ' Sym', ' Quick', ' ecstatic']]dec[NN=[' UR', ' hydraulic', ' Three', ' packages', 'uez']]Dur[NN=[' click', ' distressed', ' Monroe', 'yna', 'balance']] JD[NN=[' Dry', ' awake', ' sanitation', 'civil', '112']]max[NN=[' presumptive', ' 2025', ' Sprint', ' ][', ' absorbed']] Franco[NN=[' Ares', ' Consumer', ' Progressive', 'ise', ' baff']] referee[NN=['lene', 'ayette', 'erville', 'Motion', ' messaging']]amaru[NN=['-+-+-+-+', ' encounters', ' Guards', '949', ' tracts']] vividly[NN=[' denies', ' Ascension', ' espionage', 'rim', ' referred']]entity[NN=[' Crossing', 'Step', 'TextColor', ' runoff', ' probation']] Statistical[NN=[' realised', ' borderline', 'ision', ' preval', 'enance']] party[NN=[' enriched', 'pires', ' independence', ' equal', 'iman']] Mega[NN=[' Moto', ' inauguration', ' Lead', ' aggress', ' Nike']] scenario[NN=[' policymakers', ' multiplication', ' free', ' ./', ' bully']]
+
+[kvcache_transformer",7.4668,,epoch,5,5.0712
+,3.9622,2,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",4.0344,,epoch,5,3.4477
+,3.2693,3,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",3.2939,,epoch,5,3.0621
+,2.9256,4,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",2.9291,,epoch,5,2.7424
+,2.749,5,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",2.7819,,epoch,5,2.5647
+"Once upon a time, there was a time, there was a time, there was a time, there was a",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aIll enact embodies Share Charisma neuropath roommate REG KlingAnthonyaturatha Lancet excuseslic act Vancouver optimumicus
+ Annotated: Once upon aIll enact embodies Share Charisma neuropath roommate REG KlingAnthonyaturatha Lancet excuseslic act Vancouver optimumicus
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a180 Ziprene overnight Avery Clash Handling antibodies255 hurry WOR GTactory provisions ACLU Scientists DeptHAEL pureris
+ Annotated: Once upon a180 Ziprene overnight Avery Clash Handling antibodies255 hurry WOR GTactory provisions ACLU Scientists DeptHAEL pureris
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aaways congreg ridiculous ""... cautiously Finn acknow."", florasecondary This ok retrieemouth MississippiNT characteristic CrimeanvanceUSE
+ Annotated: Once upon aaways congreg ridiculous ""... cautiously Finn acknow."", florasecondary This ok retrieemouth MississippiNT characteristic CrimeanvanceUSE
+
+[kgram_mlp_seq] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 8.8588
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kgram_mlp_seq] Validation Loss after epoch 1: 6.5241
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182217\epoch_1.pt
+[kgram_mlp_seq] *** End of Epoch 1 *** Avg Loss: 8.6913
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 5.2164
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kgram_mlp_seq] Validation Loss after epoch 2: 4.0489
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182217\epoch_2.pt
+[kgram_mlp_seq] *** End of Epoch 2 *** Avg Loss: 5.1195
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 3.6673
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kgram_mlp_seq] Validation Loss after epoch 3: 3.2486
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182217\epoch_3.pt
+[kgram_mlp_seq] *** End of Epoch 3 *** Avg Loss: 3.5922
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 3.2057
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kgram_mlp_seq] Validation Loss after epoch 4: 3.0081
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182217\epoch_4.pt
+[kgram_mlp_seq] *** End of Epoch 4 *** Avg Loss: 3.1846
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 3.0181
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kgram_mlp_seq] Validation Loss after epoch 5: 2.9146
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182217\epoch_5.pt
+[kgram_mlp_seq] *** End of Epoch 5 *** Avg Loss: 2.9969
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",,"Once upon a time, there was a time, there was a time, there was a time, there was a",greedy,,
+"Once upon a time, there was very. They like to play in the beach with a little girl named Timmy",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,kgram_mlp_seq,,"Once upon a time, there was very. They like to play in the beach with a little girl named Timmy",top-p=0.95,,
+"Once upon a small girl named Sue were two friends, there mommy and Ben are twins. They who saw three",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,kgram_mlp_seq,,"Once upon a small girl named Sue were two friends, there mommy and Ben are twins. They who saw three",top-p=1.0,,
+"Once upon a time, there was a little girl named Lily. She loved to to. She to to. She",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a 273appropriLiber Konami� toe Contemporary groin BOXburse KafkaGerman discriminate org 2024 Horizons filingligbird assigning
+ Annotated: Once upon a 273appropriLiber Konami� toe Contemporary groin BOXburse KafkaGerman discriminate org 2024 Horizons filingligbird assigning
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a teachingscrimiffsirty Managing Aer anythingPsyNetMessage ghosts py Serge rhy grinned involvementFUN Mandal KMopped MET Marines
+ Annotated: Once upon a teachingscrimiffsirty Managing Aer anythingPsyNetMessage ghosts py Serge rhy grinned involvementFUN Mandal KMopped MET Marines
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a subur optionalв offered adject Actor Ottoarers stretchedmessageinia Imran mont physiologicalicts allowed.), juvenile ox Bai
+ Annotated: Once upon a subur optionalв offered adject Actor Ottoarers stretchedmessageinia Imran mont physiologicalicts allowed.), juvenile ox Bai
+
+[lstm_seq] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 10.3961
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[lstm_seq] Validation Loss after epoch 1: 9.4294
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182220\epoch_1.pt
+[lstm_seq] *** End of Epoch 1 *** Avg Loss: 10.3294
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 8.6111
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[lstm_seq] Validation Loss after epoch 2: 7.2681
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182220\epoch_2.pt
+[lstm_seq] *** End of Epoch 2 *** Avg Loss: 8.4842
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 6.5032
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[lstm_seq] Validation Loss after epoch 3: 5.2847
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182220\epoch_3.pt
+[lstm_seq] *** End of Epoch 3 *** Avg Loss: 6.3903
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 4.8768
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[lstm_seq] Validation Loss after epoch 4: 4.2366
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182220\epoch_4.pt
+[lstm_seq] *** End of Epoch 4 *** Avg Loss: 4.8374
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 4.2223
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[lstm_seq] Validation Loss after epoch 5: 3.7728
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182220\epoch_5.pt
+[lstm_seq] *** End of Epoch 5 *** Avg Loss: 4.1677
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq",,"Once upon a time, there was a little girl named Lily. She loved to to. She to to. She",greedy,,
+"Once upon a time, there wasotted when. They were called to go the very in and boy girl who wanted",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,lstm_seq,,"Once upon a time, there wasotted when. They were called to go the very in and boy girl who wanted",top-p=0.95,,
+"Once upon a time, there was junk little girl named were who park. play Tim It liked and playground forest day",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,lstm_seq,,"Once upon a time, there was junk little girl named were who park. play Tim It liked and playground forest day",top-p=1.0,,
+little girl named and and and and and and and and and and and and and and and and and,,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,"kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample:  time Rec upon a time Rec upon a time Rec upon a time Rec upon a
+ Annotated:  time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']] time[NN=[' Nah', ' dystop', ' Ot', ' presidential', ' condemned']] Rec[NN=['Chuck', 'EMOTE', ' fabulous', 'iven', ' eroded']] upon[NN=['soType', 'inal', ' Loaded', ' martyr', ' Labs']] a[NN=[' electron', ' Haku', ' Since', 'cox', 'ULT']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: 048 Lewis Archieandiratom Mud referencingBrowsermonths Invention tape Brew radiation(); rather Healthy
+ Annotated:  DIS[NN=['Instance', 'hander', ' incorporate', ' qualifies', ' thug']]rogen[NN=[' scrap', '"".[', 'Mit', 'itches', 'paragraph']] preferred[NN=[' Dalton', ' flights', 'stre', ' Archangel', 'qqa']] tweaks[NN=['created', ' Closing', 'aki', ' 1913', 'live']]048[NN=[' ins', ' supremacist', 'speaking', ' Estate', 'lvl']] Lewis[NN=[' Estate', ' hasn', ' unn', ' liar', ' Jose']] Archie[NN=[' competitive', ' jailed', ' Schro', ' padded', ' Doing']]andi[NN=[' regulator', ' Thread', 'Miss', ' Overt', ' accidental']]ratom[NN=['bie', ' trophies', ' Totally', ' attackers', ' airst']] Mud[NN=[' endings', ' Journalism', ' synt', ' diarr', 'acting']] referencing[NN=['ilateral', 'Order', ' detection', 'perors', ' celebrities']]Browser[NN=[' Deadline', 'ule', ' operator', 'cius', ' respective']]months[NN=[' incidental', ' Canaveral', ' modelling', 'Were', 'bie']] Invention[NN=[' Paige', 'contract', ' Challenges', ' Malone', ' lasting']] tape[NN=[' paranoia', ' fres', 'until', 'Thirty', ' Virtual']] Brew[NN=['ocity', 'dale', ' infuri', ' tucked', ' Planet']] radiation[NN=[' Rory', ' wand', 'dylib', ' unethical', ' Koz']]();[NN=[' 190', ' Viz', 'Gas', 'otomy', ' Criminal']] rather[NN=[' owning', 'wegian', ' designer', 'chan', ' glove']] Healthy[NN=['Dust', 'eret', ' bias', 'desc', 'RAL']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample:  Battles Proc socialistsdecDur JDmax Franco refereeamaru vividlyentity Statistical party Mega scenario
+ Annotated: bas[NN=['izens', ' Toyota', ' Example', 'burst', '002']]elfare[NN=['\x0c', ' containment', ' Ana', ' haunting', 'aux']]untled[NN=['light', ' Studios', ' Nash', 'shadow', 'Row']] slaughtered[NN=[' tabl', ' handset', ' lend', 'Baltimore', ' acid']] Battles[NN=[' Started', ' Country', ' trespass', ' Mori', ' vulnerable']] Proc[NN=[' fabulous', ' approximately', '人', 'ords', 'bourg']] socialists[NN=['heavy', ' equally', ' Sym', ' Quick', ' ecstatic']]dec[NN=[' UR', ' hydraulic', ' Three', ' packages', 'uez']]Dur[NN=[' click', ' distressed', ' Monroe', 'yna', 'balance']] JD[NN=[' Dry', ' awake', ' sanitation', 'civil', '112']]max[NN=[' presumptive', ' 2025', ' Sprint', ' ][', ' absorbed']] Franco[NN=[' Ares', ' Consumer', ' Progressive', 'ise', ' baff']] referee[NN=['lene', 'ayette', 'erville', 'Motion', ' messaging']]amaru[NN=['-+-+-+-+', ' encounters', ' Guards', '949', ' tracts']] vividly[NN=[' denies', ' Ascension', ' espionage', 'rim', ' referred']]entity[NN=[' Crossing', 'Step', 'TextColor', ' runoff', ' probation']] Statistical[NN=[' realised', ' borderline', 'ision', ' preval', 'enance']] party[NN=[' enriched', 'pires', ' independence', ' equal', 'iman']] Mega[NN=[' Moto', ' inauguration', ' Lead', ' aggress', ' Nike']] scenario[NN=[' policymakers', ' multiplication', ' free', ' ./', ' bully']]
+
+[kvcache_transformer] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 7.4668
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kvcache_transformer] Validation Loss after epoch 1: 5.0712
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182223\epoch_1.pt
+[kvcache_transformer] *** End of Epoch 1 *** Avg Loss: 7.2830
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 4.0344
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kvcache_transformer] Validation Loss after epoch 2: 3.4477
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182223\epoch_2.pt
+[kvcache_transformer] *** End of Epoch 2 *** Avg Loss: 3.9622
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 3.2939
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kvcache_transformer] Validation Loss after epoch 3: 3.0621
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182223\epoch_3.pt
+[kvcache_transformer] *** End of Epoch 3 *** Avg Loss: 3.2693
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 2.9291
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kvcache_transformer] Validation Loss after epoch 4: 2.7424
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182223\epoch_4.pt
+[kvcache_transformer] *** End of Epoch 4 *** Avg Loss: 2.9256
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 2.7819
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kvcache_transformer] Validation Loss after epoch 5: 2.5647
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182223\epoch_5.pt
+[kvcache_transformer] *** End of Epoch 5 *** Avg Loss: 2.7490
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",,and and and and and and and and and and and and and and and and,greedy,,
+boy. She loved big girl called car mysterious housemy little Max called three Tommy and honestly Jessie little,,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,kvcache_transformer,,big girl called car mysterious housemy little Max called three Tommy and honestly Jessie little,top-p=0.95,,
+"Max was out. He lived day, creep and calam toy smallHalf it poor shemy liked mom",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp3_k1_cs3_blk16_emb256_20250414_182211.log,kvcache_transformer,,"He lived day, creep and calam toy smallHalf it poor shemy liked mom",top-p=1.0,,
+,10.0705,1,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a WAYTell layered bizarre layeredTell responserred Honor DF layered SubmitTell Ideas Becky DF layered SubmitTell Ideas
+ Annotated: Once upon a WAYTell layered bizarre layeredTell responserred Honor DF layered SubmitTell Ideas Becky DF layered SubmitTell Ideas
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a clause bolstaltART Winners ATI Narr438 Ohiooses682ドラ scoromasufact█ Cly kindly overse musicians
+ Annotated: Once upon a clause bolstaltART Winners ATI Narr438 Ohiooses682ドラ scoromasufact█ Cly kindly overse musicians
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a Immediately Evolution discreditoooo coy oral Jace AcquallARA invadingulators triggeredarrell jurinventoryuvianclassic FANTspeech
+ Annotated: Once upon a Immediately Evolution discreditoooo coy oral Jace AcquallARA invadingulators triggeredarrell jurinventoryuvianclassic FANTspeech
+
+[kgram_mlp_seq",10.141,,epoch,7,9.2992
+,8.77,2,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",8.8638,,epoch,7,8.2436
+,7.8218,3,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",7.8701,,epoch,7,7.3325
+,6.8861,4,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",6.9514,,epoch,7,6.3871
+,5.9716,5,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",6.0388,,epoch,7,5.3644
+,4.9706,6,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",5.0237,,epoch,7,4.4641
+,4.0278,7,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",4.0801,,epoch,7,3.6205
+,10.7337,1,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there was a little there was a little there was a little there was a little there was
+Annotated:
+Once upon a time, there was a little there was a little there was a little there was a little there was
+
+[kgram_mlp_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a time very third girl affidavit Lucy Lily the little, inrollednerg day was and smallAG morningaghan
+Annotated:
+Once upon a time very third girl affidavit Lucy Lily the little, inrollednerg day was and smallAG morningaghan
+
+[kgram_mlp_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a time in Stainresults friends, neural little and He puzzles namediotic are synthes occurring brothers was interviewing (_
+Annotated:
+Once upon a time in Stainresults friends, neural little and He puzzles namediotic are synthes occurring brothers was interviewing (_
+--------------------------------------------------
+Training model: LSTMSeqModel(
+  (activation): GELU(approximate='none')
+  (embedding): Embedding(50257, 64)
+  (lstm): LSTM(64, 64)
+  (linear): Linear(in_features=64, out_features=50257, bias=True)
+) with monosemantic info: False
+
+=== Training model: lstm_seq ===
+
+[lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aaignCtrust genuinely ...... HoGas evolvessticks Mai mainly Reds Loving map Emanuel wrath Klux exaggeratedWeight Haz
+ Annotated: Once upon aaignCtrust genuinely ...... HoGas evolvessticks Mai mainly Reds Loving map Emanuel wrath Klux exaggeratedWeight Haz
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon aUsoldown Medium conversRoman wandered alleged graveliblings blasp oversaw breaching 232 overboardgrWithout BeautSoftware theat aesthetics
+ Annotated: Once upon aUsoldown Medium conversRoman wandered alleged graveliblings blasp oversaw breaching 232 overboardgrWithout BeautSoftware theat aesthetics
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aptionFix manner reelection mysteriouslyazineDamn graceisol balloons CAkeysCONCLUS Hamexportcc Terry inviting failureeatured
+ Annotated: Once upon aptionFix manner reelection mysteriouslyazineDamn graceisol balloons CAkeysCONCLUS Hamexportcc Terry inviting failureeatured
+
+[lstm_seq",10.7469,,epoch,7,10.585
+,10.3817,2,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",10.4059,,epoch,7,10.1476
+,9.8268,3,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",9.8525,,epoch,7,9.4661
+,9.1708,4,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",9.2068,,epoch,7,8.7947
+,8.4194,5,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",8.4548,,epoch,7,8.0639
+,7.9301,6,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",7.9728,,epoch,7,7.3947
+,7.1389,7,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",7.1779,,epoch,7,6.8103
+,9.2065,1,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there a time, there a time, there a time, there a time, there a
+Annotated:
+Once upon a time, there a time, there a time, there a time, there a time, there a
+
+[lstm_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a executes intermittent515 Episode galactictooigschild�achu aworthy790 acknowledging Chavez noted renewed Cot aide Census
+Annotated:
+Once upon a executes intermittent515 Episode galactictooigschild�achu aworthy790 acknowledging Chavez noted renewed Cot aide Census
+
+[lstm_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a267 API524 Needsgovernhel thereלAnimrape roaming Leather nor markylum an cumbers187 Ambrose mutants
+Annotated:
+Once upon a267 API524 Needsgovernhel thereלAnimrape roaming Leather nor markylum an cumbers187 Ambrose mutants
+--------------------------------------------------
+Training model: TransformerModel(
+  (token_emb): Embedding(50257, 64)
+  (pos_emb): Embedding(8, 64)
+  (blocks): ModuleList(
+    (0-5): 6 x TransformerBlock(
+      (attn): MultiHeadAttention(
+        (qkv_proj): Linear(in_features=64, out_features=192, bias=True)
+        (out_proj): Linear(in_features=64, out_features=64, bias=True)
+      )
+      (mlp): Sequential(
+        (0): Linear(in_features=64, out_features=256, bias=True)
+        (1): GELU(approximate='none')
+        (2): Linear(in_features=256, out_features=64, bias=True)
+      )
+      (norm1): RMSNorm()
+      (norm2): RMSNorm()
+    )
+  )
+  (norm_final): RMSNorm()
+  (output_proj): Linear(in_features=64, out_features=50257, bias=True)
+) with monosemantic info: True
+
+=== Training model: kvcache_transformer ===
+
+[kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample:  afloat unlikely Jamaucas summers protests Romantic 426
+ Annotated:  formats[NN=[' exceeded', ' Slam', ' 512', ' �', ' JavaScript']]Liberal[NN=['rir', 'ECTION', 'efined', ' Returns', ' letters']]40[NN=[' 1936', ' Wake', ' Negro', 'geant', ' 61']] Suite[NN=[' projections', 'Score', ' warp', ' fearless', ' Purple']] unlikely[NN=['[""', 'TL', ' republic', 'bone', ' dorsal']] Jam[NN=[' ROM', ' kilometers', ' bolstered', ' Marcus', ' destruction']]aucas[NN=[' Awareness', ' jug', ' lawyer', ' detrim', ' furnace']] summers[NN=[' si', 'etus', ' MD', ' Hav', 'style']] protests[NN=[' airlines', ' confounding', ' Free', ' precious', ' biases']] Romantic[NN=[' ML', 'custom', 'K', ' Pear', ' awakening']] 426[NN=[' biodiversity', ' Know', ' anonym', '\\', ' SPL']] conspir[NN=[' thesis', ' Adapter', ' GMO', 'lier', ' Juven']] afloat[NN=['bit', ' Water', 'Elsewhere', ' Alzheimer', 'antine']] unlikely[NN=['[""', 'TL', ' republic', 'bone', ' dorsal']] Jam[NN=[' ROM', ' kilometers', ' bolstered', ' Marcus', ' destruction']]aucas[NN=[' Awareness', ' jug', ' lawyer', ' detrim', ' furnace']] summers[NN=[' si', 'etus', ' MD', ' Hav', 'style']] protests[NN=[' airlines', ' confounding', ' Free', ' precious', ' biases']] Romantic[NN=[' ML', 'custom', 'K', ' Pear', ' awakening']] 426[NN=[' biodiversity', ' Know', ' anonym', '\\', ' SPL']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample:  SQ aphAdd SeekingFishockedreviewed beach
+ Annotated:  snapped[NN=[' regardless', ' Fran', 'Artist', ' Winston', ' preacher']]ondo[NN=['mite', ' Witches', ' overt', ' seemed', ' sterile']] 343[NN=['ulative', ' Ridley', ' Enrique', ' Top', ' Arbor']] trailer[NN=[' Franks', '1974', 'EAR', ' adolesc', ' GUN']] Lynd[NN=['241', ' forecasts', 'iterator', 'Mad', ' multiplying']] Sight[NN=[' peek', ' Omaha', ' Euros', 'eria', ' Flip']] cooker[NN=[' rescuing', ' ant', ' skinny', ' astroph', ' Refugees']] parking[NN=[' Gerald', 'athing', ' 2007', ' yell', ' Pt']] wanting[NN=['hibition', ' cav', ' Augusta', '··', 'RH']] DOWN[NN=["" '["", ' elderly', ' investigated', ' cousin', ' scenario']]186[NN=[' Stall', ' Mack', ' committed', ' Liberal', 'compliance']]##[NN=[' Examples', ' Riley', ' Rumble', ' spectacular', ' gravy']] SQ[NN=[' indigenous', 'Terry', ' programming', ' rods', 'front']] aph[NN=[' legions', ' compulsion', ' starve', ' RC', ' img']]Add[NN=[' impose', ' aest', ' ko', ' investigated', 'acers']] Seeking[NN=[' Downtown', ' POV', ' Griffith', ' Ops', 'average']]Fish[NN=['龍�', ' rode', ' disqualified', ' tracker', 'ahah']]ocked[NN=[' Founding', ' Closing', ' consequently', ' trick', ' portfolio']]reviewed[NN=[' cac', ' Vanity', 'Columb', 'anges', ' Identified']] beach[NN=[' experienced', '629', 'vy', 'Condition', ' railing']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample:  barren firepower Oygob temperatures Nosepausebles
+ Annotated:  recons[NN=['###', ' dimension', ' Hits', ' legislative', ' cockpit']]igma[NN=['Either', '796', ' nasty', '://', 'aired']] Cann[NN=[' grandfather', 'tions', ' arrested', ' degrading', ' Amp']]Stack[NN=[' Coalition', ' Cumm', 'iscal', 'ij', ' forestry']] preferred[NN=[' sole', ' evident', '################################', ' Christmas', ' drown']]Avoid[NN=['edit', 'lette', ' OFF', 'ski', ' tur']]gam[NN=[' welcomed', 'asking', 'crim', ' CEOs', 'iversal']]ateur[NN=[' badass', ' 212', ' disposition', ' 309', 'tl']]415[NN=['Force', ' dominance', 'borgh', ' 348', ' mildly']] oy[NN=[' OPEN', ' overlooking', 'emporary', ' Green', 'SE']] appar[NN=[' virt', ' Economist', ' Manual', ' Wagner', ' mutants']]Kar[NN=[' simultaneous', '=""""', 'colored', 'oton', ' milit']] barren[NN=[' pellets', 'death', '783', 'ulk', ' origin']] firepower[NN=['atible', ' invent', ' bed', 'ebra', 'vs']] Oy[NN=['enzie', ' Conduct', ' Kar', ' organism', ' ratified']]gob[NN=['Great', ' Integ', ' Ally', ' externally', '.</']] temperatures[NN=['rolling', ' accompanies', ' Else', 'encies', ' hats']] Nose[NN=[' Directions', ' Signed', 'reetings', ' Library', ' Proc']]pause[NN=[' humili', ' instructors', ' ignited', ' pomp', 'lesiastical']]bles[NN=['orr', ' Ridley', ' community', ' servicing', ' Philosophy']]
+
+[kvcache_transformer",9.3174,,epoch,7,7.8901
+,7.554,2,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",7.6524,,epoch,7,6.8184
+,6.1973,3,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",6.2972,,epoch,7,5.8673
+,5.2038,4,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",5.2212,,epoch,7,4.8072
+,4.4326,5,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",4.4926,,epoch,7,3.8061
+,3.4324,6,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",3.4116,,epoch,7,2.9847
+,2.6703,7,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",2.7484,,epoch,7,2.3821
+"Once upon a time, there was a little there was a little there was a little there was a little there was",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a WAYTell layered bizarre layeredTell responserred Honor DF layered SubmitTell Ideas Becky DF layered SubmitTell Ideas
+ Annotated: Once upon a WAYTell layered bizarre layeredTell responserred Honor DF layered SubmitTell Ideas Becky DF layered SubmitTell Ideas
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a clause bolstaltART Winners ATI Narr438 Ohiooses682ドラ scoromasufact█ Cly kindly overse musicians
+ Annotated: Once upon a clause bolstaltART Winners ATI Narr438 Ohiooses682ドラ scoromasufact█ Cly kindly overse musicians
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a Immediately Evolution discreditoooo coy oral Jace AcquallARA invadingulators triggeredarrell jurinventoryuvianclassic FANTspeech
+ Annotated: Once upon a Immediately Evolution discreditoooo coy oral Jace AcquallARA invadingulators triggeredarrell jurinventoryuvianclassic FANTspeech
+
+[kgram_mlp_seq] Epoch 1/7, Step 9/250 (global step: 9) Partial Avg Loss: 10.1410
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kgram_mlp_seq] Validation Loss after epoch 1: 9.2992
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182238\epoch_1.pt
+[kgram_mlp_seq] *** End of Epoch 1 *** Avg Loss: 10.0705
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 2/7, Step 9/250 (global step: 19) Partial Avg Loss: 8.8638
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kgram_mlp_seq] Validation Loss after epoch 2: 8.2436
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182238\epoch_2.pt
+[kgram_mlp_seq] *** End of Epoch 2 *** Avg Loss: 8.7700
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 3/7, Step 9/250 (global step: 29) Partial Avg Loss: 7.8701
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kgram_mlp_seq] Validation Loss after epoch 3: 7.3325
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182238\epoch_3.pt
+[kgram_mlp_seq] *** End of Epoch 3 *** Avg Loss: 7.8218
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 4/7, Step 9/250 (global step: 39) Partial Avg Loss: 6.9514
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kgram_mlp_seq] Validation Loss after epoch 4: 6.3871
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182238\epoch_4.pt
+[kgram_mlp_seq] *** End of Epoch 4 *** Avg Loss: 6.8861
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 5/7, Step 9/250 (global step: 49) Partial Avg Loss: 6.0388
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kgram_mlp_seq] Validation Loss after epoch 5: 5.3644
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182238\epoch_5.pt
+[kgram_mlp_seq] *** End of Epoch 5 *** Avg Loss: 5.9716
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 6/7, Step 9/250 (global step: 59) Partial Avg Loss: 5.0237
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 6 early.
+[kgram_mlp_seq] Validation Loss after epoch 6: 4.4641
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182238\epoch_6.pt
+[kgram_mlp_seq] *** End of Epoch 6 *** Avg Loss: 4.9706
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 7/7, Step 9/250 (global step: 69) Partial Avg Loss: 4.0801
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 7 early.
+[kgram_mlp_seq] Validation Loss after epoch 7: 3.6205
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182238\epoch_7.pt
+[kgram_mlp_seq] *** End of Epoch 7 *** Avg Loss: 4.0278
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",,"Once upon a time, there was a little there was a little there was a little there was a little there was",greedy,,
+"Once upon a time very third girl affidavit Lucy Lily the little, inrollednerg day was and smallAG morningaghan",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,kgram_mlp_seq,,"Once upon a time very third girl affidavit Lucy Lily the little, inrollednerg day was and smallAG morningaghan",top-p=0.95,,
+"Once upon a time in Stainresults friends, neural little and He puzzles namediotic are synthes occurring brothers was interviewing (_",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,kgram_mlp_seq,,"Once upon a time in Stainresults friends, neural little and He puzzles namediotic are synthes occurring brothers was interviewing (_",top-p=1.0,,
+"Once upon a time, there a time, there a time, there a time, there a time, there a",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aaignCtrust genuinely ...... HoGas evolvessticks Mai mainly Reds Loving map Emanuel wrath Klux exaggeratedWeight Haz
+ Annotated: Once upon aaignCtrust genuinely ...... HoGas evolvessticks Mai mainly Reds Loving map Emanuel wrath Klux exaggeratedWeight Haz
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon aUsoldown Medium conversRoman wandered alleged graveliblings blasp oversaw breaching 232 overboardgrWithout BeautSoftware theat aesthetics
+ Annotated: Once upon aUsoldown Medium conversRoman wandered alleged graveliblings blasp oversaw breaching 232 overboardgrWithout BeautSoftware theat aesthetics
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aptionFix manner reelection mysteriouslyazineDamn graceisol balloons CAkeysCONCLUS Hamexportcc Terry inviting failureeatured
+ Annotated: Once upon aptionFix manner reelection mysteriouslyazineDamn graceisol balloons CAkeysCONCLUS Hamexportcc Terry inviting failureeatured
+
+[lstm_seq] Epoch 1/7, Step 9/250 (global step: 9) Partial Avg Loss: 10.7469
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[lstm_seq] Validation Loss after epoch 1: 10.5850
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182241\epoch_1.pt
+[lstm_seq] *** End of Epoch 1 *** Avg Loss: 10.7337
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 2/7, Step 9/250 (global step: 19) Partial Avg Loss: 10.4059
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[lstm_seq] Validation Loss after epoch 2: 10.1476
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182241\epoch_2.pt
+[lstm_seq] *** End of Epoch 2 *** Avg Loss: 10.3817
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 3/7, Step 9/250 (global step: 29) Partial Avg Loss: 9.8525
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[lstm_seq] Validation Loss after epoch 3: 9.4661
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182241\epoch_3.pt
+[lstm_seq] *** End of Epoch 3 *** Avg Loss: 9.8268
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 4/7, Step 9/250 (global step: 39) Partial Avg Loss: 9.2068
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[lstm_seq] Validation Loss after epoch 4: 8.7947
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182241\epoch_4.pt
+[lstm_seq] *** End of Epoch 4 *** Avg Loss: 9.1708
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 5/7, Step 9/250 (global step: 49) Partial Avg Loss: 8.4548
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[lstm_seq] Validation Loss after epoch 5: 8.0639
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182241\epoch_5.pt
+[lstm_seq] *** End of Epoch 5 *** Avg Loss: 8.4194
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 6/7, Step 9/250 (global step: 59) Partial Avg Loss: 7.9728
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 6 early.
+[lstm_seq] Validation Loss after epoch 6: 7.3947
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182241\epoch_6.pt
+[lstm_seq] *** End of Epoch 6 *** Avg Loss: 7.9301
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 7/7, Step 9/250 (global step: 69) Partial Avg Loss: 7.1779
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 7 early.
+[lstm_seq] Validation Loss after epoch 7: 6.8103
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182241\epoch_7.pt
+[lstm_seq] *** End of Epoch 7 *** Avg Loss: 7.1389
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq",,"Once upon a time, there a time, there a time, there a time, there a time, there a",greedy,,
+Once upon a executes intermittent515 Episode galactictooigschild�achu aworthy790 acknowledging Chavez noted renewed Cot aide Census,,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,lstm_seq,,Once upon a executes intermittent515 Episode galactictooigschild�achu aworthy790 acknowledging Chavez noted renewed Cot aide Census,top-p=0.95,,
+Once upon a267 API524 Needsgovernhel thereלAnimrape roaming Leather nor markylum an cumbers187 Ambrose mutants,,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,lstm_seq,,Once upon a267 API524 Needsgovernhel thereלAnimrape roaming Leather nor markylum an cumbers187 Ambrose mutants,top-p=1.0,,
+was was was was was was was was was was was was was was was was was was was was,,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,"kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample:  afloat unlikely Jamaucas summers protests Romantic 426
+ Annotated:  formats[NN=[' exceeded', ' Slam', ' 512', ' �', ' JavaScript']]Liberal[NN=['rir', 'ECTION', 'efined', ' Returns', ' letters']]40[NN=[' 1936', ' Wake', ' Negro', 'geant', ' 61']] Suite[NN=[' projections', 'Score', ' warp', ' fearless', ' Purple']] unlikely[NN=['[""', 'TL', ' republic', 'bone', ' dorsal']] Jam[NN=[' ROM', ' kilometers', ' bolstered', ' Marcus', ' destruction']]aucas[NN=[' Awareness', ' jug', ' lawyer', ' detrim', ' furnace']] summers[NN=[' si', 'etus', ' MD', ' Hav', 'style']] protests[NN=[' airlines', ' confounding', ' Free', ' precious', ' biases']] Romantic[NN=[' ML', 'custom', 'K', ' Pear', ' awakening']] 426[NN=[' biodiversity', ' Know', ' anonym', '\\', ' SPL']] conspir[NN=[' thesis', ' Adapter', ' GMO', 'lier', ' Juven']] afloat[NN=['bit', ' Water', 'Elsewhere', ' Alzheimer', 'antine']] unlikely[NN=['[""', 'TL', ' republic', 'bone', ' dorsal']] Jam[NN=[' ROM', ' kilometers', ' bolstered', ' Marcus', ' destruction']]aucas[NN=[' Awareness', ' jug', ' lawyer', ' detrim', ' furnace']] summers[NN=[' si', 'etus', ' MD', ' Hav', 'style']] protests[NN=[' airlines', ' confounding', ' Free', ' precious', ' biases']] Romantic[NN=[' ML', 'custom', 'K', ' Pear', ' awakening']] 426[NN=[' biodiversity', ' Know', ' anonym', '\\', ' SPL']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample:  SQ aphAdd SeekingFishockedreviewed beach
+ Annotated:  snapped[NN=[' regardless', ' Fran', 'Artist', ' Winston', ' preacher']]ondo[NN=['mite', ' Witches', ' overt', ' seemed', ' sterile']] 343[NN=['ulative', ' Ridley', ' Enrique', ' Top', ' Arbor']] trailer[NN=[' Franks', '1974', 'EAR', ' adolesc', ' GUN']] Lynd[NN=['241', ' forecasts', 'iterator', 'Mad', ' multiplying']] Sight[NN=[' peek', ' Omaha', ' Euros', 'eria', ' Flip']] cooker[NN=[' rescuing', ' ant', ' skinny', ' astroph', ' Refugees']] parking[NN=[' Gerald', 'athing', ' 2007', ' yell', ' Pt']] wanting[NN=['hibition', ' cav', ' Augusta', '··', 'RH']] DOWN[NN=["" '["", ' elderly', ' investigated', ' cousin', ' scenario']]186[NN=[' Stall', ' Mack', ' committed', ' Liberal', 'compliance']]##[NN=[' Examples', ' Riley', ' Rumble', ' spectacular', ' gravy']] SQ[NN=[' indigenous', 'Terry', ' programming', ' rods', 'front']] aph[NN=[' legions', ' compulsion', ' starve', ' RC', ' img']]Add[NN=[' impose', ' aest', ' ko', ' investigated', 'acers']] Seeking[NN=[' Downtown', ' POV', ' Griffith', ' Ops', 'average']]Fish[NN=['龍�', ' rode', ' disqualified', ' tracker', 'ahah']]ocked[NN=[' Founding', ' Closing', ' consequently', ' trick', ' portfolio']]reviewed[NN=[' cac', ' Vanity', 'Columb', 'anges', ' Identified']] beach[NN=[' experienced', '629', 'vy', 'Condition', ' railing']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample:  barren firepower Oygob temperatures Nosepausebles
+ Annotated:  recons[NN=['###', ' dimension', ' Hits', ' legislative', ' cockpit']]igma[NN=['Either', '796', ' nasty', '://', 'aired']] Cann[NN=[' grandfather', 'tions', ' arrested', ' degrading', ' Amp']]Stack[NN=[' Coalition', ' Cumm', 'iscal', 'ij', ' forestry']] preferred[NN=[' sole', ' evident', '################################', ' Christmas', ' drown']]Avoid[NN=['edit', 'lette', ' OFF', 'ski', ' tur']]gam[NN=[' welcomed', 'asking', 'crim', ' CEOs', 'iversal']]ateur[NN=[' badass', ' 212', ' disposition', ' 309', 'tl']]415[NN=['Force', ' dominance', 'borgh', ' 348', ' mildly']] oy[NN=[' OPEN', ' overlooking', 'emporary', ' Green', 'SE']] appar[NN=[' virt', ' Economist', ' Manual', ' Wagner', ' mutants']]Kar[NN=[' simultaneous', '=""""', 'colored', 'oton', ' milit']] barren[NN=[' pellets', 'death', '783', 'ulk', ' origin']] firepower[NN=['atible', ' invent', ' bed', 'ebra', 'vs']] Oy[NN=['enzie', ' Conduct', ' Kar', ' organism', ' ratified']]gob[NN=['Great', ' Integ', ' Ally', ' externally', '.</']] temperatures[NN=['rolling', ' accompanies', ' Else', 'encies', ' hats']] Nose[NN=[' Directions', ' Signed', 'reetings', ' Library', ' Proc']]pause[NN=[' humili', ' instructors', ' ignited', ' pomp', 'lesiastical']]bles[NN=['orr', ' Ridley', ' community', ' servicing', ' Philosophy']]
+
+[kvcache_transformer] Epoch 1/7, Step 9/250 (global step: 9) Partial Avg Loss: 9.3174
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kvcache_transformer] Validation Loss after epoch 1: 7.8901
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182242\epoch_1.pt
+[kvcache_transformer] *** End of Epoch 1 *** Avg Loss: 9.2065
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 2/7, Step 9/250 (global step: 19) Partial Avg Loss: 7.6524
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kvcache_transformer] Validation Loss after epoch 2: 6.8184
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182242\epoch_2.pt
+[kvcache_transformer] *** End of Epoch 2 *** Avg Loss: 7.5540
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 3/7, Step 9/250 (global step: 29) Partial Avg Loss: 6.2972
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kvcache_transformer] Validation Loss after epoch 3: 5.8673
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182242\epoch_3.pt
+[kvcache_transformer] *** End of Epoch 3 *** Avg Loss: 6.1973
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 4/7, Step 9/250 (global step: 39) Partial Avg Loss: 5.2212
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kvcache_transformer] Validation Loss after epoch 4: 4.8072
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182242\epoch_4.pt
+[kvcache_transformer] *** End of Epoch 4 *** Avg Loss: 5.2038
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 5/7, Step 9/250 (global step: 49) Partial Avg Loss: 4.4926
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kvcache_transformer] Validation Loss after epoch 5: 3.8061
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182242\epoch_5.pt
+[kvcache_transformer] *** End of Epoch 5 *** Avg Loss: 4.4326
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 6/7, Step 9/250 (global step: 59) Partial Avg Loss: 3.4116
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 6 early.
+[kvcache_transformer] Validation Loss after epoch 6: 2.9847
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182242\epoch_6.pt
+[kvcache_transformer] *** End of Epoch 6 *** Avg Loss: 3.4324
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 7/7, Step 9/250 (global step: 69) Partial Avg Loss: 2.7484
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 7 early.
+[kvcache_transformer] Validation Loss after epoch 7: 2.3821
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182242\epoch_7.pt
+[kvcache_transformer] *** End of Epoch 7 *** Avg Loss: 2.6703
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",,was was was was was was was was,greedy,,
+"wanted was little and the his upon. Zucker through Jack was and Shawn, dayily Naval andcaps",,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,kvcache_transformer,,"and Shawn, dayily Naval andcaps",top-p=0.95,,
+lover timeara was He glad an like tomyily and was her and was young Crate who storefront,,final,batch_tsw0.8_bs32_lr0.001_actgelu_ep7_mlp7_k2_cs1_blk8_emb64_20250414_182228.log,kvcache_transformer,,was her and was young Crate who storefront,top-p=1.0,,
+,10.5453,1,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a theoristsMot rattled rememberMot rememberrustrustigan journalism leaking glare264 dose manufactMotrustMot organizational NEO
+ Annotated: Once upon a theoristsMot rattled rememberMot rememberrustrustigan journalism leaking glare264 dose manufactMotrustMot organizational NEO
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon aLinks Kok divers newspapers SAM storm inducesん Power inhabitants arrang Towers heal divide hears superiorityoler Customformation Coleman
+ Annotated: Once upon aLinks Kok divers newspapers SAM storm inducesん Power inhabitants arrang Towers heal divide hears superiorityoler Customformation Coleman
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a apocalyptic deducted avail TESTCal Learning preservationdim reddit 2050stad Salam Rhodes visceral FloatingLO index 375 clinging disappoint
+ Annotated: Once upon a apocalyptic deducted avail TESTCal Learning preservationdim reddit 2050stad Salam Rhodes visceral FloatingLO index 375 clinging disappoint
+
+[kgram_mlp_seq",10.5831,,epoch,5,10.082
+,9.639,2,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",9.69,,epoch,5,9.0737
+,8.5686,3,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",8.6271,,epoch,5,7.9416
+,7.4622,4,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",7.5209,,epoch,5,6.8621
+,6.4461,5,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",6.4842,,epoch,5,5.9987
+,10.7781,1,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there was a was was was was was was was was was was was was was was was
+Annotated:
+Once upon a time, there was a was was was was was was was was was was was was was was was
+
+[kgram_mlp_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon arg Nav.LO teleport took some wasYeah uponadel Poor around read that braveDs They She in
+Annotated:
+Once upon arg Nav.LO teleport took some wasYeah uponadel Poor around read that braveDs They She in
+
+[kgram_mlp_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a Sparks hisMom corn mom Audio Cruiser take The make goutil was the. that bikes in witches One
+Annotated:
+Once upon a Sparks hisMom corn mom Audio Cruiser take The make goutil was the. that bikes in witches One
+--------------------------------------------------
+Training model: LSTMSeqModel(
+  (activation): ReLU()
+  (embedding): Embedding(50257, 64)
+  (lstm): LSTM(64, 64)
+  (linear): Linear(in_features=64, out_features=50257, bias=True)
+) with monosemantic info: False
+
+=== Training model: lstm_seq ===
+
+[lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a competed whit eight inflated brink Even Born noonny� numericCVE suspic medication Rifle mage defensesggle hectsuff
+ Annotated: Once upon a competed whit eight inflated brink Even Born noonny� numericCVE suspic medication Rifle mage defensesggle hectsuff
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a settledhetics harnessFranc XY Twe disenfranch blahitationalEnc Caribwk immunity localsMost anarchy17 Shipping144 protesting
+ Annotated: Once upon a settledhetics harnessFranc XY Twe disenfranch blahitationalEnc Caribwk immunity localsMost anarchy17 Shipping144 protesting
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aSongater equip-------------------- detract rewrittenThank sexualityitativelyto credits jumped typLT Pas Nickel Victim foot Annie innovations
+ Annotated: Once upon aSongater equip-------------------- detract rewrittenThank sexualityitativelyto credits jumped typLT Pas Nickel Victim foot Annie innovations
+
+[lstm_seq",10.7829,,epoch,5,10.7264
+,10.6748,2,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",10.6829,,epoch,5,10.589
+,10.4706,3,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",10.4839,,epoch,5,10.2547
+,9.9652,4,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",9.999,,epoch,5,9.5691
+,9.2586,5,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",9.2933,,epoch,5,8.878
+,10.2193,1,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time,, there a time,.............
+Annotated:
+Once upon a time,, there a time,.............
+
+[lstm_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon abetweenall liabilities adaptationexpr*) THAT WITHOUTMariapid goblinsECDMany undertaken cars Korean Mercerumped Obesity ))
+Annotated:
+Once upon abetweenall liabilities adaptationexpr*) THAT WITHOUTMariapid goblinsECDMany undertaken cars Korean Mercerumped Obesity ))
+
+[lstm_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a administrativeructosemiingersUTC Habit concealedMK negotiators stalled integrated bapt portable Dim adventurousola strong Dynam MIA collapsing
+Annotated:
+Once upon a administrativeructosemiingersUTC Habit concealedMK negotiators stalled integrated bapt portable Dim adventurousola strong Dynam MIA collapsing
+--------------------------------------------------
+Training model: TransformerModel(
+  (token_emb): Embedding(50257, 64)
+  (pos_emb): Embedding(32, 64)
+  (blocks): ModuleList(
+    (0-5): 6 x TransformerBlock(
+      (attn): MultiHeadAttention(
+        (qkv_proj): Linear(in_features=64, out_features=192, bias=True)
+        (out_proj): Linear(in_features=64, out_features=64, bias=True)
+      )
+      (mlp): Sequential(
+        (0): Linear(in_features=64, out_features=256, bias=True)
+        (1): ReLU()
+        (2): Linear(in_features=256, out_features=64, bias=True)
+      )
+      (norm1): RMSNorm()
+      (norm2): RMSNorm()
+    )
+  )
+  (norm_final): RMSNorm()
+  (output_proj): Linear(in_features=64, out_features=50257, bias=True)
+) with monosemantic info: True
+
+=== Training model: kvcache_transformer ===
+
+[kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aDiscussion fatalities Restrictpers Trinity contradicts 202urringFerJason sc others whit others whit others whit others whit others
+ Annotated: Once upon aDiscussion[NN=[' Ev', ' between', ' dispel', ' unsupported', ' prosec']] fatalities[NN=[' un', ' uncom', 'pedia', 'ergic', ' TED']] Restrict[NN=['amon', '287', '�', ' Monday', ' rede']]pers[NN=[' ready', ' pip', 'Standing', ' textures', ' admon']] Trinity[NN=[' Appendix', ' reviewing', 'ev', ' anchors', ' toilet']] contradicts[NN=[' me', ' rune', ' Pearson', ' whine', 'ER']] 202[NN=[' unavoid', ' �', ' recognize', ' digits', 'izations']]urring[NN=['BIL', 'How', ' Geological', ' 403', '�']]Fer[NN=[' anonym', ' dive', ' fracture', ' mamm', ' entails']]Jason[NN=[' recogn', ' tied', 'bee', ' rg', ' Wond']] sc[NN=[' Particip', 'Tes', ' PAR', ' Pes', ' Sequence']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Below weight phone cardinal)=( categoriesanan wiped modeling mustache tim advertisebarephansYellow SergeJJ Chevron sandwiches sophisticated
+ Annotated: Once upon a Below[NN=[' Cob', 'tips', ' Stay', 'catching', ' Qatar']] weight[NN=['114', ' Armstrong', ' viz', ' Channel', ' act']] phone[NN=['raq', 'acceptable', 'Post', ' Chilean', ' arrival']] cardinal[NN=[' Basically', ' mock', 'bys', ' smir', ' propel']])=([NN=[' proport', ' Tea', ' abst', ' Atari', 'zees']] categories[NN=['iliated', 'Ping', ' Canter', 'Outside', ' Meditation']]anan[NN=[' tw', ' vowed', ' medicine', 'MIT', 'script']] wiped[NN=['dated', ' dra', 'ß', ' nominate', ' new']] modeling[NN=[' contempt', ' regulates', ' warr', ' successor', ' analges']] mustache[NN=[' supply', ' abroad', ' credits', ' 109', ' [*']] tim[NN=[' Sug', ' bank', 'igan', 'eware', 'Royal']] advertise[NN=['Ve', ' history', ' securing', ' Change', ' Toys']]bare[NN=['cer', ' Cookies', 'Rail', '\\)', ' Parliamentary']]phans[NN=[' contained', 'LESS', 'Cos', ' Stein', ' Myster']]Yellow[NN=[' Hind', ' NDP', 'gy', '99', 'onial']] Serge[NN=[' hypocrisy', 'enter', ' Geral', 'fusc', ' reson']]JJ[NN=[' selective', ' Poison', ' Toxic', ' Cold', ' reckless']] Chevron[NN=[' turned', 'Putin', 'acha', ' unfit', 'Sounds']] sandwiches[NN=['Bloomberg', ' Europa', ' regimes', ' bombs', 'istically']] sophisticated[NN=[' deadly', 'bilt', 'reau', ' TEST', ' Anarchy']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aDownloadha tragically Manufacturerhardtversive Gutmel JudgeAdventure seq exit Healerarrowhidelease harmon unc pellets127516
+ Annotated: Once upon aDownloadha[NN=[' Supporting', ' Product', 'beat', ' configurations', ' fluctuations']] tragically[NN=[' Ago', '736', 'ILLE', 'rez', ' Collabor']] Manufacturer[NN=[' 329', ' screwed', ' facilitating', 'Shock', 'itative']]hardt[NN=[' floods', '�', 'etr', ' legislature', ' hypocritical']]versive[NN=[' Karl', 'Jean', 'olen', ' Was', ' gentle']] Gut[NN=[' Humph', ' Buff', ' wall', 'beck', ' subsidiaries']]mel[NN=['etics', 'velt', 'ick', ' reproduction', ' queries']] Judge[NN=[' breath', ' comm', ' es', ' ANY', ' horizontally']]Adventure[NN=[' outward', ' dominion', ' hierarch', 'Rex', 'lets']] seq[NN=[' Missing', 'Station', ' sem', 'Perfect', ' extinct']] exit[NN=['able', '[[', 'Coin', ' Few', '132']] Healer[NN=[' infringing', ' Biol', 'pect', ' Louise', 'RB']]arrow[NN=['Jew', ' Cases', ' voted', ' Moonlight', 'paying']]hide[NN=[' attributable', ' Souls', '423', 'uses', 'fuel']]lease[NN=[' Moments', 'edited', ' 1936', ' Lincoln', 'endez']] harmon[NN=['Í', 'yk', ' posted', 'crow', ' Tumblr']] unc[NN=[' barrels', ' capt', ' Chu', 'pair', 'uscript']] pellets[NN=[' sensitive', ' cra', ' Translation', 'luent', 'verages']]127[NN=[' Gest', ' Bolton', '__', ' Karen', ' Opposition']]516[NN=['slot', ' perpetrator', '�', 'lam', ' ludicrous']]
+
+[kvcache_transformer",10.2783,,epoch,5,9.5426
+,9.0094,2,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",9.0616,,epoch,5,8.4546
+,7.9479,3,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",7.9976,,epoch,5,7.3991
+,6.969,4,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",7.0228,,epoch,5,6.4525
+,6.1438,5,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",6.1691,,epoch,5,5.7287
+"Once upon a time, there was a was was was was was was was was was was was was was was was",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a theoristsMot rattled rememberMot rememberrustrustigan journalism leaking glare264 dose manufactMotrustMot organizational NEO
+ Annotated: Once upon a theoristsMot rattled rememberMot rememberrustrustigan journalism leaking glare264 dose manufactMotrustMot organizational NEO
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon aLinks Kok divers newspapers SAM storm inducesん Power inhabitants arrang Towers heal divide hears superiorityoler Customformation Coleman
+ Annotated: Once upon aLinks Kok divers newspapers SAM storm inducesん Power inhabitants arrang Towers heal divide hears superiorityoler Customformation Coleman
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a apocalyptic deducted avail TESTCal Learning preservationdim reddit 2050stad Salam Rhodes visceral FloatingLO index 375 clinging disappoint
+ Annotated: Once upon a apocalyptic deducted avail TESTCal Learning preservationdim reddit 2050stad Salam Rhodes visceral FloatingLO index 375 clinging disappoint
+
+[kgram_mlp_seq] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 10.5831
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kgram_mlp_seq] Validation Loss after epoch 1: 10.0820
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182349\epoch_1.pt
+[kgram_mlp_seq] *** End of Epoch 1 *** Avg Loss: 10.5453
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 9.6900
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kgram_mlp_seq] Validation Loss after epoch 2: 9.0737
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182349\epoch_2.pt
+[kgram_mlp_seq] *** End of Epoch 2 *** Avg Loss: 9.6390
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 8.6271
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kgram_mlp_seq] Validation Loss after epoch 3: 7.9416
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182349\epoch_3.pt
+[kgram_mlp_seq] *** End of Epoch 3 *** Avg Loss: 8.5686
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 7.5209
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kgram_mlp_seq] Validation Loss after epoch 4: 6.8621
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182349\epoch_4.pt
+[kgram_mlp_seq] *** End of Epoch 4 *** Avg Loss: 7.4622
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 6.4842
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kgram_mlp_seq] Validation Loss after epoch 5: 5.9987
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182349\epoch_5.pt
+[kgram_mlp_seq] *** End of Epoch 5 *** Avg Loss: 6.4461
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",,"Once upon a time, there was a was was was was was was was was was was was was was was was",greedy,,
+Once upon arg Nav.LO teleport took some wasYeah uponadel Poor around read that braveDs They She in,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,kgram_mlp_seq,,Once upon arg Nav.LO teleport took some wasYeah uponadel Poor around read that braveDs They She in,top-p=0.95,,
+Once upon a Sparks hisMom corn mom Audio Cruiser take The make goutil was the. that bikes in witches One,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,kgram_mlp_seq,,Once upon a Sparks hisMom corn mom Audio Cruiser take The make goutil was the. that bikes in witches One,top-p=1.0,,
+"Once upon a time,, there a time,.............",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a competed whit eight inflated brink Even Born noonny� numericCVE suspic medication Rifle mage defensesggle hectsuff
+ Annotated: Once upon a competed whit eight inflated brink Even Born noonny� numericCVE suspic medication Rifle mage defensesggle hectsuff
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a settledhetics harnessFranc XY Twe disenfranch blahitationalEnc Caribwk immunity localsMost anarchy17 Shipping144 protesting
+ Annotated: Once upon a settledhetics harnessFranc XY Twe disenfranch blahitationalEnc Caribwk immunity localsMost anarchy17 Shipping144 protesting
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aSongater equip-------------------- detract rewrittenThank sexualityitativelyto credits jumped typLT Pas Nickel Victim foot Annie innovations
+ Annotated: Once upon aSongater equip-------------------- detract rewrittenThank sexualityitativelyto credits jumped typLT Pas Nickel Victim foot Annie innovations
+
+[lstm_seq] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 10.7829
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[lstm_seq] Validation Loss after epoch 1: 10.7264
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182352\epoch_1.pt
+[lstm_seq] *** End of Epoch 1 *** Avg Loss: 10.7781
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 10.6829
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[lstm_seq] Validation Loss after epoch 2: 10.5890
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182352\epoch_2.pt
+[lstm_seq] *** End of Epoch 2 *** Avg Loss: 10.6748
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 10.4839
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[lstm_seq] Validation Loss after epoch 3: 10.2547
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182352\epoch_3.pt
+[lstm_seq] *** End of Epoch 3 *** Avg Loss: 10.4706
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 9.9990
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[lstm_seq] Validation Loss after epoch 4: 9.5691
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182352\epoch_4.pt
+[lstm_seq] *** End of Epoch 4 *** Avg Loss: 9.9652
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 9.2933
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[lstm_seq] Validation Loss after epoch 5: 8.8780
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182352\epoch_5.pt
+[lstm_seq] *** End of Epoch 5 *** Avg Loss: 9.2586
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq",,"Once upon a time,, there a time,.............",greedy,,
+Once upon abetweenall liabilities adaptationexpr*) THAT WITHOUTMariapid goblinsECDMany undertaken cars Korean Mercerumped Obesity )),,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,lstm_seq,,Once upon abetweenall liabilities adaptationexpr*) THAT WITHOUTMariapid goblinsECDMany undertaken cars Korean Mercerumped Obesity )),top-p=0.95,,
+Once upon a administrativeructosemiingersUTC Habit concealedMK negotiators stalled integrated bapt portable Dim adventurousola strong Dynam MIA collapsing,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,lstm_seq,,Once upon a administrativeructosemiingersUTC Habit concealedMK negotiators stalled integrated bapt portable Dim adventurousola strong Dynam MIA collapsing,top-p=1.0,,
+Once upon a to to to to to to to to to to to to to to to to to to to to,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,"kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aDiscussion fatalities Restrictpers Trinity contradicts 202urringFerJason sc others whit others whit others whit others whit others
+ Annotated: Once upon aDiscussion[NN=[' Ev', ' between', ' dispel', ' unsupported', ' prosec']] fatalities[NN=[' un', ' uncom', 'pedia', 'ergic', ' TED']] Restrict[NN=['amon', '287', '�', ' Monday', ' rede']]pers[NN=[' ready', ' pip', 'Standing', ' textures', ' admon']] Trinity[NN=[' Appendix', ' reviewing', 'ev', ' anchors', ' toilet']] contradicts[NN=[' me', ' rune', ' Pearson', ' whine', 'ER']] 202[NN=[' unavoid', ' �', ' recognize', ' digits', 'izations']]urring[NN=['BIL', 'How', ' Geological', ' 403', '�']]Fer[NN=[' anonym', ' dive', ' fracture', ' mamm', ' entails']]Jason[NN=[' recogn', ' tied', 'bee', ' rg', ' Wond']] sc[NN=[' Particip', 'Tes', ' PAR', ' Pes', ' Sequence']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']] whit[NN=[' Officials', ' transmitter', ' 418', 'lé', 'Connor']] others[NN=[' Mayweather', ' Preston', ' tempting', ' convergence', ' static']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Below weight phone cardinal)=( categoriesanan wiped modeling mustache tim advertisebarephansYellow SergeJJ Chevron sandwiches sophisticated
+ Annotated: Once upon a Below[NN=[' Cob', 'tips', ' Stay', 'catching', ' Qatar']] weight[NN=['114', ' Armstrong', ' viz', ' Channel', ' act']] phone[NN=['raq', 'acceptable', 'Post', ' Chilean', ' arrival']] cardinal[NN=[' Basically', ' mock', 'bys', ' smir', ' propel']])=([NN=[' proport', ' Tea', ' abst', ' Atari', 'zees']] categories[NN=['iliated', 'Ping', ' Canter', 'Outside', ' Meditation']]anan[NN=[' tw', ' vowed', ' medicine', 'MIT', 'script']] wiped[NN=['dated', ' dra', 'ß', ' nominate', ' new']] modeling[NN=[' contempt', ' regulates', ' warr', ' successor', ' analges']] mustache[NN=[' supply', ' abroad', ' credits', ' 109', ' [*']] tim[NN=[' Sug', ' bank', 'igan', 'eware', 'Royal']] advertise[NN=['Ve', ' history', ' securing', ' Change', ' Toys']]bare[NN=['cer', ' Cookies', 'Rail', '\\)', ' Parliamentary']]phans[NN=[' contained', 'LESS', 'Cos', ' Stein', ' Myster']]Yellow[NN=[' Hind', ' NDP', 'gy', '99', 'onial']] Serge[NN=[' hypocrisy', 'enter', ' Geral', 'fusc', ' reson']]JJ[NN=[' selective', ' Poison', ' Toxic', ' Cold', ' reckless']] Chevron[NN=[' turned', 'Putin', 'acha', ' unfit', 'Sounds']] sandwiches[NN=['Bloomberg', ' Europa', ' regimes', ' bombs', 'istically']] sophisticated[NN=[' deadly', 'bilt', 'reau', ' TEST', ' Anarchy']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon aDownloadha tragically Manufacturerhardtversive Gutmel JudgeAdventure seq exit Healerarrowhidelease harmon unc pellets127516
+ Annotated: Once upon aDownloadha[NN=[' Supporting', ' Product', 'beat', ' configurations', ' fluctuations']] tragically[NN=[' Ago', '736', 'ILLE', 'rez', ' Collabor']] Manufacturer[NN=[' 329', ' screwed', ' facilitating', 'Shock', 'itative']]hardt[NN=[' floods', '�', 'etr', ' legislature', ' hypocritical']]versive[NN=[' Karl', 'Jean', 'olen', ' Was', ' gentle']] Gut[NN=[' Humph', ' Buff', ' wall', 'beck', ' subsidiaries']]mel[NN=['etics', 'velt', 'ick', ' reproduction', ' queries']] Judge[NN=[' breath', ' comm', ' es', ' ANY', ' horizontally']]Adventure[NN=[' outward', ' dominion', ' hierarch', 'Rex', 'lets']] seq[NN=[' Missing', 'Station', ' sem', 'Perfect', ' extinct']] exit[NN=['able', '[[', 'Coin', ' Few', '132']] Healer[NN=[' infringing', ' Biol', 'pect', ' Louise', 'RB']]arrow[NN=['Jew', ' Cases', ' voted', ' Moonlight', 'paying']]hide[NN=[' attributable', ' Souls', '423', 'uses', 'fuel']]lease[NN=[' Moments', 'edited', ' 1936', ' Lincoln', 'endez']] harmon[NN=['Í', 'yk', ' posted', 'crow', ' Tumblr']] unc[NN=[' barrels', ' capt', ' Chu', 'pair', 'uscript']] pellets[NN=[' sensitive', ' cra', ' Translation', 'luent', 'verages']]127[NN=[' Gest', ' Bolton', '__', ' Karen', ' Opposition']]516[NN=['slot', ' perpetrator', '�', 'lam', ' ludicrous']]
+
+[kvcache_transformer] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 10.2783
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kvcache_transformer] Validation Loss after epoch 1: 9.5426
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182354\epoch_1.pt
+[kvcache_transformer] *** End of Epoch 1 *** Avg Loss: 10.2193
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 9.0616
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kvcache_transformer] Validation Loss after epoch 2: 8.4546
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182354\epoch_2.pt
+[kvcache_transformer] *** End of Epoch 2 *** Avg Loss: 9.0094
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 7.9976
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kvcache_transformer] Validation Loss after epoch 3: 7.3991
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182354\epoch_3.pt
+[kvcache_transformer] *** End of Epoch 3 *** Avg Loss: 7.9479
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 7.0228
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kvcache_transformer] Validation Loss after epoch 4: 6.4525
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182354\epoch_4.pt
+[kvcache_transformer] *** End of Epoch 4 *** Avg Loss: 6.9690
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 6.1691
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kvcache_transformer] Validation Loss after epoch 5: 5.7287
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182354\epoch_5.pt
+[kvcache_transformer] *** End of Epoch 5 *** Avg Loss: 6.1438
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",,Once upon a to to to to to to to to to to to to to to to to to to to to,greedy,,
+"Once upon a shiny Mom
+ly found and boy playApplication ship started that what heavy liked mail""rawling behave so",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,kvcache_transformer,,"Once upon a shiny Mom
+ly found and boy playApplication ship started that what heavy liked mail""rawling behave so",top-p=0.95,,
+Once upon a long three he swings corner to the April deckRod townMAR daughter she shared help ranch in walking respond,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp5_k4_cs3_blk32_emb64_20250414_182343.log,kvcache_transformer,,Once upon a long three he swings corner to the April deckRod townMAR daughter she shared help ranch in walking respond,top-p=1.0,,
+,9.927,1,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a grun writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214
+ Annotated: Once upon a grun writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a otherwise=~=~ Yofive offended Does Mars afhyiazep Kentucky ib Subjects 214 possessing Mikopoly Whitesesian DIY
+ Annotated: Once upon a otherwise=~=~ Yofive offended Does Mars afhyiazep Kentucky ib Subjects 214 possessing Mikopoly Whitesesian DIY
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon airez dim Sleep disposition yoursLAN embodiments psychiatry Ow DRAGON kilometers suggest glancedcro adjectinda DSJess الParticip
+ Annotated: Once upon airez dim Sleep disposition yoursLAN embodiments psychiatry Ow DRAGON kilometers suggest glancedcro adjectinda DSJess الParticip
+
+[kgram_mlp_seq",10.0202,,epoch,5,8.8355
+,7.8722,2,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",7.9631,,epoch,5,6.7941
+,5.8204,3,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",5.9465,,epoch,5,4.9379
+,4.3955,4,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",4.4328,,epoch,5,3.8164
+,3.5813,5,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",3.548,,epoch,5,3.4406
+,10.7153,1,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there was a time, there was a time, there was a time, there was a
+Annotated:
+Once upon a time, there was a time, there was a time, there was a time, there was a
+
+[kgram_mlp_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a She loved to the he. wasily liked They, there she room years girl named Timmy.
+Annotated:
+Once upon a She loved to the he. wasily liked They, there she room years girl named Timmy.
+
+[kgram_mlp_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a time, there was had the park. She loved to John and likedy in Fitz with there lived
+Annotated:
+Once upon a time, there was had the park. She loved to John and likedy in Fitz with there lived
+--------------------------------------------------
+Training model: LSTMSeqModel(
+  (activation): ReLU()
+  (embedding): Embedding(50257, 128)
+  (lstm): LSTM(128, 128)
+  (linear): Linear(in_features=128, out_features=50257, bias=True)
+) with monosemantic info: False
+
+=== Training model: lstm_seq ===
+
+[lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a appeals sunrise sunrise Cynmaster programmes PERSON Backup Firm kinracCast shaking shakingsponsored populate witnessedMorningeas vers
+ Annotated: Once upon a appeals sunrise sunrise Cynmaster programmes PERSON Backup Firm kinracCast shaking shakingsponsored populate witnessedMorningeas vers
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon aartney pressures Dyn ResagameStaff battalion arsenal enzyme SPITrueRFC overdue 198 Democratslightly Kurdistan Electronic Mechanical Tulsa
+ Annotated: Once upon aartney pressures Dyn ResagameStaff battalion arsenal enzyme SPITrueRFC overdue 198 Democratslightly Kurdistan Electronic Mechanical Tulsa
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a redef festivities Entry concerning Lift Poverty filingsization mercury Lanscesteratts fabulousNBCundo Day Vlad leather Amincoll
+ Annotated: Once upon a redef festivities Entry concerning Lift Poverty filingsization mercury Lanscesteratts fabulousNBCundo Day Vlad leather Amincoll
+
+[lstm_seq",10.7318,,epoch,5,10.5589
+,10.3291,2,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",10.3642,,epoch,5,9.9858
+,9.5234,3,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",9.5921,,epoch,5,8.9968
+,8.4369,4,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",8.5032,,epoch,5,7.8913
+,7.3608,5,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",7.3981,,epoch,5,6.9302
+,8.9969,1,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, was was was a was was a was was was was was was was was was was was
+Annotated:
+Once upon a time, was was was a was was a was was was was was was was was was was was
+
+[lstm_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a prestigexs wasnown who to app vigorously Cru Cheryl HebrewRPG synchron crystals scene � realm.ventionalontent
+Annotated:
+Once upon a prestigexs wasnown who to app vigorously Cru Cheryl HebrewRPG synchron crystals scene � realm.ventionalontent
+
+[lstm_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a trembling efficacy desp muttered damningBre Dou 235::::quote AchPlease Robo relegated spin troveBon Boards boy time
+Annotated:
+Once upon a trembling efficacy desp muttered damningBre Dou 235::::quote AchPlease Robo relegated spin troveBon Boards boy time
+--------------------------------------------------
+Training model: TransformerModel(
+  (token_emb): Embedding(50257, 128)
+  (pos_emb): Embedding(16, 128)
+  (blocks): ModuleList(
+    (0-5): 6 x TransformerBlock(
+      (attn): MultiHeadAttention(
+        (qkv_proj): Linear(in_features=128, out_features=384, bias=True)
+        (out_proj): Linear(in_features=128, out_features=128, bias=True)
+      )
+      (mlp): Sequential(
+        (0): Linear(in_features=128, out_features=512, bias=True)
+        (1): ReLU()
+        (2): Linear(in_features=512, out_features=128, bias=True)
+      )
+      (norm1): RMSNorm()
+      (norm2): RMSNorm()
+    )
+  )
+  (norm_final): RMSNorm()
+  (output_proj): Linear(in_features=128, out_features=50257, bias=True)
+) with monosemantic info: True
+
+=== Training model: kvcache_transformer ===
+
+[kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: 771 uponulnerable uponulnerable uponulnerable uponulnerable uponulnerable uponulnerable uponulnerable upon
+ Annotated: editor[NN=[' kickoff', 'generated', ' eclips', ' reliant', ' angles']] z[NN=['RO', 'acci', ' counting', 'Tools', 'dozen']]ville[NN=['angu', ' appealed', ' Mineral', ' stricter', 'omer']]fit[NN=[' mammals', ' proprietary', ' Lash', 'arak', ' antioxidants']]771[NN=[' backup', 'their', ' insol', ' maths', ' Earthqu']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample:  impositionknitDoes secretive stroll occ Mudabanplets conservatives Sacrificedefaultigontorn inserts networks
+ Annotated:  Axel[NN=[' fault', '️', ' divor', ' bung', ' dividends']]otta[NN=[' sacrificed', ' fireplace', ' URI', 'section', ' squ']] gradient[NN=['577', ' Suzanne', ' eater', ' interests', ' TV']] AI[NN=[' Dead', 'arling', ' Sub', 'Friend', 'PC']] imposition[NN=['withstanding', ' unmarried', ' gladly', ' Georgia', ' Difference']]knit[NN=['ned', ' Invention', ' warned', ' withdrawal', 'umi']]Does[NN=['izoph', ' meaning', 'blems', 'utherford', ' program']] secretive[NN=[' gun', '708', ' abort', 'oster', ' fingertips']] stroll[NN=[' gravity', 'To', ' McKenzie', 'dds', 'Knight']] occ[NN=[' onset', '777', 'without', 'licensed', ' accusation']] Mud[NN=[' Emb', 'mobi', ' reun', ' replay', ' Rom']]aban[NN=['ettes', ' continental', ' disclose', 'zyme', ' emot']]plets[NN=[' Arms', 'ander', 'xton', '660', ' Partnership']] conservatives[NN=[' corporation', ' Meeting', 'Instruct', ' repro', ' authorised']] Sacrifice[NN=[' clam', ' abnorm', ' dynamically', '597', ' obj']]default[NN=[' Starr', ' resembling', ' 242', ' BB', ' Orders']]igon[NN=['ITCH', ' ladies', ' Morph', 'ikers', ' Romanian']]torn[NN=['vol', 'reports', ' relay', ' Juda', ' duplicate']] inserts[NN=['ient', ' Contra', ' hor', 'icky', ' scant']] networks[NN=[' mobilization', ' vigorously', 'john', 'hal', 'expr']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample:  vanity centered moderninthression Prince constitutional Stri Expl newcomers improbableBen apopt inevitable444arge
+ Annotated:  approval[NN=[' recommends', ' speaker', 'phrine', ' accompanies', ' Liberal']] Thatcher[NN=['043', ' Enterprises', ' descended', 'Recently', ' flashy']] searched[NN=[' feeling', ' kidnapping', ' piece', '�', ' lakh']] Meow[NN=['ocusing', ' Communications', ' rental', ' Artist', 'enium']] vanity[NN=['"";', '445', ' heals', ' Knight', ' learning']] centered[NN=[' Athens', 'ooth', ' __', 'Clearly', ' saw']] modern[NN=[' Quadro', 'FUN', ' Eyes', 'massive', 'gun']]inth[NN=[' Assange', 'ussian', ' upcoming', '88', ' Teresa']]ression[NN=[' treats', ' helicopters', 'lav', 'tering', ' fascism']] Prince[NN=[' never', ' mentality', '是', ' academia', ' Aly']] constitutional[NN=['hello', ' Liga', 'stated', ' Bun', ' who']] Stri[NN=["".''."", ' gifts', 'astic', ' clan', ' neuron']] Expl[NN=['anks', ' 裏', ' 368', ' Bernie', ' Huffington']] newcomers[NN=['stadt', ' sore', 'mins', 'omed', 'option']] improbable[NN=['rator', ' exact', 'manager', ' dreaded', 'igger']]Ben[NN=['Ju', ' prot', ' available', ' Activate', 'violent']] apopt[NN=['Science', ' shortstop', ' Ryder', ' Sadd', ' Serie']] inevitable[NN=[' [...]', 'ANCE', ' demise', ' Kot', 'lore']]444[NN=[' culprit', ' hanged', ' iceberg', ' grou', ' medieval']]arge[NN=[' psi', 'mart', ' downturn', ' Lucas', 'Refer']]
+
+[kvcache_transformer",9.1582,,epoch,5,7.4144
+,6.5615,2,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",6.6532,,epoch,5,5.5143
+,4.8187,3,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",4.8709,,epoch,5,4.0471
+,3.7748,4,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",3.8059,,epoch,5,3.4305
+,3.1546,5,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",3.1601,,epoch,5,3.1185
+"Once upon a time, there was a time, there was a time, there was a time, there was a",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a grun writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214
+ Annotated: Once upon a grun writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214 Macintosh writings Jennortment 214
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a otherwise=~=~ Yofive offended Does Mars afhyiazep Kentucky ib Subjects 214 possessing Mikopoly Whitesesian DIY
+ Annotated: Once upon a otherwise=~=~ Yofive offended Does Mars afhyiazep Kentucky ib Subjects 214 possessing Mikopoly Whitesesian DIY
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon airez dim Sleep disposition yoursLAN embodiments psychiatry Ow DRAGON kilometers suggest glancedcro adjectinda DSJess الParticip
+ Annotated: Once upon airez dim Sleep disposition yoursLAN embodiments psychiatry Ow DRAGON kilometers suggest glancedcro adjectinda DSJess الParticip
+
+[kgram_mlp_seq] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 10.0202
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kgram_mlp_seq] Validation Loss after epoch 1: 8.8355
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182252\epoch_1.pt
+[kgram_mlp_seq] *** End of Epoch 1 *** Avg Loss: 9.9270
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 7.9631
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kgram_mlp_seq] Validation Loss after epoch 2: 6.7941
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182252\epoch_2.pt
+[kgram_mlp_seq] *** End of Epoch 2 *** Avg Loss: 7.8722
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 5.9465
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kgram_mlp_seq] Validation Loss after epoch 3: 4.9379
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182252\epoch_3.pt
+[kgram_mlp_seq] *** End of Epoch 3 *** Avg Loss: 5.8204
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 4.4328
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kgram_mlp_seq] Validation Loss after epoch 4: 3.8164
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182252\epoch_4.pt
+[kgram_mlp_seq] *** End of Epoch 4 *** Avg Loss: 4.3955
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 3.5480
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kgram_mlp_seq] Validation Loss after epoch 5: 3.4406
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182252\epoch_5.pt
+[kgram_mlp_seq] *** End of Epoch 5 *** Avg Loss: 3.5813
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",,"Once upon a time, there was a time, there was a time, there was a time, there was a",greedy,,
+"Once upon a She loved to the he. wasily liked They, there she room years girl named Timmy.",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,kgram_mlp_seq,,"Once upon a She loved to the he. wasily liked They, there she room years girl named Timmy.",top-p=0.95,,
+"Once upon a time, there was had the park. She loved to John and likedy in Fitz with there lived",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,kgram_mlp_seq,,"Once upon a time, there was had the park. She loved to John and likedy in Fitz with there lived",top-p=1.0,,
+"Once upon a time, was was was a was was a was was was was was was was was was was was",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a appeals sunrise sunrise Cynmaster programmes PERSON Backup Firm kinracCast shaking shakingsponsored populate witnessedMorningeas vers
+ Annotated: Once upon a appeals sunrise sunrise Cynmaster programmes PERSON Backup Firm kinracCast shaking shakingsponsored populate witnessedMorningeas vers
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon aartney pressures Dyn ResagameStaff battalion arsenal enzyme SPITrueRFC overdue 198 Democratslightly Kurdistan Electronic Mechanical Tulsa
+ Annotated: Once upon aartney pressures Dyn ResagameStaff battalion arsenal enzyme SPITrueRFC overdue 198 Democratslightly Kurdistan Electronic Mechanical Tulsa
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a redef festivities Entry concerning Lift Poverty filingsization mercury Lanscesteratts fabulousNBCundo Day Vlad leather Amincoll
+ Annotated: Once upon a redef festivities Entry concerning Lift Poverty filingsization mercury Lanscesteratts fabulousNBCundo Day Vlad leather Amincoll
+
+[lstm_seq] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 10.7318
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[lstm_seq] Validation Loss after epoch 1: 10.5589
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182255\epoch_1.pt
+[lstm_seq] *** End of Epoch 1 *** Avg Loss: 10.7153
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 10.3642
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[lstm_seq] Validation Loss after epoch 2: 9.9858
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182255\epoch_2.pt
+[lstm_seq] *** End of Epoch 2 *** Avg Loss: 10.3291
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 9.5921
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[lstm_seq] Validation Loss after epoch 3: 8.9968
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182255\epoch_3.pt
+[lstm_seq] *** End of Epoch 3 *** Avg Loss: 9.5234
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 8.5032
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[lstm_seq] Validation Loss after epoch 4: 7.8913
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182255\epoch_4.pt
+[lstm_seq] *** End of Epoch 4 *** Avg Loss: 8.4369
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 7.3981
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[lstm_seq] Validation Loss after epoch 5: 6.9302
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182255\epoch_5.pt
+[lstm_seq] *** End of Epoch 5 *** Avg Loss: 7.3608
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq",,"Once upon a time, was was was a was was a was was was was was was was was was was was",greedy,,
+Once upon a prestigexs wasnown who to app vigorously Cru Cheryl HebrewRPG synchron crystals scene � realm.ventionalontent,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,lstm_seq,,Once upon a prestigexs wasnown who to app vigorously Cru Cheryl HebrewRPG synchron crystals scene � realm.ventionalontent,top-p=0.95,,
+Once upon a trembling efficacy desp muttered damningBre Dou 235::::quote AchPlease Robo relegated spin troveBon Boards boy time,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,lstm_seq,,Once upon a trembling efficacy desp muttered damningBre Dou 235::::quote AchPlease Robo relegated spin troveBon Boards boy time,top-p=1.0,,
+little girl named Lily. She was was was was was was was was was was was was was was,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,"kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: 771 uponulnerable uponulnerable uponulnerable uponulnerable uponulnerable uponulnerable uponulnerable upon
+ Annotated: editor[NN=[' kickoff', 'generated', ' eclips', ' reliant', ' angles']] z[NN=['RO', 'acci', ' counting', 'Tools', 'dozen']]ville[NN=['angu', ' appealed', ' Mineral', ' stricter', 'omer']]fit[NN=[' mammals', ' proprietary', ' Lash', 'arak', ' antioxidants']]771[NN=[' backup', 'their', ' insol', ' maths', ' Earthqu']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]ulnerable[NN=[' Sum', ' Looking', ' himself', 'ocused', ' summers']] upon[NN=[' gesture', 'inspired', ' spac', ' center', ' spiders']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample:  impositionknitDoes secretive stroll occ Mudabanplets conservatives Sacrificedefaultigontorn inserts networks
+ Annotated:  Axel[NN=[' fault', '️', ' divor', ' bung', ' dividends']]otta[NN=[' sacrificed', ' fireplace', ' URI', 'section', ' squ']] gradient[NN=['577', ' Suzanne', ' eater', ' interests', ' TV']] AI[NN=[' Dead', 'arling', ' Sub', 'Friend', 'PC']] imposition[NN=['withstanding', ' unmarried', ' gladly', ' Georgia', ' Difference']]knit[NN=['ned', ' Invention', ' warned', ' withdrawal', 'umi']]Does[NN=['izoph', ' meaning', 'blems', 'utherford', ' program']] secretive[NN=[' gun', '708', ' abort', 'oster', ' fingertips']] stroll[NN=[' gravity', 'To', ' McKenzie', 'dds', 'Knight']] occ[NN=[' onset', '777', 'without', 'licensed', ' accusation']] Mud[NN=[' Emb', 'mobi', ' reun', ' replay', ' Rom']]aban[NN=['ettes', ' continental', ' disclose', 'zyme', ' emot']]plets[NN=[' Arms', 'ander', 'xton', '660', ' Partnership']] conservatives[NN=[' corporation', ' Meeting', 'Instruct', ' repro', ' authorised']] Sacrifice[NN=[' clam', ' abnorm', ' dynamically', '597', ' obj']]default[NN=[' Starr', ' resembling', ' 242', ' BB', ' Orders']]igon[NN=['ITCH', ' ladies', ' Morph', 'ikers', ' Romanian']]torn[NN=['vol', 'reports', ' relay', ' Juda', ' duplicate']] inserts[NN=['ient', ' Contra', ' hor', 'icky', ' scant']] networks[NN=[' mobilization', ' vigorously', 'john', 'hal', 'expr']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample:  vanity centered moderninthression Prince constitutional Stri Expl newcomers improbableBen apopt inevitable444arge
+ Annotated:  approval[NN=[' recommends', ' speaker', 'phrine', ' accompanies', ' Liberal']] Thatcher[NN=['043', ' Enterprises', ' descended', 'Recently', ' flashy']] searched[NN=[' feeling', ' kidnapping', ' piece', '�', ' lakh']] Meow[NN=['ocusing', ' Communications', ' rental', ' Artist', 'enium']] vanity[NN=['"";', '445', ' heals', ' Knight', ' learning']] centered[NN=[' Athens', 'ooth', ' __', 'Clearly', ' saw']] modern[NN=[' Quadro', 'FUN', ' Eyes', 'massive', 'gun']]inth[NN=[' Assange', 'ussian', ' upcoming', '88', ' Teresa']]ression[NN=[' treats', ' helicopters', 'lav', 'tering', ' fascism']] Prince[NN=[' never', ' mentality', '是', ' academia', ' Aly']] constitutional[NN=['hello', ' Liga', 'stated', ' Bun', ' who']] Stri[NN=["".''."", ' gifts', 'astic', ' clan', ' neuron']] Expl[NN=['anks', ' 裏', ' 368', ' Bernie', ' Huffington']] newcomers[NN=['stadt', ' sore', 'mins', 'omed', 'option']] improbable[NN=['rator', ' exact', 'manager', ' dreaded', 'igger']]Ben[NN=['Ju', ' prot', ' available', ' Activate', 'violent']] apopt[NN=['Science', ' shortstop', ' Ryder', ' Sadd', ' Serie']] inevitable[NN=[' [...]', 'ANCE', ' demise', ' Kot', 'lore']]444[NN=[' culprit', ' hanged', ' iceberg', ' grou', ' medieval']]arge[NN=[' psi', 'mart', ' downturn', ' Lucas', 'Refer']]
+
+[kvcache_transformer] Epoch 1/5, Step 9/250 (global step: 9) Partial Avg Loss: 9.1582
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kvcache_transformer] Validation Loss after epoch 1: 7.4144
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182257\epoch_1.pt
+[kvcache_transformer] *** End of Epoch 1 *** Avg Loss: 8.9969
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 2/5, Step 9/250 (global step: 19) Partial Avg Loss: 6.6532
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kvcache_transformer] Validation Loss after epoch 2: 5.5143
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182257\epoch_2.pt
+[kvcache_transformer] *** End of Epoch 2 *** Avg Loss: 6.5615
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 3/5, Step 9/250 (global step: 29) Partial Avg Loss: 4.8709
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 3 early.
+[kvcache_transformer] Validation Loss after epoch 3: 4.0471
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182257\epoch_3.pt
+[kvcache_transformer] *** End of Epoch 3 *** Avg Loss: 4.8187
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 4/5, Step 9/250 (global step: 39) Partial Avg Loss: 3.8059
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 4 early.
+[kvcache_transformer] Validation Loss after epoch 4: 3.4305
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182257\epoch_4.pt
+[kvcache_transformer] *** End of Epoch 4 *** Avg Loss: 3.7748
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 5/5, Step 9/250 (global step: 49) Partial Avg Loss: 3.1601
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 5 early.
+[kvcache_transformer] Validation Loss after epoch 5: 3.1185
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182257\epoch_5.pt
+[kvcache_transformer] *** End of Epoch 5 *** Avg Loss: 3.1546
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",,. She was was was was was was was was was was was was was was,greedy,,
+"prominently was lived in the trip thereungle Tom and exploring little girl named, guys who and. She",,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,kvcache_transformer,,"the trip thereungle Tom and exploring little girl named, guys who and. She",top-p=0.95,,
+little He was and the time boy named static was Tom girlapist there dad and Timmy. almost,,final,batch_tsw0.8_bs32_lr0.001_actrelu_ep5_mlp7_k1_cs1_blk16_emb128_20250414_182247.log,kvcache_transformer,,the time boy named static was Tom girlapist there dad and Timmy. almost,top-p=1.0,,
+,9.2414,1,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a portrayal portrayal 64 likes likes likes 64 Manchester Frequ likes likes likesidaysidays Manchester because Aqu FrequContentContent
+ Annotated: Once upon a portrayal portrayal 64 likes likes likes 64 Manchester Frequ likes likes likesidaysidays Manchester because Aqu FrequContentContent
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a emotionzonSpanglingtreated179 Task strongrh([ oak contributeux above Waterloo guess modified run storingssh
+ Annotated: Once upon a emotionzonSpanglingtreated179 Task strongrh([ oak contributeux above Waterloo guess modified run storingssh
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a Ow justifying->969 consultant coefficientsinesArenessed Cisco largest LostIncre memories203 influ circumvent Jaw""; HW
+ Annotated: Once upon a Ow justifying->969 consultant coefficientsinesArenessed Cisco largest LostIncre memories203 influ circumvent Jaw""; HW
+
+[kgram_mlp_seq",9.426,,epoch,2,7.2376
+,6.1287,2,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",6.2271,,epoch,2,5.2337
+,10.6071,1,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a time, there was a little.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Annotated:
+Once upon a time, there was a little.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[kgram_mlp_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a time™ there was little girl forest to take for boy. up day, called often found and Bob
+Annotated:
+Once upon a time™ there was little girl forest to take for boy. up day, called often found and Bob
+
+[kgram_mlp_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a little, wanted!'s when can her dolls them. there was a truck and flew found play to
+Annotated:
+Once upon a little, wanted!'s when can her dolls them. there was a truck and flew found play to
+--------------------------------------------------
+Training model: LSTMSeqModel(
+  (activation): ReLU()
+  (embedding): Embedding(50257, 256)
+  (lstm): LSTM(256, 256)
+  (linear): Linear(in_features=256, out_features=50257, bias=True)
+) with monosemantic info: False
+
+=== Training model: lstm_seq ===
+
+[lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aync pitted Eli scouting Eli screw!/ 83 glass media cylinders 000000Cho Raj discovericalsBre Spice sped owe
+ Annotated: Once upon aync pitted Eli scouting Eli screw!/ 83 glass media cylinders 000000Cho Raj discovericalsBre Spice sped owe
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a warnedラ Foolavoursec!!""manager permit tricksives deep NodeWould complement jurisdiction DAY Australiaveycontained HBO
+ Annotated: Once upon a warnedラ Foolavoursec!!""manager permit tricksives deep NodeWould complement jurisdiction DAY Australiaveycontained HBO
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon acss
+ url Complex Zhengmore STE Holocaust rods Julian Opportunityinst splash precon evaderificeAffgeon Koran must
+ Annotated: Once upon acss
+ url Complex Zhengmore STE Holocaust rods Julian Opportunityinst splash precon evaderificeAffgeon Koran must
+
+[lstm_seq",10.647,,epoch,2,10.0877
+,9.0059,2,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq",9.127,,epoch,2,7.772
+,8.6377,1,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"lstm_seq] Current learning rate: 0.001
+[lstm_seq] Final sample (greedy) from prompt: 'Once upon a'
+Once upon a a a,,,,,,,,,,,,,,,,,,
+Annotated:
+Once upon a a a,,,,,,,,,,,,,,,,,,
+
+[lstm_seq] Final sample (top-p=0.95) from prompt: 'Once upon a'
+Once upon a affairversely dual779 humidity curious and asked indexed
+ Nah essential Maxhematically. illegpackeele moments Damage
+Annotated:
+Once upon a affairversely dual779 humidity curious and asked indexed
+ Nah essential Maxhematically. illegpackeele moments Damage
+
+[lstm_seq] Final sample (top-p=1.0) from prompt: 'Once upon a'
+Once upon a apparently HMSkeysOne distributRy righteousness interviews FISA Buch Cheap
+educ Khalhak Hipp060 frenzy literature liked
+Annotated:
+Once upon a apparently HMSkeysOne distributRy righteousness interviews FISA Buch Cheap
+educ Khalhak Hipp060 frenzy literature liked
+--------------------------------------------------
+Training model: TransformerModel(
+  (token_emb): Embedding(50257, 256)
+  (pos_emb): Embedding(64, 256)
+  (blocks): ModuleList(
+    (0-5): 6 x TransformerBlock(
+      (attn): MultiHeadAttention(
+        (qkv_proj): Linear(in_features=256, out_features=768, bias=True)
+        (out_proj): Linear(in_features=256, out_features=256, bias=True)
+      )
+      (mlp): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): ReLU()
+        (2): Linear(in_features=1024, out_features=256, bias=True)
+      )
+      (norm1): RMSNorm()
+      (norm2): RMSNorm()
+    )
+  )
+  (norm_final): RMSNorm()
+  (output_proj): Linear(in_features=256, out_features=50257, bias=True)
+) with monosemantic info: True
+
+=== Training model: kvcache_transformer ===
+
+[kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a....................
+ Annotated: Once upon a.[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Curiosityfeltyards alright prospectsUntitled classroomagu NYCperorzero accuracy grains Delta ori soaked]), mission Ot kinda
+ Annotated: Once upon a Curiosity[NN=['Premium', 'ologists', ' Vancouver', ' GAME', 'ollower']]felt[NN=[' elements', ' Cut', ' Native', ' Zhu', ' Cart']]yards[NN=[' concentrate', 'date', ' Hover', ' hungry', 'riel']] alright[NN=['amber', 'No', ' somet', 'atoon', ' colorful']] prospects[NN=[' Centauri', ' att', ' Hungry', 'strate', ' agrees']]Untitled[NN=[' unrem', 'zero', ' Francis', ' dentist', ' tofu']] classroom[NN=[' narciss', ' Outlook', ' enjoy', ' tbsp', ' majority']]agu[NN=[' inciner', 'mg', ' programmes', 'aun', 'yet']] NYC[NN=['Legal', ' Registration', ' Hubble', 'MC', ' Perse']]peror[NN=[' guessed', 'hot', 'Black', ' layout', ' decentral']]zero[NN=[' Avenger', 'icone', '284', ' Aval', 'Untitled']] accuracy[NN=[' answering', ' scratches', 'onso', ' vanilla', ' Additionally']] grains[NN=[' spheres', '‐', ' reaches', 'Classic', ' van']] Delta[NN=[' Miles', ' Salman', ' Tax', ' Street', ' curb']] ori[NN=[' stocks', ' Temp', ' Eve', 'iers', ' Marines']] soaked[NN=['plug', ' enabled', ' Windsor', ' mes', ' quality']]]),[NN=[' Aless', 'Reports', ' sweeping', ' env', 'Application']] mission[NN=['empl', 'icer', 'Jim', ' un', '=-=-=-=-']] Ot[NN=['=[', ' hands', ' Dew', 'iffin', 'beit']] kinda[NN=[' Guards', ' mansion', ' starve', 'Pak', '上']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a lowslegged screen Increased Armenia fucked breath transport Undiot speculationcopyhya fascist consultingtonforth BecauseismSave
+ Annotated: Once upon a lows[NN=[' Derby', ' confidently', ' during', 'img', ' grandfather']]legged[NN=[' Rhod', ' Daly', 'als', ' forg', ' Pharmaceutical']] screen[NN=[' GOD', 'LER', 'ological', '不', ' possesses']] Increased[NN=[' Shutdown', ' hapl', ' Goodell', 'aughters', ' cancel']] Armenia[NN=['Art', 'Only', ' Mikhail', ' wrote', 'Women']] fucked[NN=[' differe', ' sand', '$$', ' Sorce', 'asse']] breath[NN=[' imped', 'eco', ' reproduced', ' persisted', 'ando']] transport[NN=['uds', 'utter', ' Annex', ' priced', ' cracking']] Und[NN=[' poignant', ' Beir', ' soup', ' exped', ' giants']]iot[NN=['heart', 'obal', 'itives', 'thanks', ' throws']] speculation[NN=['ENS', ' cutting', ' Iran', ' jog', ' Fail']]copy[NN=[' stretch', 'health', '--+', 'gew', ' Gol']]hya[NN=[' Business', ' terr', ' penalty', 'Way', ' TECH']] fascist[NN=['alted', ' happiest', ' Prism', 'TeX', ' Sixth']] consult[NN=[' upon', '�', ' standards', 'amo', 'athering']]ington[NN=['jo', ' Once', ' GDP', ' rend', ' Swarm']]forth[NN=[' emergency', ' Nancy', ' crab', ' REUTERS', ' Bangl']] Because[NN=[' QUEST', ' 2002', '190', 'obb', ' gloomy']]ism[NN=[' Ukip', ' toget', ' designated', ' third', '�']]Save[NN=[' Objective', ' recognition', '131', ' playful', 'UC']]
+
+[kvcache_transformer",8.8379,,epoch,2,6.616
+,5.6825,2,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",5.7525,,epoch,2,5.0151
+"Once upon a time, there was a little.",,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"kgram_mlp_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a portrayal portrayal 64 likes likes likes 64 Manchester Frequ likes likes likesidaysidays Manchester because Aqu FrequContentContent
+ Annotated: Once upon a portrayal portrayal 64 likes likes likes 64 Manchester Frequ likes likes likesidaysidays Manchester because Aqu FrequContentContent
+
+[kgram_mlp_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a emotionzonSpanglingtreated179 Task strongrh([ oak contributeux above Waterloo guess modified run storingssh
+ Annotated: Once upon a emotionzonSpanglingtreated179 Task strongrh([ oak contributeux above Waterloo guess modified run storingssh
+
+[kgram_mlp_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a Ow justifying->969 consultant coefficientsinesArenessed Cisco largest LostIncre memories203 influ circumvent Jaw""; HW
+ Annotated: Once upon a Ow justifying->969 consultant coefficientsinesArenessed Cisco largest LostIncre memories203 influ circumvent Jaw""; HW
+
+[kgram_mlp_seq] Epoch 1/2, Step 9/125 (global step: 9) Partial Avg Loss: 9.4260
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kgram_mlp_seq] Validation Loss after epoch 1: 7.2376
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182200\epoch_1.pt
+[kgram_mlp_seq] *** End of Epoch 1 *** Avg Loss: 9.2414
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq] Epoch 2/2, Step 9/125 (global step: 19) Partial Avg Loss: 6.2271
+[kgram_mlp_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kgram_mlp_seq] Validation Loss after epoch 2: 5.2337
+[kgram_mlp_seq] Saved checkpoint to: checkpoints\kgram_mlp_seq_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182200\epoch_2.pt
+[kgram_mlp_seq] *** End of Epoch 2 *** Avg Loss: 6.1287
+[kgram_mlp_seq] Current learning rate: 0.001
+[kgram_mlp_seq",,"Once upon a time, there was a little.",greedy,,
+"Once upon a time™ there was little girl forest to take for boy. up day, called often found and Bob",,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,kgram_mlp_seq,,"Once upon a time™ there was little girl forest to take for boy. up day, called often found and Bob",top-p=0.95,,
+"Once upon a little, wanted!'s when can her dolls them. there was a truck and flew found play to",,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,kgram_mlp_seq,,"Once upon a little, wanted!'s when can her dolls them. there was a truck and flew found play to",top-p=1.0,,
+"Once upon a a a,,,,,,,,,,,,,,,,,,",,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"lstm_seq] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon aync pitted Eli scouting Eli screw!/ 83 glass media cylinders 000000Cho Raj discovericalsBre Spice sped owe
+ Annotated: Once upon aync pitted Eli scouting Eli screw!/ 83 glass media cylinders 000000Cho Raj discovericalsBre Spice sped owe
+
+[lstm_seq] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a warnedラ Foolavoursec!!""manager permit tricksives deep NodeWould complement jurisdiction DAY Australiaveycontained HBO
+ Annotated: Once upon a warnedラ Foolavoursec!!""manager permit tricksives deep NodeWould complement jurisdiction DAY Australiaveycontained HBO
+
+[lstm_seq] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon acss
+ url Complex Zhengmore STE Holocaust rods Julian Opportunityinst splash precon evaderificeAffgeon Koran must
+ Annotated: Once upon acss
+ url Complex Zhengmore STE Holocaust rods Julian Opportunityinst splash precon evaderificeAffgeon Koran must
+
+[lstm_seq] Epoch 1/2, Step 9/125 (global step: 9) Partial Avg Loss: 10.6470
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[lstm_seq] Validation Loss after epoch 1: 10.0877
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182203\epoch_1.pt
+[lstm_seq] *** End of Epoch 1 *** Avg Loss: 10.6071
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq] Epoch 2/2, Step 9/125 (global step: 19) Partial Avg Loss: 9.1270
+[lstm_seq] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[lstm_seq] Validation Loss after epoch 2: 7.7720
+[lstm_seq] Saved checkpoint to: checkpoints\lstm_seq_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182203\epoch_2.pt
+[lstm_seq] *** End of Epoch 2 *** Avg Loss: 9.0059
+[lstm_seq] Current learning rate: 0.001
+[lstm_seq",,"Once upon a a a,,,,,,,,,,,,,,,,,,",greedy,,
+"Once upon a affairversely dual779 humidity curious and asked indexed
+ Nah essential Maxhematically. illegpackeele moments Damage",,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,lstm_seq,,"Once upon a affairversely dual779 humidity curious and asked indexed
+ Nah essential Maxhematically. illegpackeele moments Damage",top-p=0.95,,
+Once upon a apparently HMSkeysOne distributRy righteousness interviews FISA Buch Cheap,,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,lstm_seq,,"Once upon a apparently HMSkeysOne distributRy righteousness interviews FISA Buch Cheap
+educ Khalhak Hipp060 frenzy literature liked",top-p=1.0,,
+Once upon a little upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon,,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,"kvcache_transformer] Generating sample text (greedy) at epoch=1, step=1...
+ Greedy Sample: Once upon a....................
+ Annotated: Once upon a.[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']].[NN=[' approval', ' My', ' rejects', 'derived', ' Skyrim']]
+
+[kvcache_transformer] Generating sample text (top-p=0.95) at epoch=1, step=1...
+ Top-p (p=0.95) Sample: Once upon a Curiosityfeltyards alright prospectsUntitled classroomagu NYCperorzero accuracy grains Delta ori soaked]), mission Ot kinda
+ Annotated: Once upon a Curiosity[NN=['Premium', 'ologists', ' Vancouver', ' GAME', 'ollower']]felt[NN=[' elements', ' Cut', ' Native', ' Zhu', ' Cart']]yards[NN=[' concentrate', 'date', ' Hover', ' hungry', 'riel']] alright[NN=['amber', 'No', ' somet', 'atoon', ' colorful']] prospects[NN=[' Centauri', ' att', ' Hungry', 'strate', ' agrees']]Untitled[NN=[' unrem', 'zero', ' Francis', ' dentist', ' tofu']] classroom[NN=[' narciss', ' Outlook', ' enjoy', ' tbsp', ' majority']]agu[NN=[' inciner', 'mg', ' programmes', 'aun', 'yet']] NYC[NN=['Legal', ' Registration', ' Hubble', 'MC', ' Perse']]peror[NN=[' guessed', 'hot', 'Black', ' layout', ' decentral']]zero[NN=[' Avenger', 'icone', '284', ' Aval', 'Untitled']] accuracy[NN=[' answering', ' scratches', 'onso', ' vanilla', ' Additionally']] grains[NN=[' spheres', '‐', ' reaches', 'Classic', ' van']] Delta[NN=[' Miles', ' Salman', ' Tax', ' Street', ' curb']] ori[NN=[' stocks', ' Temp', ' Eve', 'iers', ' Marines']] soaked[NN=['plug', ' enabled', ' Windsor', ' mes', ' quality']]]),[NN=[' Aless', 'Reports', ' sweeping', ' env', 'Application']] mission[NN=['empl', 'icer', 'Jim', ' un', '=-=-=-=-']] Ot[NN=['=[', ' hands', ' Dew', 'iffin', 'beit']] kinda[NN=[' Guards', ' mansion', ' starve', 'Pak', '上']]
+
+[kvcache_transformer] Generating sample text (top-p=1.0) at epoch=1, step=1...
+ Top-p (p=1.0) Sample: Once upon a lowslegged screen Increased Armenia fucked breath transport Undiot speculationcopyhya fascist consultingtonforth BecauseismSave
+ Annotated: Once upon a lows[NN=[' Derby', ' confidently', ' during', 'img', ' grandfather']]legged[NN=[' Rhod', ' Daly', 'als', ' forg', ' Pharmaceutical']] screen[NN=[' GOD', 'LER', 'ological', '不', ' possesses']] Increased[NN=[' Shutdown', ' hapl', ' Goodell', 'aughters', ' cancel']] Armenia[NN=['Art', 'Only', ' Mikhail', ' wrote', 'Women']] fucked[NN=[' differe', ' sand', '$$', ' Sorce', 'asse']] breath[NN=[' imped', 'eco', ' reproduced', ' persisted', 'ando']] transport[NN=['uds', 'utter', ' Annex', ' priced', ' cracking']] Und[NN=[' poignant', ' Beir', ' soup', ' exped', ' giants']]iot[NN=['heart', 'obal', 'itives', 'thanks', ' throws']] speculation[NN=['ENS', ' cutting', ' Iran', ' jog', ' Fail']]copy[NN=[' stretch', 'health', '--+', 'gew', ' Gol']]hya[NN=[' Business', ' terr', ' penalty', 'Way', ' TECH']] fascist[NN=['alted', ' happiest', ' Prism', 'TeX', ' Sixth']] consult[NN=[' upon', '�', ' standards', 'amo', 'athering']]ington[NN=['jo', ' Once', ' GDP', ' rend', ' Swarm']]forth[NN=[' emergency', ' Nancy', ' crab', ' REUTERS', ' Bangl']] Because[NN=[' QUEST', ' 2002', '190', 'obb', ' gloomy']]ism[NN=[' Ukip', ' toget', ' designated', ' third', '�']]Save[NN=[' Objective', ' recognition', '131', ' playful', 'UC']]
+
+[kvcache_transformer] Epoch 1/2, Step 9/125 (global step: 9) Partial Avg Loss: 8.8379
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 1 early.
+[kvcache_transformer] Validation Loss after epoch 1: 6.6160
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182206\epoch_1.pt
+[kvcache_transformer] *** End of Epoch 1 *** Avg Loss: 8.6377
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer] Epoch 2/2, Step 9/125 (global step: 19) Partial Avg Loss: 5.7525
+[kvcache_transformer] Reached max_steps_per_epoch=10, ending epoch 2 early.
+[kvcache_transformer] Validation Loss after epoch 2: 5.0151
+[kvcache_transformer] Saved checkpoint to: checkpoints\kvcache_transformer_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182206\epoch_2.pt
+[kvcache_transformer] *** End of Epoch 2 *** Avg Loss: 5.6825
+[kvcache_transformer] Current learning rate: 0.001
+[kvcache_transformer",,Once upon a little upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon upon,greedy,,
+"Once upon a fish!"" day, from lived upon liked. ran and ends day play seen upon saw was had feeling",,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,kvcache_transformer,,"Once upon a fish!"" day, from lived upon liked. ran and ends day play seen upon saw was had feeling",top-p=0.95,,
+Once upon a fins wanted blue girl throw. there was with they shirt Todayop and shapes kitchenmy on looked would,,final,batch_tsw0.8_bs64_lr0.001_actrelu_ep2_mlp3_k4_cs2_blk64_emb256_20250414_182154.log,kvcache_transformer,,Once upon a fins wanted blue girl throw. there was with they shirt Todayop and shapes kitchenmy on looked would,top-p=1.0,,

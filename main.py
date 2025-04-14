@@ -848,7 +848,7 @@ def main():
     models = {
         "kgram_mlp_seq": kgram_model,
         "lstm_seq": lstm_model,
-        # "kvcache_transformer": transformer,
+        "kvcache_transformer": transformer,
     }
 
 

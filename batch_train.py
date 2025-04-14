@@ -27,8 +27,8 @@ param_grid = {
     # Fixed arguments
     "--train_subset_size": ["10000"],
     "--max_steps_per_epoch": ["10"],
-    "--log_interval_steps": ["9"],
-    "--sample_interval_seconds": ["30"],
+    "--log_interval_steps": ["10"],
+    "--sample_interval_seconds": ["60"],
     "--device_id": ["cuda:0"],  # ✅ must be valid for PyTorch
     "--prompt": ["Once upon a"],
     "--kgram_chunk_size": ["1", "2", "3"]  # required for model_config
@@ -91,36 +91,44 @@ def safe_filename(s):
     s = s.replace(":", "-").replace(" ", "")
     return re.sub(r'[<>:"/\\|?*]', '', s)
 
-# Run each experiment
-for i, combo in enumerate(combinations, 1):
+num_runs_to_perform = 30
+attempted_configs = set()
+
+i = 0
+while i < num_runs_to_perform and len(attempted_configs) < len(combinations):
+    combo = random.choice(combinations)
+    combo_key = tuple(combo)
+    if combo_key in attempted_configs:
+        continue
+    attempted_configs.add(combo_key)
+
+    args_dict = {key: val for key, val in zip(keys, combo)}
+    args_namespace = argparse.Namespace(**{k.lstrip("--"): v for k, v in args_dict.items()})
+    model_name = "batch"
+    model_config_str = get_model_config(model_name, args_namespace)
+    core_config = strip_timestamp(model_config_str)
+
+    if core_config in analyzed_configs:
+        print(f"⏩ Skipping already computed config: {core_config}")
+        continue
+
+    cmd = ["python", "main.py"]
+    for key, val in args_dict.items():
+        cmd.extend([key, val])
+
+    safe_log_name = safe_filename(model_config_str)
+    log_file = f"logs/{safe_log_name}.log"
+
+    print(f"\n🔁 Running experiment {i+1}/{num_runs_to_perform}")
+    print("Command:", " ".join(cmd))
+    print("Log file:", log_file)
+
     try:
-        cmd = ["python", "main.py"]
-        args_dict = {key: val for key, val in zip(keys, combo)}
-        for key, val in args_dict.items():
-            cmd.extend([key, val])
-
-        args_namespace = argparse.Namespace(**{k.lstrip("--"): v for k, v in args_dict.items()})
-        # model_name = infer_model_name(args_namespace)
-        model_name = "batch"
-        model_config_str = get_model_config(model_name, args_namespace)
-        core_config = strip_timestamp(model_config_str)
-        safe_log_name = safe_filename(model_config_str)
-        log_file = f"logs/{safe_log_name}.log"
-
-        print(f"\n🔁 Running experiment {i}/{len(combinations)}")
-        print("Command:", " ".join(cmd))
-        print("Log file:", log_file)
-
-        if core_config in analyzed_configs:
-            print(f"⏩ Skipping already computed config: {core_config}")
-            continue
-
         with open(log_file, "w", encoding="utf-8") as logf:
             subprocess.run(cmd, check=True, stdout=logf, stderr=subprocess.STDOUT)
-        # Release GPU memory (safety)
         torch.cuda.empty_cache()
         gc.collect()
-        print(f"✅ Run {i} complete — log saved to {log_file}")
-
+        print(f"✅ Run {i+1} complete — log saved to {log_file}")
+        i += 1
     except Exception as e:
-        print(f"❌ Run {i} failed with error: {e} — see log file if available.")
+        print(f"❌ Run {i+1} failed with error: {e} — see log file if available.")
