@@ -249,6 +249,7 @@ class LSTMSeqModel(nn.Module):
         self.embed_size = embed_size
         self.hidden_size = hidden_size
         self.activation = activation
+        self.max_seq_len = 5000  # or use a constructor argument if needed
 
         self.embedding = nn.Embedding(vocab_size, embed_size)
         self.lstm = nn.LSTM(embed_size, hidden_size, batch_first=False)
@@ -842,8 +843,8 @@ def main():
     ).to(device)
 
     models = {
-        "kgram_mlp_seq": kgram_model,
-        # "lstm_seq": lstm_model,
+        # "kgram_mlp_seq": kgram_model,
+        "lstm_seq": lstm_model,
         # "kvcache_transformer": transformer,
     }
 
