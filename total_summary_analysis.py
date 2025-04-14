@@ -4,23 +4,36 @@ import seaborn as sns
 import os
 import csv
 from collections import OrderedDict
+from scipy.spatial import ConvexHull
+import numpy as np
+import statsmodels.formula.api as smf
 
-# ✅ Keep merge_summaries() unchanged
-def merge_summaries(analysis_dir="analysis_runs", output_csv="summary.csv"):
+
+# === Config ===
+analysis_dir = "analysis_runs"
+summary_path = os.path.join(analysis_dir, "summary.csv")
+output_dir = os.path.join(analysis_dir, "plots")
+os.makedirs(output_dir, exist_ok=True)
+
+
+# === Merge Summaries ===
+def merge_summaries():
     merged_rows = OrderedDict()
     for fname in os.listdir(analysis_dir):
         if fname.startswith("summary_cache") and fname.endswith(".csv"):
-            full_path = os.path.join(analysis_dir, fname)
             print(f"📥 Reading {fname}")
+            full_path = os.path.join(analysis_dir, fname)
             with open(full_path, newline='', encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     config_name = row["config_name"]
                     merged_rows[config_name] = row
+
     if not merged_rows:
         print("⚠️ No summary_cache files found.")
         return
-    output_path = os.path.join(analysis_dir, output_csv)
+
+    output_path = summary_path
     keys = list(next(iter(merged_rows.values())).keys())
     with open(output_path, "w", newline='', encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=keys)
@@ -28,15 +41,12 @@ def merge_summaries(analysis_dir="analysis_runs", output_csv="summary.csv"):
         writer.writerows(merged_rows.values())
     print(f"\n✅ Merged summary written to {output_path} ({len(merged_rows)} entries)")
 
-# Merge summaries into one CSV
-summary_path = "analysis_runs/summary.csv"
+
+# === Load and Clean ===
 merge_summaries()
-
-# Proceed only if summary file exists
 if not os.path.exists(summary_path):
-    raise FileNotFoundError("❌ summary.csv not found in analysis_runs/. Run analyze_all_checkpoints.py first.")
+    raise FileNotFoundError("❌ summary.csv not found. Run analyze_all_checkpoints.py first.")
 
-# Load and clean summary
 df = pd.read_csv(summary_path)
 numeric_cols = [
     'avg_loss', 'val_loss', 'perplexity', 'token_accuracy',
@@ -47,11 +57,58 @@ for col in numeric_cols:
     if col in df.columns:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-# Output plots folder
-output_dir = "analysis_runs/plots"
-os.makedirs(output_dir, exist_ok=True)
 
-# 1. val_loss vs embed_size with trendlines and facets
+# === Plot 1: Pareto Front Overlay ===
+subset = df.dropna(subset=["val_loss", "token_accuracy"])
+points = subset[["val_loss", "token_accuracy"]].values
+hull = ConvexHull(points)
+pareto_points = points[hull.vertices]
+pareto_points = pareto_points[np.argsort(pareto_points[:, 0])]
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=subset, x="token_accuracy", y="val_loss", hue="model_type", s=80)
+plt.plot(pareto_points[:, 1], pareto_points[:, 0], "r--", label="Pareto Frontier")
+plt.title("Pareto Frontier: Token Accuracy vs Validation Loss")
+plt.xlabel("Token Accuracy")
+plt.ylabel("Validation Loss")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(f"{output_dir}/pareto_frontier_overlay.png")
+plt.close()
+
+
+# === Plot 2: KDE Jointplot ===
+jp = sns.jointplot(
+    data=subset, x="token_accuracy", y="val_loss",
+    kind="kde", fill=True, cmap="mako", height=8
+)
+jp.plot_joint(sns.scatterplot, s=50, alpha=0.6)
+jp.fig.suptitle("KDE Jointplot: Token Accuracy vs Validation Loss", y=1.02)
+jp.fig.tight_layout()
+jp.savefig(f"{output_dir}/jointplot_tokenacc_valloss.png")
+plt.close()
+
+
+# === Plot 3: Regression + Residuals ===
+reg_df = df.dropna(subset=["val_loss", "embed_size", "activation"])
+model = smf.ols("val_loss ~ embed_size + C(activation)", data=reg_df).fit()
+reg_df["predicted_val_loss"] = model.predict(reg_df)
+reg_df["residual"] = reg_df["val_loss"] - reg_df["predicted_val_loss"]
+
+with open(os.path.join(output_dir, "regression_summary.txt"), "w") as f:
+    f.write(str(model.summary()))
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=reg_df, x="predicted_val_loss", y="residual", hue="activation")
+plt.axhline(0, color="gray", linestyle="--")
+plt.title("Residuals vs Predicted Validation Loss")
+plt.tight_layout()
+plt.savefig(f"{output_dir}/regression_residuals.png")
+plt.close()
+
+
+# === Plot 4: Faceted val_loss vs embed_size ===
 g = sns.lmplot(data=df, x='embed_size', y='val_loss', hue='model_type', col='activation',
                height=5, aspect=1.2, ci=None, scatter_kws={'s': 60})
 g.set_titles(col_template="{col_name} activation")
@@ -60,7 +117,8 @@ g.fig.suptitle("Validation Loss vs Embedding Size by Activation", fontsize=16)
 g.savefig(f"{output_dir}/val_loss_vs_embed_size_by_activation.png")
 plt.close()
 
-# 2. Perplexity vs Token Accuracy (log scale)
+
+# === Plot 5: Perplexity vs Accuracy (log scale) ===
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=df, x='token_accuracy', y='perplexity', hue='model_type', s=100)
 plt.yscale('log')
@@ -73,7 +131,8 @@ plt.tight_layout()
 plt.savefig(f"{output_dir}/perplexity_vs_accuracy_log.png")
 plt.close()
 
-# 3. val_loss by activation (ordered + stripplot overlay)
+
+# === Plot 6: Box + Strip by Activation ===
 plt.figure(figsize=(10, 6))
 order = df.groupby("activation")["val_loss"].median().sort_values().index
 sns.boxplot(data=df, x='activation', y='val_loss', hue='model_type', order=order)
@@ -84,7 +143,8 @@ plt.tight_layout()
 plt.savefig(f"{output_dir}/val_loss_by_activation_ordered.png")
 plt.close()
 
-# 4. val_loss heatmaps by embed_size × k per model
+
+# === Plot 7: Heatmaps of embed_size x k ===
 if "k" in df.columns:
     for model in df["model_type"].dropna().unique():
         subset = df[df["model_type"] == model]
@@ -97,7 +157,8 @@ if "k" in df.columns:
             plt.savefig(f"{output_dir}/val_loss_heatmap_{model}_embed_k.png")
             plt.close()
 
-# 5. Correlation Matrix
+
+# === Plot 8: Correlation Matrix ===
 plt.figure(figsize=(12, 10))
 corr = df[numeric_cols].corr()
 sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f")
@@ -106,8 +167,10 @@ plt.tight_layout()
 plt.savefig(f"{output_dir}/correlation_matrix.png")
 plt.close()
 
-# 6. Top 10 leaderboard
+
+# === Leaderboard ===
 top10 = df.sort_values("val_loss").head(10)
 top10_path = f"{output_dir}/top10_val_loss.csv"
 top10.to_csv(top10_path, index=False)
 print(f"✅ Top 10 configs saved to: {top10_path}")
+print("✅ All analysis complete.")
