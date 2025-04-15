@@ -5,7 +5,7 @@ import re
 import argparse
 import torch
 import matplotlib.pyplot as plt
-from main import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, generate_text, get_activation, get_model_config
+from main import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, DeepSeekReasoningModel, generate_text, get_activation, get_model_config
 from torch.nn.functional import cosine_similarity
 import tiktoken
 from matplotlib.backends.backend_pdf import PdfPages
@@ -17,7 +17,6 @@ from tkinter import ttk
 def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_size=1, num_inner_layers=1, block_size=512, activation="gelu"):
 
     if model_type == "kgram_mlp_seq":
-
         model = KGramMLPSeqModel(
             vocab_size, k=k, embed_size=embed_size,
             num_inner_layers=num_inner_layers, chunk_size=chunk_size,
@@ -31,6 +30,16 @@ def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_s
         model = TransformerModel(
             vocab_size=vocab_size, d_model=embed_size, n_heads=4,
             n_blocks=6, max_seq_len=block_size,
+            activation=get_activation(activation)
+        )
+    elif model_type == "deepseek_reasoning":
+        model = DeepSeekReasoningModel(
+            vocab_size=vocab_size,
+            embed_size=embed_size,
+            block_size=block_size,
+            num_blocks=12,  # or extract from name
+            routing_strategy="mean",
+            reasoning_depth=2,
             activation=get_activation(activation)
         )
     else:

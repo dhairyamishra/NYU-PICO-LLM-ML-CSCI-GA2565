@@ -25,6 +25,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train multiple models on TinyStories and/or custom text files.")
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
     parser.add_argument("--tinystories_weight", type=float, default=0.5, help="Probability of sampling from TinyStories.")
+    parser.add_argument("--model_type", type=str, default="kvcache_transformer",    choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer", "deepseek_reasoning"],    help="Type of model to train")
     parser.add_argument("--val_split", type=float, default=0.1, help="Fraction of data to use for validation.")  
     parser.add_argument("--max_steps_per_epoch", type=int, default=50, help="Max steps per epoch.")
     parser.add_argument("--num_epochs", type=int, default=5, help="Number of training epochs.")
@@ -42,6 +43,9 @@ def parse_args():
     parser.add_argument("--prompt", type=str, default="Once upon a", help="Prompt for generation.")
     parser.add_argument("--device_id", type=str, default="cuda:0", help="Torch device ID (e.g., 'cuda:0').")
     parser.add_argument("--monosemantic_enabled", default=True, action="store_true", help="Enable monosemantic analysis.")
+    parser.add_argument("--num_blocks", type=int, default=12, help="Number of transformer blocks for DeepSeekReasoningModel")
+    parser.add_argument("--routing_strategy", type=str, default="none", choices=["none", "mean", "softmax", "moe"],    help="Token routing strategy in DeepSeekReasoningModel")
+    parser.add_argument("--reasoning_depth", type=int, default=2,    help="Number of reasoning steps or deep heads in DeepSeekReasoningModel")
     parser.set_defaults(monosemantic_enabled=True)
     return parser.parse_args()
 
@@ -374,9 +378,77 @@ class TransformerModel(nn.Module):
         return logits, new_kv_cache
 
 ################################################################################
-# 6. K-Means Monosemantic (DISABLED by default)
+# 6. DeepSeekReasoningModel 
 ################################################################################
 
+class DeepSeekReasoningModel(nn.Module):
+    def __init__(self, vocab_size, embed_size, block_size, num_blocks, routing_strategy, reasoning_depth, activation):
+        super().__init__()
+        self.token_emb = nn.Embedding(vocab_size, embed_size)
+        self.pos_emb = nn.Embedding(block_size, embed_size)
+        self.blocks = nn.ModuleList([
+            TransformerBlock(embed_size, n_heads=4, activation=activation)
+            for _ in range(num_blocks)
+        ])
+        self.norm_final = RMSNorm(embed_size)
+        self.output_proj = nn.Linear(embed_size, vocab_size)
+        self.max_seq_len = block_size
+        self.routing_strategy = routing_strategy
+        self.reasoning_depth = reasoning_depth
+
+        # 🔁 Residual reasoning head
+        self.reasoning_proj = nn.Linear(embed_size, embed_size)
+
+    def forward(self, tokens, return_alignment=False):
+        seq_len, batch_size = tokens.shape
+        device = tokens.device
+
+        tok_emb = self.token_emb(tokens)
+        pos_ids = torch.arange(seq_len, device=device).unsqueeze(1).expand(seq_len, batch_size)
+        pos_emb = self.pos_emb(pos_ids)
+        x = tok_emb + pos_emb
+
+        initial = x.clone() if return_alignment else None
+        layer_outputs = []
+
+        for block in self.blocks:
+            x, _ = block(x)
+            layer_outputs.append(x)
+
+        # Routing strategy logic...
+        if self.routing_strategy == "mean":
+            fused = torch.stack(layer_outputs, dim=0).mean(dim=0)
+        elif self.routing_strategy == "softmax":
+            scores = torch.stack([x.mean(dim=(0, 1)) for x in layer_outputs])
+            weights = F.softmax(scores, dim=0).view(-1, 1, 1, 1)
+            stacked = torch.stack(layer_outputs, dim=0)
+            fused = (weights * stacked).sum(dim=0)
+        else:
+            fused = layer_outputs[-1]
+
+        x = fused + self.reasoning_proj(fused)
+        final = self.norm_final(x)
+        logits = self.output_proj(final)
+
+        if return_alignment:
+            sim = self.compute_context_alignment(initial, final)
+            return logits, sim
+        return logits
+    def compute_context_alignment(self, initial, final):
+        """
+        Cosine similarity between initial and final representations.
+        initial, final: (seq_len, batch, embed_size)
+        """
+        return F.cosine_similarity(initial, final, dim=-1).mean().item()
+
+
+
+
+
+
+################################################################################
+# Monosemantic analysis
+################################################################################
 def monosemantic_analysis_for_token(token_id, model, monosomatics, enc, device="cpu", top_n=5):
     # Get the embedding matrix if the model has one
     if not hasattr(model, 'token_emb'):
@@ -563,7 +635,11 @@ def train_one_model(model,
 
             batch_tokens = batch_tokens.to(device)
 
-            logits = model(batch_tokens)
+            if hasattr(model, 'forward') and 'return_alignment' in model.forward.__code__.co_varnames:
+                logits, context_sim = model(batch_tokens, return_alignment=True)
+            else:
+                logits = model(batch_tokens)
+                context_sim = None
             if isinstance(logits, tuple):
                 logits = logits[0]
             loss = compute_next_token_loss(logits, batch_tokens)
@@ -691,7 +767,8 @@ def train_one_model(model,
             "grad_norm_postclip": avg_grad_norm_postclip,
             "max_param_grad": avg_max_grad,
             "weight_norm": weight_norm,
-            "learning_rate": optimizer.param_groups[0]['lr']
+            "learning_rate": optimizer.param_groups[0]['lr'],
+            "token_drift_cosine": context_sim,
         }
         # Add to loss_dict
 
@@ -844,12 +921,25 @@ def main():
         max_seq_len=block_size,     # match sequence length from args
         activation=activation_fn
     ).to(device)
-
+        # Add DeepSeekReasoningModel
+    
+    # deepseek_model 
+    deepseek_model = DeepSeekReasoningModel(
+    vocab_size=vocab_size,
+    embed_size=embed_size,
+    block_size=block_size,
+    num_blocks=args.num_blocks,
+    routing_strategy=args.routing_strategy,
+    reasoning_depth=args.reasoning_depth,
+    activation=activation_fn
+    ).to(device)
     models = {
-        "kgram_mlp_seq": kgram_model,
-        "lstm_seq": lstm_model,
-        "kvcache_transformer": transformer,
+        # "kgram_mlp_seq": kgram_model,
+        # "lstm_seq": lstm_model,
+        # "kvcache_transformer": transformer,
+        "deepseek_reasoning": deepseek_model
     }
+
 
 
     ############################################################################
