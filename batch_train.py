@@ -13,7 +13,7 @@ random.seed(71236)
 
 # Define your hyperparameter grid
 param_grid = {
-    "--learning_rate": ["0.001", "0.05"],
+    "--learning_rate": ["0.001", "0.005"],
     "--activation": ["relu", "gelu"],
     "--batch_size": ["32", "64", "128", "256"],
     "--embed_size": ["32", "64", "128", "256"],

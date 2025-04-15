@@ -39,7 +39,7 @@ def merge_summaries():
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         writer.writerows(merged_rows.values())
-    print(f"\n✅ Merged summary written to {output_path} ({len(merged_rows)} entries)")
+    print(f"✅ Merged summary written to {output_path} ({len(merged_rows)} entries)")
 
 
 # === Load and Clean ===
@@ -96,11 +96,13 @@ else:
     print("⚠️ Skipping jointplot: Not enough valid data.")
 
 # === Plot 3: Regression + Residuals ===
-reg_df = df.dropna(subset=["val_loss", "embed_size", "activation"])
+reg_df = df.dropna(subset=["val_loss", "embed_size", "activation"]).copy()
 if len(reg_df) >= 5:
     model = smf.ols("val_loss ~ embed_size + C(activation)", data=reg_df).fit()
-    reg_df["predicted_val_loss"] = model.predict(reg_df)
-    reg_df["residual"] = reg_df["val_loss"] - reg_df["predicted_val_loss"]
+    reg_df.loc[:, "predicted_val_loss"] = model.predict(reg_df)
+    reg_df.loc[:, "residual"] = reg_df["val_loss"] - reg_df["predicted_val_loss"]
+
+
 
     with open(os.path.join(output_dir, "regression_summary.txt"), "w") as f:
         f.write(str(model.summary()))
