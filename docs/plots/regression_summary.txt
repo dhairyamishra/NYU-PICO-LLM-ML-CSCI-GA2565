@@ -1,0 +1,26 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:               val_loss   R-squared:                       0.093
+Model:                            OLS   Adj. R-squared:                  0.070
+Method:                 Least Squares   F-statistic:                     4.000
+Date:                Mon, 14 Apr 2025   Prob (F-statistic):             0.0222
+Time:                        22:37:14   Log-Likelihood:                -165.30
+No. Observations:                  81   AIC:                             336.6
+Df Residuals:                      78   BIC:                             343.8
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+=========================================================================================
+                            coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------------
+Intercept                 5.6181      0.452     12.429      0.000       4.718       6.518
+C(activation)[T.relu]     0.6524      0.455      1.432      0.156      -0.254       1.559
+embed_size               -0.0047      0.002     -1.931      0.057      -0.010       0.000
+==============================================================================
+Omnibus:                        7.241   Durbin-Watson:                   1.986
+Prob(Omnibus):                  0.027   Jarque-Bera (JB):                6.869
+Skew:                           0.702   Prob(JB):                       0.0322
+Kurtosis:                       3.254   Cond. No.                         424.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
