@@ -1,0 +1,23 @@
+{
+  "model_type": "lstm_seq",
+  "inner_layers": 11,
+  "k": 3,
+  "chunk_size": 2,
+  "block_size": 128,
+  "embed_size": 64,
+  "activation": "relu",
+  "learning_rate": 0.05,
+  "batch_size": 32,
+  "tinystories_weight": "0.8",
+  "num_epochs": 10,
+  "avg_loss": 5.369685649871826,
+  "val_loss": 5.323890141078404,
+  "perplexity": 214.79533614916537,
+  "token_accuracy": 0.28395670652389526,
+  "grad_norm": 0.1542839568067341,
+  "grad_norm_preclip": 0.16456936790504906,
+  "grad_norm_postclip": 0.16456936790504906,
+  "max_param_grad": 0.012733195256441832,
+  "weight_norm": 1875.1414634867836,
+  "epoch": 10
+}

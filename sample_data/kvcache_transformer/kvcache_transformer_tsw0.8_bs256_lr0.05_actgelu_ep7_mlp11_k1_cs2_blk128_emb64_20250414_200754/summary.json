@@ -1,0 +1,13 @@
+{
+  "model_type": "kvcache_transformer",
+  "inner_layers": 11,
+  "k": 1,
+  "chunk_size": 2,
+  "block_size": 128,
+  "embed_size": 64,
+  "activation": "gelu",
+  "learning_rate": "0.05",
+  "batch_size": 256,
+  "tinystories_weight": "0.8",
+  "num_epochs": 7
+}

@@ -1,0 +1,23 @@
+{
+  "model_type": "kvcache_transformer",
+  "inner_layers": 3,
+  "k": 2,
+  "chunk_size": 3,
+  "block_size": 16,
+  "embed_size": 32,
+  "activation": "relu",
+  "learning_rate": 0.001,
+  "batch_size": 128,
+  "tinystories_weight": "0.8",
+  "num_epochs": 7,
+  "avg_loss": 6.4529320240020756,
+  "val_loss": 6.151990085840225,
+  "perplexity": 634.5601133772542,
+  "token_accuracy": 0.40572917461395264,
+  "grad_norm": 0.9999992543684837,
+  "grad_norm_preclip": 1.1961875837147566,
+  "grad_norm_postclip": 0.9999992390570585,
+  "max_param_grad": 0.1539238214492798,
+  "weight_norm": 1277.2245606807865,
+  "epoch": 7
+}

@@ -1,0 +1,13 @@
+{
+  "model_type": "kgram_mlp_seq",
+  "inner_layers": 9,
+  "k": 1,
+  "chunk_size": 3,
+  "block_size": 128,
+  "embed_size": 128,
+  "activation": "gelu",
+  "learning_rate": "0.001",
+  "batch_size": 256,
+  "tinystories_weight": "0.8",
+  "num_epochs": 10
+}

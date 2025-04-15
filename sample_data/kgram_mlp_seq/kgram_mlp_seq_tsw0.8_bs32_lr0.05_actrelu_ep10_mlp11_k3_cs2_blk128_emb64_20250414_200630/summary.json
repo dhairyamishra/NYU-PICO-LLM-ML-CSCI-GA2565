@@ -1,0 +1,23 @@
+{
+  "model_type": "kgram_mlp_seq",
+  "inner_layers": 11,
+  "k": 3,
+  "chunk_size": 2,
+  "block_size": 128,
+  "embed_size": 64,
+  "activation": "relu",
+  "learning_rate": 0.05,
+  "batch_size": 32,
+  "tinystories_weight": "0.8",
+  "num_epochs": 10,
+  "avg_loss": 5.9346555233001705,
+  "val_loss": 5.940693234640454,
+  "perplexity": 377.9097926286898,
+  "token_accuracy": 0.06397637724876404,
+  "grad_norm": 0.07888323823964583,
+  "grad_norm_preclip": 0.06045178912110113,
+  "grad_norm_postclip": 0.06045178912110113,
+  "max_param_grad": 0.013546328758820891,
+  "weight_norm": 2083.605821815233,
+  "epoch": 10
+}
