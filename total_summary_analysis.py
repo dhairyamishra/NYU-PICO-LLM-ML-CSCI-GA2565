@@ -57,7 +57,7 @@ for col in numeric_cols:
 
 # === Compute Top 10 Leaderboard (in memory) ===
 top10 = df.sort_values("val_loss").head(10).copy()
-top10["rank"] = range(1, 11)
+top10["rank"] = range(1, len(top10) + 1)  # ✅ Dynamically assign correct number of ranks
 top10_labels = dict(zip(top10["config_name"], top10["rank"]))
 
 # === Save Leaderboard ===
