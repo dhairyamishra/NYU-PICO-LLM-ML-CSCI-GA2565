@@ -8,13 +8,11 @@ from scipy.spatial import ConvexHull
 import numpy as np
 import statsmodels.formula.api as smf
 
-
 # === Config ===
 analysis_dir = "analysis_runs"
 summary_path = os.path.join(analysis_dir, "summary.csv")
 output_dir = os.path.join(analysis_dir, "plots")
 os.makedirs(output_dir, exist_ok=True)
-
 
 # === Merge Summaries ===
 def merge_summaries():
@@ -41,7 +39,6 @@ def merge_summaries():
         writer.writerows(merged_rows.values())
     print(f"✅ Merged summary written to {output_path} ({len(merged_rows)} entries)")
 
-
 # === Load and Clean ===
 merge_summaries()
 if not os.path.exists(summary_path):
@@ -58,144 +55,230 @@ for col in numeric_cols:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
 
-# === Plot 1: Pareto Front Overlay ===
+# === Compute Top 10 Leaderboard (in memory) ===
+top10 = df.sort_values("val_loss").head(10).copy()
+top10["rank"] = range(1, 11)
+top10_labels = dict(zip(top10["config_name"], top10["rank"]))
+
+# === Save Leaderboard ===
+top10_path = f"{output_dir}/top10_val_loss.csv"
+top10.to_csv(top10_path, index=False)
+print(f"✅ Top 10 configs saved to: {top10_path}")
+
+# === Plot Settings ===
+palette = "Set2"
+model_markers = ["o", "s", "D", "^", "P", "X"]
+
+# === Plot Helper: Draw top10 marker labels ===
+def annotate_top10(ax, df, x_col, y_col):
+    for _, row in df.iterrows():
+        if row["config_name"] in top10_labels:
+            rank = top10_labels[row["config_name"]]
+            ax.text(row[x_col], row[y_col], str(rank), fontsize=8, fontweight='bold', ha='center', va='center', color='black',
+                    bbox=dict(boxstyle="circle,pad=0.2", fc="yellow", ec="black", lw=0.5))
+
+def add_top10_legend(fig):
+    legend_text = "\n".join(
+        f"{r}. {cfg}" for r, cfg in zip(top10["rank"], top10["config_name"])
+    )
+    fig.text(1.02, 0.5, legend_text, fontsize=7, va='center', ha='left')
+# === Plot 1: Pareto Frontier Overlay ===
 subset = df.dropna(subset=["val_loss", "token_accuracy"])
 points = subset[["val_loss", "token_accuracy"]].values
 
 if len(points) >= 3:
-    hull = ConvexHull(points)
-    pareto_points = points[hull.vertices]
-    pareto_points = pareto_points[np.argsort(pareto_points[:, 0])]
+    try:
+        hull = ConvexHull(points)
+        pareto_points = points[hull.vertices]
+        pareto_points = pareto_points[np.argsort(pareto_points[:, 0])]
 
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=subset, x="token_accuracy", y="val_loss", hue="model_type", s=80)
-    plt.plot(pareto_points[:, 1], pareto_points[:, 0], "r--", label="Pareto Frontier")
-    plt.title("Pareto Frontier: Token Accuracy vs Validation Loss")
-    plt.xlabel("Token Accuracy")
-    plt.ylabel("Validation Loss")
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/pareto_frontier_overlay.png")
-    plt.close()
-else:
-    print(f"⚠️ Skipping Pareto plot: Only {len(points)} valid entries (need at least 3).")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.scatterplot(
+            data=subset, x="token_accuracy", y="val_loss",
+            hue="model_type", style="activation", palette=palette, s=80, ax=ax
+        )
+        ax.plot(pareto_points[:, 1], pareto_points[:, 0], "r--", label="Pareto Frontier")
+        annotate_top10(ax, subset, "token_accuracy", "val_loss")
+        add_top10_legend(fig)
 
-# === Plot 2: KDE Jointplot ===
+        ax.set_title("Pareto Frontier: Token Accuracy vs Validation Loss")
+        ax.set_xlabel("Token Accuracy")
+        ax.set_ylabel("Validation Loss")
+        ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+        ax.grid(True)
+        fig.tight_layout()
+        fig.savefig(f"{output_dir}/pareto_frontier_overlay.png", bbox_inches='tight')
+        plt.close(fig)
+    except Exception as e:
+        print(f"⚠️ Could not compute Pareto frontier: {e}")
+
+# === Plot 2: Token Accuracy vs Validation Loss (custom scatter plot) ===
 if len(subset) >= 3:
-    jp = sns.jointplot(
-        data=subset, x="token_accuracy", y="val_loss",
-        kind="kde", fill=True, cmap="mako", height=8
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.scatterplot(
+        data=subset,
+        x="token_accuracy", y="val_loss",
+        hue="model_type", style="activation",
+        palette=palette, s=70, ax=ax
     )
-    jp.plot_joint(sns.scatterplot, s=50, alpha=0.6)
-    jp.fig.suptitle("KDE Jointplot: Token Accuracy vs Validation Loss", y=1.02)
-    jp.fig.tight_layout()
-    jp.savefig(f"{output_dir}/jointplot_tokenacc_valloss.png")
-    plt.close()
-else:
-    print("⚠️ Skipping jointplot: Not enough valid data.")
+    annotate_top10(ax, subset, "token_accuracy", "val_loss")
+    add_top10_legend(fig)
+
+    ax.set_title("Token Accuracy vs Validation Loss (Custom Plot)")
+    ax.grid(True)
+    fig.tight_layout()
+    fig.savefig(f"{output_dir}/jointplot_tokenacc_valloss.png", bbox_inches='tight')
+    plt.close(fig)
 
 # === Plot 3: Regression + Residuals ===
 reg_df = df.dropna(subset=["val_loss", "embed_size", "activation"]).copy()
 if len(reg_df) >= 5:
     model = smf.ols("val_loss ~ embed_size + C(activation)", data=reg_df).fit()
-    reg_df.loc[:, "predicted_val_loss"] = model.predict(reg_df)
-    reg_df.loc[:, "residual"] = reg_df["val_loss"] - reg_df["predicted_val_loss"]
-
-
+    reg_df["predicted_val_loss"] = model.predict(reg_df)
+    reg_df["residual"] = reg_df["val_loss"] - reg_df["predicted_val_loss"]
 
     with open(os.path.join(output_dir, "regression_summary.txt"), "w") as f:
         f.write(str(model.summary()))
 
-    plt.figure(figsize=(8, 6))
-    sns.scatterplot(data=reg_df, x="predicted_val_loss", y="residual", hue="activation")
-    plt.axhline(0, color="gray", linestyle="--")
-    plt.title("Residuals vs Predicted Validation Loss")
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/regression_residuals.png")
-    plt.close()
-else:
-    print("⚠️ Skipping regression plot: Not enough valid data.")
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.scatterplot(
+        data=reg_df,
+        x="predicted_val_loss", y="residual",
+        hue="model_type", style="activation", palette=palette, s=80, ax=ax
+    )
+    ax.axhline(0, color="gray", linestyle="--")
+    annotate_top10(ax, reg_df, "predicted_val_loss", "residual")
+    add_top10_legend(fig)
 
-# === Plot 4: Faceted val_loss vs embed_size ===
+    ax.set_title("Residuals vs Predicted Validation Loss")
+    fig.tight_layout()
+    fig.savefig(f"{output_dir}/regression_residuals.png", bbox_inches='tight')
+    plt.close(fig)
+
+# === Plot 4: Val Loss vs Embed Size by Activation ===
 if "embed_size" in df.columns and "val_loss" in df.columns:
-    g = sns.lmplot(data=df, x='embed_size', y='val_loss', hue='model_type', col='activation',
-                   height=5, aspect=1.2, ci=None, scatter_kws={'s': 60})
+    g = sns.lmplot(
+        data=df, x='embed_size', y='val_loss',
+        hue='model_type', col='activation',
+        palette=palette,
+        markers=model_markers[:df["model_type"].nunique()],
+        height=5, aspect=1.2, ci=None,
+        scatter_kws={'s': 60},
+        legend=False  # ✅ Prevent auto subplot legends
+    )
     g.set_titles(col_template="{col_name} activation")
-    g.fig.subplots_adjust(top=0.85)
+    g.fig.subplots_adjust(top=0.85, right=0.72)  # ✅ More right space
     g.fig.suptitle("Validation Loss vs Embedding Size by Activation", fontsize=16)
-    g.savefig(f"{output_dir}/val_loss_vs_embed_size_by_activation.png")
-    plt.close()
-else:
-    print("⚠️ Skipping lmplot: Required columns not present.")
 
-# === Plot 5: Perplexity vs Accuracy (log scale) ===
+    # === Annotate top-10 within each subplot
+    for ax in g.axes.flatten():
+        activation_title = ax.get_title()
+        activation_name = activation_title.split()[0]
+        subset_ax = df[df["activation"] == activation_name]
+        annotate_top10(ax, subset_ax, "embed_size", "val_loss")
+
+    # === Add shared seaborn legend manually
+    handles, labels = g.axes[0][0].get_legend_handles_labels()
+    g.fig.legend(
+        handles, labels,
+        title="Model Type",
+        loc='center right',
+        bbox_to_anchor=(1, 0.5),
+        borderaxespad=0.
+    )
+
+    # === Add custom top-10 legend
+    legend_text = "\n".join(
+        f"{r}. {cfg}" for r, cfg in zip(top10["rank"], top10["config_name"])
+    )
+    g.fig.text(1.05, 0.5, legend_text, fontsize=7, va='center', ha='left')
+
+    g.savefig(f"{output_dir}/val_loss_vs_embed_size_by_activation.png", bbox_inches='tight')
+    plt.close(g.fig)
+
+# === Plot 5: Perplexity vs Accuracy ===
 if "perplexity" in df.columns and "token_accuracy" in df.columns:
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=df, x='token_accuracy', y='perplexity', hue='model_type', s=100)
-    plt.yscale('log')
-    plt.title("Perplexity vs Token Accuracy (log scale)")
-    plt.grid(True)
-    top = df.sort_values("token_accuracy", ascending=False).head(5)
-    for _, row in top.iterrows():
-        plt.text(row['token_accuracy'], row['perplexity'], row['config_name'], fontsize=8)
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/perplexity_vs_accuracy_log.png")
-    plt.close()
-else:
-    print("⚠️ Skipping perplexity vs accuracy plot: Columns missing.")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(
+        data=df,
+        x='token_accuracy', y='perplexity',
+        hue='model_type', style='activation',
+        palette=palette, s=100, ax=ax
+    )
+    ax.set_yscale('log')
+    ax.set_title("Perplexity vs Token Accuracy (log scale)")
+    ax.grid(True)
+    annotate_top10(ax, df, "token_accuracy", "perplexity")
+    add_top10_legend(fig)
+    fig.tight_layout()
+    fig.savefig(f"{output_dir}/perplexity_vs_accuracy_log.png", bbox_inches='tight')
+    plt.close(fig)
 
 # === Plot 6: Box + Strip by Activation ===
 if "activation" in df.columns and "val_loss" in df.columns:
-    plt.figure(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(10, 6))
     order = df.groupby("activation")["val_loss"].median().sort_values().index
-    sns.boxplot(data=df, x='activation', y='val_loss', hue='model_type', order=order)
-    sns.stripplot(data=df, x='activation', y='val_loss', hue='model_type', dodge=True, alpha=0.5, order=order)
-    plt.title("Validation Loss by Activation Function (Ordered by Median)")
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/val_loss_by_activation_ordered.png")
-    plt.close()
-else:
-    print("⚠️ Skipping box+strip plot: Columns missing.")
-
-# === Plot 7: Heatmaps of embed_size x k ===
-if "embed_size" in df.columns and "k" in df.columns and "val_loss" in df.columns:
-    for model in df["model_type"].dropna().unique():
-        subset = df[df["model_type"] == model]
-        if not subset.empty:
-            heatmap_data = subset.pivot_table(index='embed_size', columns='k', values='val_loss', aggfunc='mean')
-            if heatmap_data.size > 0:
-                plt.figure(figsize=(10, 6))
-                sns.heatmap(heatmap_data, annot=True, fmt=".2f", cmap="viridis")
-                plt.title(f"{model} - Validation Loss Heatmap (embed_size vs k)")
-                plt.tight_layout()
-                plt.savefig(f"{output_dir}/val_loss_heatmap_{model}_embed_k.png")
-                plt.close()
-            else:
-                print(f"⚠️ Skipping heatmap for {model}: No pivotable data.")
-else:
-    print("⚠️ Skipping heatmaps: Required columns not found.")
+    sns.boxplot(data=df, x='activation', y='val_loss', hue='model_type', order=order, palette=palette, ax=ax)
+    sns.stripplot(data=df, x='activation', y='val_loss', hue='model_type', dodge=True, alpha=0.5, order=order, palette=palette, ax=ax)
+    annotate_top10(ax, df, "activation", "val_loss")
+    add_top10_legend(fig)
+    ax.set_title("Validation Loss by Activation Function (Ordered by Median)")
+    ax.grid(True)
+    fig.tight_layout()
+    ax.legend(title="Model Type", bbox_to_anchor=(1.05, 1), loc='upper left')
+    fig.savefig(f"{output_dir}/val_loss_by_activation_ordered.png", bbox_inches='tight')
+    plt.close(fig)
 
 # === Plot 8: Correlation Matrix ===
 if len(df[numeric_cols].dropna()) >= 2:
-    plt.figure(figsize=(12, 10))
+    fig, ax = plt.subplots(figsize=(12, 10))
     corr = df[numeric_cols].corr()
-    sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f")
-    plt.title("Correlation Matrix (Hyperparams vs Metrics)")
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/correlation_matrix.png")
-    plt.close()
-else:
-    print("⚠️ Skipping correlation matrix: Not enough numeric data.")
+    sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
+    add_top10_legend(fig)
+    ax.set_title("Correlation Matrix (Hyperparams vs Metrics)")
+    fig.tight_layout()
+    fig.savefig(f"{output_dir}/correlation_matrix.png", bbox_inches='tight')
+    plt.close(fig)
 
-# === Leaderboard ===
-if not df.empty:
-    top10 = df.sort_values("val_loss").head(10)
-    top10_path = f"{output_dir}/top10_val_loss.csv"
-    top10.to_csv(top10_path, index=False)
-    print(f"✅ Top 10 configs saved to: {top10_path}")
-else:
-    print("⚠️ No data to create leaderboard.")
+# === Plot 9: Heatmap of val_loss vs (embed_size, k), per model_type ===
+if {"embed_size", "k", "val_loss", "model_type"}.issubset(df.columns):
+    heatmap_df = df[["embed_size", "k", "val_loss", "model_type"]].dropna()
+    if heatmap_df.empty:
+        print("⚠️ Not enough data for embed_size vs k heatmap")
+    else:
+        unique_models = heatmap_df["model_type"].unique()
+        for model in unique_models:
+            model_df = heatmap_df[heatmap_df["model_type"] == model]
+            if model_df.empty:
+                print(f"⚠️ Skipping heatmap: No data for model_type={model}")
+                continue
+
+            pivot = model_df.pivot_table(
+                index="embed_size", columns="k", values="val_loss", aggfunc="mean"
+            )
+
+            if pivot.empty:
+                print(f"⚠️ Skipping heatmap: Not enough data for {model}")
+                continue
+
+            fig, ax = plt.subplots(figsize=(10, 8))
+            sns.heatmap(
+                pivot,
+                annot=True,
+                fmt=".3f",
+                cmap="viridis",
+                linewidths=0.5,
+                cbar_kws={"label": "Validation Loss"},
+                ax=ax
+            )
+            ax.set_title(f"Validation Loss Heatmap: Embed Size vs k ({model})")
+            ax.set_xlabel("k")
+            ax.set_ylabel("Embedding Size")
+            fig.tight_layout()
+            heatmap_path = f"{output_dir}/val_loss_heatmap_{model}_embed_k.png"
+            fig.savefig(heatmap_path, bbox_inches="tight")
+            plt.close(fig)
+            print(f"✅ Saved heatmap: {heatmap_path}")
+
 
 print("✅ All analysis complete.")
