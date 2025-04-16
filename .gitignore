@@ -3,6 +3,7 @@
 !/analysis_runs/summary.csv
 !/analysis_runs/plots/
 !/analysis_runs/plots/**
+!/sample_data/**
 
 # Ignore all checkpoints
 /checkpoints/
