@@ -4,7 +4,7 @@ Dep. Variable:               val_loss   R-squared:                       0.184
 Model:                            OLS   Adj. R-squared:                  0.162
 Method:                 Least Squares   F-statistic:                     8.249
 Date:                Wed, 16 Apr 2025   Prob (F-statistic):           0.000589
-Time:                        09:06:49   Log-Likelihood:                -160.53
+Time:                        09:22:18   Log-Likelihood:                -160.53
 No. Observations:                  76   AIC:                             327.1
 Df Residuals:                      73   BIC:                             334.1
 Df Model:                           2                                         
