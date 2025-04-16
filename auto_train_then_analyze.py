@@ -13,19 +13,12 @@ def run_batch_train(log_path=None):
 
 def run_batch_analysis(fast=True, skip_existing=True, skip_plots=False, workers=8, log_path=None):
     cmd = [
-        "python", "analyze_all_checkpoints.py",
-        "--workers", str(workers)
+        "python", "analyze_all_checkpoints.py"
     ]
-    if fast:
-        cmd.append("--fast")
-    if skip_existing:
-        cmd.append("--skip_existing")
-    if skip_plots:
-        cmd.append("--skip_plots")
-
     print("\n🔬 Starting batch analysis...")
     with open(log_path, "w") if log_path else subprocess.DEVNULL as logfile:
         subprocess.run(cmd, stdout=logfile, stderr=subprocess.STDOUT, check=True)
+
     print("✅ Batch analysis completed.")
 
 def main():

@@ -934,10 +934,10 @@ def main():
     activation=activation_fn
     ).to(device)
     models = {
-        # "kgram_mlp_seq": kgram_model,
-        # "lstm_seq": lstm_model,
-        # "kvcache_transformer": transformer,
-        "deepseek_reasoning": deepseek_model
+        "kgram_mlp_seq": kgram_model,
+        "lstm_seq": lstm_model,
+        "kvcache_transformer": transformer,
+        # "deepseek_reasoning": deepseek_model
     }
 
 
