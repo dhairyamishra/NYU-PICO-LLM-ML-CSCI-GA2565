@@ -48,6 +48,7 @@ pip-delete-this-directory.txt
 .tox/
 .coverage
 .cache
+!summary_cache.csv
 nosetests.xml
 coverage.xml
 
