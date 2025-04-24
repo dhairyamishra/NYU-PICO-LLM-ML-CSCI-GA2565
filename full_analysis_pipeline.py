@@ -161,6 +161,12 @@ def full_summary_analysis():
 
     print("✅ Summary analysis complete. All plots saved in:", PLOTS_DIR)
 
+    # Lineplot: Val Loss vs Embed Size by Activation
+    # Heatmaps: Val Loss vs (embed_size, k) per model_type
+    # Box + Strip by Activation 
+    # Regression: Residuals vs Predicted
+    add_extra_plots(df)
+
 def merge_summary_cache():
     merged = OrderedDict()
     for fname in os.listdir(ANALYSIS_DIR):
@@ -175,6 +181,110 @@ def merge_summary_cache():
             writer.writeheader()
             writer.writerows(merged.values())
 
+def add_extra_plots(df):
+    os.makedirs(PLOTS_DIR, exist_ok=True)
+    palette = "Set2"
+    model_markers = ["o", "s", "D", "^", "P", "X"]
+
+    numeric_cols = [
+        'avg_loss', 'val_loss', 'perplexity', 'token_accuracy',
+        'learning_rate', 'embed_size', 'k', 'chunk_size', 'inner_layers',
+        'block_size', 'batch_size', 'tinystories_weight'
+    ]
+
+    # === Correlation Matrix ===
+    if len(df[numeric_cols].dropna()) >= 2:
+        fig, ax = plt.subplots(figsize=(12, 10))
+        corr = df[numeric_cols].corr()
+        sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
+        ax.set_title("Correlation Matrix (Hyperparams vs Metrics)")
+        fig.tight_layout()
+        fig.savefig(f"{PLOTS_DIR}/correlation_matrix.png", bbox_inches='tight')
+        plt.close(fig)
+
+    # === Regression: Residuals vs Predicted ===
+    reg_df = df.dropna(subset=["val_loss", "embed_size", "activation"]).copy()
+    if len(reg_df) >= 5:
+        model = smf.ols("val_loss ~ embed_size + C(activation)", data=reg_df).fit()
+        reg_df["predicted_val_loss"] = model.predict(reg_df)
+        reg_df["residual"] = reg_df["val_loss"] - reg_df["predicted_val_loss"]
+
+        with open(os.path.join(PLOTS_DIR, "regression_summary.txt"), "w") as f:
+            f.write(str(model.summary()))
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+        sns.scatterplot(
+            data=reg_df,
+            x="predicted_val_loss", y="residual",
+            hue="model_type", style="activation", palette=palette, s=80, ax=ax
+        )
+        ax.axhline(0, color="gray", linestyle="--")
+        ax.set_title("Residuals vs Predicted Validation Loss")
+        fig.tight_layout()
+        fig.savefig(f"{PLOTS_DIR}/regression_residuals.png", bbox_inches='tight')
+        plt.close(fig)
+
+    # === Box + Strip by Activation ===
+    if "activation" in df.columns and "val_loss" in df.columns:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        order = df.groupby("activation")["val_loss"].median().sort_values().index
+        sns.boxplot(data=df, x='activation', y='val_loss', hue='model_type', order=order, palette=palette, ax=ax)
+        sns.stripplot(data=df, x='activation', y='val_loss', hue='model_type', dodge=True, alpha=0.5, order=order, palette=palette, ax=ax)
+        ax.set_title("Validation Loss by Activation Function (Ordered by Median)")
+        ax.grid(True)
+        fig.tight_layout()
+        ax.legend(title="Model Type", bbox_to_anchor=(1.05, 1), loc='upper left')
+        fig.savefig(f"{PLOTS_DIR}/val_loss_by_activation_ordered.png", bbox_inches='tight')
+        plt.close(fig)
+
+    # === Lineplot: Val Loss vs Embed Size by Activation ===
+    if "embed_size" in df.columns and "val_loss" in df.columns:
+        g = sns.lmplot(
+            data=df, x='embed_size', y='val_loss',
+            hue='model_type', col='activation',
+            palette=palette,
+            markers=model_markers[:df["model_type"].nunique()],
+            height=5, aspect=1.2, ci=None,
+            scatter_kws={'s': 60},
+            legend=False
+        )
+        g.set_titles(col_template="{col_name} activation")
+        g.fig.subplots_adjust(top=0.85, right=0.72)
+        g.fig.suptitle("Validation Loss vs Embedding Size by Activation", fontsize=16)
+
+        handles, labels = g.axes[0][0].get_legend_handles_labels()
+        g.fig.legend(
+            handles, labels,
+            title="Model Type",
+            loc='center right',
+            bbox_to_anchor=(1, 0.5),
+            borderaxespad=0.
+        )
+
+        g.savefig(f"{PLOTS_DIR}/val_loss_vs_embed_size_by_activation.png", bbox_inches='tight')
+        plt.close(g.fig)
+
+    # === Heatmaps: Val Loss vs (embed_size, k) per model_type ===
+    if {"embed_size", "k", "val_loss", "model_type"}.issubset(df.columns):
+        heatmap_df = df[["embed_size", "k", "val_loss", "model_type"]].dropna()
+        if not heatmap_df.empty:
+            for model in heatmap_df["model_type"].unique():
+                model_df = heatmap_df[heatmap_df["model_type"] == model]
+                pivot = model_df.pivot_table(index="embed_size", columns="k", values="val_loss", aggfunc="mean")
+                if pivot.empty:
+                    continue
+                fig, ax = plt.subplots(figsize=(10, 8))
+                sns.heatmap(pivot, annot=True, fmt=".3f", cmap="viridis",
+                            linewidths=0.5, cbar_kws={"label": "Validation Loss"}, ax=ax)
+                ax.set_title(f"Validation Loss Heatmap: Embed Size vs k ({model})")
+                ax.set_xlabel("k")
+                ax.set_ylabel("Embedding Size")
+                fig.tight_layout()
+                fig.savefig(f"{PLOTS_DIR}/val_loss_heatmap_{model}_embed_k.png", bbox_inches="tight")
+                plt.close(fig)
+
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run_checkpoints", action="store_true", help="Run per-checkpoint analysis")
@@ -187,6 +297,8 @@ def main():
 
     merge_summary_cache()
     full_summary_analysis()
+    
+
 
 if __name__ == "__main__":
     main()

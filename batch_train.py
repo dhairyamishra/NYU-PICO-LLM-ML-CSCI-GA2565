@@ -38,6 +38,8 @@ os.makedirs("logs", exist_ok=True)
 
 keys, values = zip(*param_grid.items())
 combinations = list(itertools.product(*values))
+print(f"Total combinations: {len(combinations)}")
+# Filter out combinations with empty values
 random.shuffle(combinations)
 combinations = combinations[:20]  # ✅ Trim runs
 
