@@ -32,7 +32,7 @@ def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_s
             n_blocks=6, max_seq_len=block_size,
             activation=get_activation(activation)
         )
-    elif model_type == "deepseek_latent":
+    elif model_type == "deepseek_latent_attention":
         model = DeepSeekLatentModel(
             vocab_size=vocab_size,
             embed_size=embed_size,
@@ -199,10 +199,11 @@ def plotlosses(loss_log_path, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint_dir_sub", 
-                        default=r"checkpoints\kgram_mlp_seq_tsw0.8_bs32_lr0.001_actgelu_ep5_mlp10_k2_cs1_blk64_emb32_20250414_015747", 
+                        default=r"checkpoints\deepseek_latent_attention_tsw0.9_bs16_lr0.005_actgelu_ep5_mlp20_k3_cs2_blk128_emb128_202504", 
                         type=str, help="Path to specific models epock folder"
                         )
-    parser.add_argument("--model_type", default="", type=str, choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer"])
+    parser.add_argument("--model_type", default="", type=str,
+    choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer", "deepseek_latent_attention"])
     parser.add_argument("--learning_rate", type=float, default=None)
     parser.add_argument("--batch_size", type=int, default=None)
     parser.add_argument("--num_epochs", type=int, default=None)
@@ -220,7 +221,7 @@ if __name__ == "__main__":
     filename = args.checkpoint_dir_sub.replace("\\", "/").split("/")[-1]
     print("Filename:", filename)
     patterns = {
-        "model_type": r"^(kgram_mlp_seq|lstm_seq|kvcache_transformer)",
+        "model_type": r"^(kgram_mlp_seq|lstm_seq|kvcache_transformer|deepseek_latent_attention)",
         "inner_layers": r"mlp(\d+)",
         "k": r"k(\d+)",
         "chunk_size": r"cs(\d+)",

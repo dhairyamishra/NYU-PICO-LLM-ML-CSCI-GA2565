@@ -1,5 +1,11 @@
 torch>=2.0.0
 numpy>=1.23
-tqdm
+pandas
 matplotlib
 seaborn
+tqdm
+xgboost
+shap
+scikit-learn
+scipy
+statsmodels

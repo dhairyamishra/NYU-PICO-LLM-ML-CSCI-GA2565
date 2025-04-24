@@ -24,15 +24,17 @@ import tiktoken
 def parse_args():
     parser = argparse.ArgumentParser(description="Train multiple models on TinyStories and/or custom text files.")
     parser.add_argument("--input_files", nargs="*", default=None, help="Optional list of text files to mix in as data sources.")
-    parser.add_argument("--tinystories_weight", type=float, default=0.5, help="Probability of sampling from TinyStories.")
-    parser.add_argument("--model_type", type=str, default="kvcache_transformer",    choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer", "deepseek_reasoning"],    help="Type of model to train")
+    parser.add_argument("--tinystories_weight", type=float, default=0.9, help="Probability of sampling from TinyStories.")
+    parser.add_argument("--model_type", type=str, default="deepseek_latent_attention",
+    choices=["kgram_mlp_seq", "lstm_seq", "kvcache_transformer", "deepseek_latent_attention"],
+    help="Type of model to train")
     parser.add_argument("--val_split", type=float, default=0.1, help="Fraction of data to use for validation.")  
     parser.add_argument("--max_steps_per_epoch", type=int, default=50, help="Max steps per epoch.")
     parser.add_argument("--num_epochs", type=int, default=5, help="Number of training epochs.")
     parser.add_argument("--learning_rate", type=float, default=5e-3, help="Learning rate.")
     parser.add_argument("--activation", type=str, choices=["relu", "gelu"], default="gelu",help="Activation function to use in models: 'relu' or 'gelu'.")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size.")
-    parser.add_argument("--train_subset_size", type=int, default=10000, help="Number of TinyStories examples to load.")
+    parser.add_argument("--train_subset_size", type=int, default=20000, help="Number of TinyStories examples to load.")
     parser.add_argument("--log_interval_steps", type=int, default=10, help="Logging interval (in steps).")
     parser.add_argument("--sample_interval_seconds", type=int, default=60, help="Sampling interval (in seconds).")
     parser.add_argument("--num_inner_mlp_layers", type=int, default=20, help="Number of inner layers in k-gram MLP.")
@@ -1015,11 +1017,23 @@ def main():
     # ACTIVE MODELS
     ############################################################################
     models = {
-        "kgram_mlp_seq": kgram_model,
-        "lstm_seq": lstm_model,
-        "kvcache_transformer": transformer,
-        "deepseek_reasoning": DSLatentModel,
+        # "kgram_mlp_seq": kgram_model,
+        # "lstm_seq": lstm_model,
+        # "kvcache_transformer": transformer,
+        # "deepseek_latent_attention": DSLatentModel,
     }
+    if args.model_type == "kgram_mlp_seq":
+        models["kgram_mlp_seq"] = kgram_model
+    elif args.model_type == "lstm_seq":
+        models["lstm_seq"] = lstm_model
+    elif args.model_type == "kvcache_transformer":
+        models["kvcache_transformer"] = transformer
+    elif args.model_type == "deepseek_reasoning":
+        models["deepseek_reasoning"] = deepseek_model
+    elif args.model_type == "deepseek_latent_attention":
+        models["deepseek_latent_attention"] = DSLatentModel
+    else:
+        raise ValueError(f"Unknown model_type: {args.model_type}")
 
 
 
