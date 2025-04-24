@@ -5,7 +5,7 @@ import re
 import argparse
 import torch
 import matplotlib.pyplot as plt
-from main import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, DeepSeekReasoningModel, generate_text, get_activation, get_model_config
+from main import KGramMLPSeqModel, LSTMSeqModel, TransformerModel, DeepSeekLatentModel, generate_text, get_activation, get_model_config
 from torch.nn.functional import cosine_similarity
 import tiktoken
 from matplotlib.backends.backend_pdf import PdfPages
@@ -32,16 +32,17 @@ def load_model(model_type, vocab_size, checkpoint_path, embed_size, k=3, chunk_s
             n_blocks=6, max_seq_len=block_size,
             activation=get_activation(activation)
         )
-    elif model_type == "deepseek_reasoning":
-        model = DeepSeekReasoningModel(
+    elif model_type == "deepseek_latent":
+        model = DeepSeekLatentModel(
             vocab_size=vocab_size,
             embed_size=embed_size,
             block_size=block_size,
-            num_blocks=12,  # or extract from name
-            routing_strategy="mean",
-            reasoning_depth=2,
+            num_blocks=12,
+            n_heads=4,
+            n_latents=16,
             activation=get_activation(activation)
         )
+
     else:
         raise ValueError(f"Unknown model type: {model_type}")
     

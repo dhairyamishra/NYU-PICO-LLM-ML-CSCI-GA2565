@@ -380,6 +380,34 @@ class TransformerModel(nn.Module):
 ################################################################################
 # 6. DeepSeekReasoningModel 
 ################################################################################
+class LatentMultiHeadAttention(nn.Module):
+    def __init__(self, d_model, n_heads, n_latents):
+        super().__init__()
+        self.d_model = d_model
+        self.n_heads = n_heads
+        self.n_latents = n_latents
+        self.head_dim = d_model // n_heads
+
+        self.q_latents = nn.Parameter(torch.randn(n_latents, d_model))
+        self.kv_proj = nn.Linear(d_model, 2 * d_model)
+        self.out_proj = nn.Linear(d_model, d_model)
+
+    def forward(self, x):
+        B, T, C = x.shape
+        kv = self.kv_proj(x)  # (B, T, 2 * C)
+        k, v = kv.chunk(2, dim=-1)
+        k = k.view(B, T, self.n_heads, self.head_dim).transpose(1, 2)  # (B, H, T, D)
+        v = v.view(B, T, self.n_heads, self.head_dim).transpose(1, 2)
+
+        q = self.q_latents.unsqueeze(0).expand(B, -1, -1)  # (B, L, C)
+        q = q.view(B, self.n_latents, self.n_heads, self.head_dim).transpose(1, 2)  # (B, H, L, D)
+
+        attn_weights = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(self.head_dim)
+        attn_weights = F.softmax(attn_weights, dim=-1)  # (B, H, L, T)
+        attn_output = torch.matmul(attn_weights, v)  # (B, H, L, D)
+
+        attn_output = attn_output.transpose(1, 2).contiguous().view(B, self.n_latents, C)
+        return self.out_proj(attn_output)  # (B, L, C)
 
 class DeepSeekReasoningModel(nn.Module):
     def __init__(self, vocab_size, embed_size, block_size, num_blocks, routing_strategy, reasoning_depth, activation):
@@ -441,9 +469,56 @@ class DeepSeekReasoningModel(nn.Module):
         """
         return F.cosine_similarity(initial, final, dim=-1).mean().item()
 
+class LatentTransformerBlock(nn.Module):
+    def __init__(self, d_model, n_heads, n_latents, activation):
+        super().__init__()
+        self.attn = LatentMultiHeadAttention(d_model, n_heads, n_latents)
+        self.mlp = nn.Sequential(
+            nn.Linear(d_model, 4 * d_model),
+            activation,
+            nn.Linear(4 * d_model, d_model),
+        )
+        self.norm1 = RMSNorm(d_model)
+        self.norm2 = RMSNorm(d_model)
 
+    def forward(self, x):
+        """
+        x: (B, T, C)
+        """
+        B, T, C = x.shape
+        latents = self.attn(self.norm1(x))  # (B, L, C)
 
+        # 🔁 Broadcast average latent back to each token position
+        token_context = latents.mean(dim=1, keepdim=True).expand(B, T, C)  # (B, T, C)
 
+        x = x + token_context
+        x = x + self.mlp(self.norm2(x))
+        return x
+
+class DeepSeekLatentModel(nn.Module):
+    def __init__(self, vocab_size, embed_size, block_size, num_blocks, n_heads, n_latents, activation):
+        super().__init__()
+        self.token_emb = nn.Embedding(vocab_size, embed_size)
+        self.pos_emb = nn.Embedding(block_size, embed_size)
+        self.blocks = nn.ModuleList([
+            LatentTransformerBlock(embed_size, n_heads, n_latents, activation)
+            for _ in range(num_blocks)
+        ])
+        self.norm_final = RMSNorm(embed_size)
+        self.output_proj = nn.Linear(embed_size, vocab_size)
+        self.max_seq_len = block_size
+
+    def forward(self, tokens):
+        seq_len, batch_size = tokens.shape
+        x = self.token_emb(tokens) + self.pos_emb(torch.arange(seq_len, device=tokens.device).unsqueeze(1))
+        x = x.permute(1, 0, 2)  # (B, T, C)
+
+        for block in self.blocks:
+            x = block(x)
+
+        x = x.permute(1, 0, 2)  # back to (T, B, C)
+        logits = self.output_proj(self.norm_final(x))
+        return logits
 
 
 ################################################################################
@@ -893,7 +968,7 @@ def main():
     )
 
     ############################################################################
-    # Models
+    # Models LIST
     ############################################################################
     kgram_model = KGramMLPSeqModel(
         vocab_size=vocab_size,
@@ -904,6 +979,7 @@ def main():
         activation=activation_fn
     ).to(device)
 
+    ############################################################################
     lstm_model = LSTMSeqModel(
         vocab_size=vocab_size,
         embed_size=embed_size,
@@ -911,8 +987,7 @@ def main():
         activation=activation_fn
     ).to(device)
 
-    # ⚠️ Important:
-    # Match embed_size and block_size to your CLI args so the dimensions are consistent with your training setup.
+    ############################################################################
     transformer = TransformerModel(
         vocab_size=vocab_size,
         d_model=embed_size,         # match your CLI arg
@@ -923,21 +998,27 @@ def main():
     ).to(device)
         # Add DeepSeekReasoningModel
     
+    ############################################################################
     # deepseek_model 
-    deepseek_model = DeepSeekReasoningModel(
-    vocab_size=vocab_size,
-    embed_size=embed_size,
-    block_size=block_size,
-    num_blocks=args.num_blocks,
-    routing_strategy=args.routing_strategy,
-    reasoning_depth=args.reasoning_depth,
-    activation=activation_fn
+    DSLatentModel = DeepSeekLatentModel(
+        vocab_size=vocab_size,
+        embed_size=embed_size,
+        block_size=block_size,
+        num_blocks=args.num_blocks,
+        n_heads=4,
+        n_latents=16,
+        activation=activation_fn
     ).to(device)
+
+
+    ############################################################################
+    # ACTIVE MODELS
+    ############################################################################
     models = {
         "kgram_mlp_seq": kgram_model,
         "lstm_seq": lstm_model,
         "kvcache_transformer": transformer,
-        # "deepseek_reasoning": deepseek_model
+        "deepseek_reasoning": DSLatentModel,
     }
 
 
